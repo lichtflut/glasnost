@@ -4,6 +4,7 @@
 package de.lichtflut.glasnost.is.pages;
 
 import de.lichtflut.glasnost.is.components.AboutTeaserPanel;
+import de.lichtflut.rb.application.base.AbstractLoginPage;
 import de.lichtflut.rb.application.common.RBPermission;
 import de.lichtflut.rb.application.custom.RequestAccountPage;
 import de.lichtflut.rb.application.custom.ResetPasswordPage;
@@ -42,25 +43,12 @@ import java.util.Set;
  * 
  * @author Oliver Tigges
  */
-public class LoginPage extends AbstractBasePage {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoginPage.class);
-
-	@SpringBean
-	private AuthModule authModule;
-
-	@SpringBean
-	private AuthenticationService authService;
-
-	// ----------------------------------------------------
+public class LoginPage extends AbstractLoginPage {
 
 	/**
 	 * Constructor.
 	 */
 	public LoginPage() {
-
-		checkCookies();
-		redirectIfAlreadyLoggedIn();
 
 		add(new LoginPanel("loginPanel") {
             @Override
@@ -90,99 +78,10 @@ public class LoginPage extends AbstractBasePage {
 
 	// ----------------------------------------------------
 
-	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-        checkCookies();
-        redirectIfAlreadyLoggedIn();
-	}
-
-	@Override
-	protected boolean needsAuthentication() {
-		return false;
-	}
-	
-	// ----------------------------------------------------
-
-	/**
-	 * Try to log the user in.
-	 * 
-	 * @param loginData The login data.
-	 */
-	private void tryLogin(final LoginData loginData) {
-		try {
-			final RBUser user = authService.login(loginData);
-			final Set<String> permissions = authModule.getUserManagement().getUserPermissions(user, user.getDomesticDomain());
-			if (!permissions.contains(RBPermission.LOGIN.name())) {
-				LOGGER.info("Login aborted - User {} is lack of permission: {}", user.getName(), RBPermission.LOGIN.name());
-				error(getString("error.login.activation"));
-			} else {
-				LOGGER.info("User {} logged in using username and password.", user.getName());
-				RBWebSession.get().replaceSession();
-				initializeUserSession(user);
-			}
-			if (loginData.getStayLoggedIn()) {
-				final String token = authService.createRememberMeToken(user, loginData);
-                CookieAccess.getInstance().setRememberMeToken(token);
-				LOGGER.info("Added 'remember-me' cookie for {}", user.getName());
-			}
-		} catch (LoginException e) {
-			error(getString("error.login.failed"));
-		}
-	}
-
-    private void checkCookies() {
-        final RBUser user = getUserFromCookies();
-        if (user != null) {
-            final Set<String> permissions = authModule.getUserManagement().getUserPermissions(user, user.getDomesticDomain());
-            if (permissions.contains(RBPermission.LOGIN.name())) {
-                initializeUserSession(user);
-            } else {
-                LOGGER.info("Login aborted - User {} is lack of permission: {}", user.getName(), RBPermission.LOGIN.name());
-                error(getString("error.login.activation"));
-            }
-        }
-	}
-
-    private RBUser getUserFromCookies() {
-        final String sessionToken = CookieAccess.getInstance().getSessionToken();
-        final String rememberMeToken = CookieAccess.getInstance().getRememberMeToken();
-        if (sessionToken != null) {
-            LOGGER.info("User has session token: {}", sessionToken);
-            final RBUser user = authService.loginByToken(sessionToken);
-            if (user != null) {
-                return user;
-            }
-        } else if (rememberMeToken != null) {
-            LOGGER.info("User has remember me token: {}", rememberMeToken);
-            return authService.loginByToken(rememberMeToken);
-        }
-        return null;
-    }
-	
-	// ----------------------------------------------------
-
 	private void addVersionInfo() {
 		final VersionInfoModel model = new VersionInfoModel();
 		add(new Label("version", new PropertyModel<String>(model, "version")));
 		add(new Label("build", new PropertyModel<String>(model, "buildTimestamp")));
-	}
-
-	private void redirectIfAlreadyLoggedIn() {
-		if (isAuthenticated()) {
-			if (!continueToOriginalDestination()) {
-				throw new RestartResponseException(WelcomePage.class);
-			}
-		}
-	}
-
-	private void initializeUserSession(RBUser user) {
-        String token = authService.createSessionToken(user);
-        new ServiceContextInitializer().init(user, user.getDomesticDomain());
-
-        WebRequest request = (WebRequest) RequestCycle.get().getRequest();
-        HttpServletRequest httpRequest = (HttpServletRequest) request.getContainerRequest();
-        httpRequest.getSession().setAttribute(AuthModule.COOKIE_SESSION_AUTH, token);
 	}
 
 }
