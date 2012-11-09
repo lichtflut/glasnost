@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <import resource="classpath:spring-context-base.xml"/>
+    <import resource="classpath:spring-context-rest.xml"/>
+    <import resource="classpath:spring-context-ui.xml"/>
+    <import resource="classpath:spring-context-auth.xml"/>
+
+    <bean id="securityConfig" class="de.lichtflut.glasnost.is.conf.GlasnostSecurityConfiguration"/>
+
+    <bean id="domainValidator" class="de.lichtflut.rb.application.common.DefaultDomainValidator"/>
+
+    <bean id="emailProperties" class="de.lichtflut.rb.core.config.ConfigurationProperties">
+        <constructor-arg index="0" value="de.lichtflut.rb.config"/>
+        <constructor-arg index="1">
+            <props>
+                <prop key="email-service.smtp-server">goldfinger.lichtflut.de</prop>
+                <prop key="email-service.smtp-user">noreply</prop>
+                <prop key="email-service.smtp-password">MI821rfc</prop>
+                <prop key="email-service.suppert-name">Glasnost</prop>
+                <prop key="email-service.support-email">noreply@glasnost.lichtflut.de</prop>
+                <prop key="email-service.application-name">Glasnost Support Team</prop>
+                <prop key="email-service.application-email">webck@lichtflut.de</prop>
+            </props>
+        </constructor-arg>
+    </bean>
+
+    <bean id="emailConfig" class="de.lichtflut.rb.core.config.PropertyBasedEmailConfiguration">
+        <constructor-arg index="0" ref="emailProperties"/>
+    </bean>
+
+    <bean id="fsConfig" class="de.lichtflut.rb.core.config.FileServiceConfiguration">
+        <property name="implementingClass" value="de.lichtflut.rb.core.services.impl.JackRabbitFileService"/>
+        <property name="properties">
+            <props>
+                <prop key="file-service.jack-rabbit.config-xml">content-repo/repository.xml</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="rbConfig" class="de.lichtflut.rb.core.config.RBConfig" init-method="ready">
+        <constructor-arg value="glasnost"></constructor-arg>
+        <property name="emailConfiguration" ref="emailConfig"/>
+        <property name="securityConfiguration" ref="securityConfig"/>
+        <property name="domainValidator" ref="domainValidator"/>
+        <property name="fileServiceConfiguration" ref="fsConfig"/>
+    </bean>
+
+    <!--  Application and paths -->
+
+    <bean id="wicketApplication" class="de.lichtflut.glasnost.is.GlasnostWebApplication">
+        <property name="config" ref="rbConfig"/>
+    </bean>
+
+    <bean id="queryServicePathBuilder" class="de.lichtflut.rb.webck.config.DefaultQueryServicePathBuilder">
+    </bean>
+
+    <bean id="resourceLinkProvider" class="de.lichtflut.rb.application.extensions.RBResourceLinkProvider">
+    </bean>
+
+</beans>

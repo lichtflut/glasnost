@@ -1,0 +1,83 @@
+/* LOGOS */
+
+div#site-header {
+    margin-left:27px;
+}
+
+div#first-level-nav {
+    margin-left:75px;
+}
+
+div#langage-select {
+    padding-left: 90px;
+}
+
+div#langage-select.login{
+    padding-left: 15px;
+}
+
+div#application-logo {
+    background: url("glasnost_images/glasnost_logo.png") no-repeat 0 0;
+    z-index: 1;
+    width: 100px;
+    height: 100px;
+    position:absolute;
+    margin-top: -16px;
+    margin-left: -35px;
+}
+
+/* TEASERS */
+
+div.teaser-logo {
+    background-image: url("glasnost_images/glasnost_logo_ext.png");
+    width: 400px;
+    height: 190px;
+    background-position: 0 15px;
+    background-repeat: no-repeat;
+}
+
+div.teaser-table {
+    background-image: url("glasnost_images/teaser_table.png");
+    background-position: -45px -60px;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 150px;
+}
+
+div.teaser-graph {
+    background-image: url("glasnost_images/teaser_graph.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 200px;
+}
+
+div.teaser {
+    font-size: 9pt;
+    padding: 0 5px;
+    max-width:550px;
+}
+
+div.teaser.small {
+    font-size: 8pt;
+    padding: 0 5px;
+    max-width:180px;
+}
+
+ul.teaser {
+    margin-top:20px;
+}
+
+ul.teaser li {
+    font-size: 8pt;
+}
+
+
+div.text-info {
+    font-size: 10pt;
+    padding: 18px 2px 0;
+    text-align: justify;
+    max-width:550px;
+    margin-left: auto;
+    margin-right: auto;
+}
