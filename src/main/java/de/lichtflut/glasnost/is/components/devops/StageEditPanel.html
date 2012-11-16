@@ -1,0 +1,29 @@
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
+<wicket:panel>
+
+    <form wicket:id="form">
+
+        <div wicket:id="feedback"/>
+
+        <div>
+            <label wicket:for="id">[ID]</label>
+            <input wicket:id="id"/>
+        </div>
+        <div>
+            <label wicket:for="name">[name]</label>
+            <input wicket:id="name"/>
+        </div>
+
+        <div class="button-bar">
+            <button type="button" wicket:id="cancel">
+                <wicket:message key="button.cancel">[cancel]</wicket:message>
+            </button>
+            <button type="button" wicket:id="save" class="default-button">
+                <wicket:message key="button.save">[save]</wicket:message>
+            </button>
+        </div>
+
+    </form>
+
+</wicket:panel>
+</html>

@@ -63,7 +63,7 @@
 
     <!-- Glasnost specific services -->
 
-    <bean id="stageDefinitionService" class="de.lichtflut.glasnost.is.services.StageDefinitionService"
+    <bean id="stageDefinitionService" class="de.lichtflut.glasnost.is.services.StageDefinitionServiceImpl"
             scope="request">
         <constructor-arg index="0" ref="context"/>
         <constructor-arg index="1" ref="arasResourceFactory"/>

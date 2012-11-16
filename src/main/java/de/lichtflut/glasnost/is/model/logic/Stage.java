@@ -2,7 +2,7 @@ package de.lichtflut.glasnost.is.model.logic;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.rb.core.RB;
-import org.arastreju.sge.SNOPS;
+import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
 import org.arastreju.sge.context.SimpleContextID;
 import org.arastreju.sge.model.ResourceID;
@@ -36,6 +36,7 @@ public class Stage extends ResourceView {
      * Create a new stage.
      */
     public Stage() {
+        addAssociation(RDF.TYPE, GIS.STAGE);
     }
 
     /**
@@ -61,6 +62,16 @@ public class Stage extends ResourceView {
         setValue(GIS.REPRESENTS_CONTEXT, context);
     }
 
+    // ----------------------------------------------------
+
+    public String getID() {
+        return stringValue(RB.HAS_ID);
+    }
+
+    public void setID(String id) {
+        setValue(RB.HAS_ID, id);
+    }
+
     public String getName() {
         return stringValue(RB.HAS_NAME);
     }
@@ -80,7 +91,7 @@ public class Stage extends ResourceView {
     // ----------------------------------------------------
 
     public String toString() {
-        return "Stage[" + getName()  + "]-" + getContext();
+        return "Stage[" + getID()  + "," + getName()+ "]-" + getContext();
     }
 
 }

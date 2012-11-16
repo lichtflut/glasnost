@@ -1,0 +1,43 @@
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
+<wicket:panel>
+
+    <div class="input-panel">
+
+        <h4><wicket:message key="header">[header]</wicket:message></h4>
+
+        <table class="entity-list">
+            <tr>
+                <th class="entity-list-header">
+                    <wicket:message key="table.header.id">[id]</wicket:message>
+                </th>
+                <th class="entity-list-header">
+                    <wicket:message key="table.header.name">[name]</wicket:message>
+                </th>
+                <th class="entity-list-header"></th>
+                <th class="entity-list-header"></th>
+                <th class="entity-list-header"></th>
+                <th class="entity-list-header"></th>
+            </tr>
+
+            <wicket:container wicket:id="stageView">
+                <tr>
+                    <td class="entity-list-cell" wicket:id="id"></td>
+                    <td class="entity-list-cell" wicket:id="name"></td>
+                    <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
+                    <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
+                    <td class="entity-list-action"><a wicket:id="edit" class="action-edit">[edit]</a></td>
+                    <td class="entity-list-action"><a wicket:id="delete" class="action-delete">[delete]</a></td>
+                </tr>
+            </wicket:container>
+        </table>
+
+        <div>
+            <a wicket:id="createStageLink"><wicket:message key="link.create-stage">[create]</wicket:message></a>
+        </div>
+
+        <div wicket:id="editor"></div>
+
+    </div>
+
+</wicket:panel>
+</html>

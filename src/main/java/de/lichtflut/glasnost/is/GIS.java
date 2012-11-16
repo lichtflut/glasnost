@@ -1,7 +1,10 @@
 package de.lichtflut.glasnost.is;
 
+import org.arastreju.sge.context.Context;
+import org.arastreju.sge.context.SimpleContextID;
 import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.SimpleResourceID;
+import org.arastreju.sge.naming.Namespace;
 
 /**
  * <p>
@@ -17,6 +20,16 @@ import org.arastreju.sge.model.SimpleResourceID;
 public interface GIS {
 
     String GIS_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/";
+
+    String STAGE_CONTEXT_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/stage-contexts/";
+
+
+    // -- TYPES -------------------------------------------
+
+    /**
+     * A stage represents a contexts.
+     */
+    ResourceID STAGE = new SimpleResourceID(GIS_NAMESPACE_URI, "Stage");
 
     // ----------------------------------------------------
 

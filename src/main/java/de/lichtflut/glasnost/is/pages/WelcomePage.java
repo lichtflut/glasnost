@@ -3,6 +3,7 @@
  */
 package de.lichtflut.glasnost.is.pages;
 
+import de.lichtflut.glasnost.is.components.devops.StageManagementPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.lichtflut.rb.application.base.RBBasePage;
@@ -21,10 +22,12 @@ import de.lichtflut.rb.application.base.RBBasePage;
 public class WelcomePage extends RBBasePage {
 
 	/**
-	 * @param parameters
+	 * @param parameters The parameters.
 	 */
 	public WelcomePage(final PageParameters parameters) {
 		super(parameters);
+
+        add(new StageManagementPanel("stageManagement"));
 	}
 	
 }
