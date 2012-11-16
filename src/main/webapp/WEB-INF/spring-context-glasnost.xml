@@ -61,4 +61,12 @@
     <bean id="resourceLinkProvider" class="de.lichtflut.rb.application.extensions.RBResourceLinkProvider">
     </bean>
 
+    <!-- Glasnost specific services -->
+
+    <bean id="stageDefinitionService" class="de.lichtflut.glasnost.is.services.StageDefinitionService"
+            scope="request">
+        <constructor-arg index="0" ref="context"/>
+        <constructor-arg index="1" ref="arasResourceFactory"/>
+    </bean>
+
 </beans>
