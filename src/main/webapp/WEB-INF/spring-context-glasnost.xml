@@ -69,4 +69,10 @@
         <constructor-arg index="1" ref="arasResourceFactory"/>
     </bean>
 
+    <bean id="devOpsService" class="de.lichtflut.glasnost.is.services.DevOpsServiceImpl"
+          scope="request">
+        <constructor-arg index="0" ref="context"/>
+        <constructor-arg index="1" ref="arasResourceFactory"/>
+    </bean>
+
 </beans>

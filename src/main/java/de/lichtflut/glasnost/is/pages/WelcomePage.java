@@ -3,7 +3,7 @@
  */
 package de.lichtflut.glasnost.is.pages;
 
-import de.lichtflut.glasnost.is.components.devops.StageManagementPanel;
+import de.lichtflut.glasnost.is.components.devops.stages.StageManagementPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.lichtflut.rb.application.base.RBBasePage;

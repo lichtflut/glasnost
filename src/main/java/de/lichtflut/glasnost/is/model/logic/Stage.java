@@ -6,9 +6,13 @@ import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
 import org.arastreju.sge.context.SimpleContextID;
 import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.Statement;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.ResourceView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -24,10 +28,13 @@ import org.arastreju.sge.model.nodes.views.ResourceView;
 public class Stage extends ResourceView {
 
     public static Stage from(SemanticNode node) {
-        if (node == null || node.isValueNode()) {
+        if (node instanceof Stage) {
+            return (Stage) node;
+        } else if (node instanceof ResourceNode) {
+            return new Stage((ResourceNode) node);
+        } else {
             return null;
         }
-        return new Stage(node.asResource());
     }
 
     // ----------------------------------------------------
@@ -60,6 +67,22 @@ public class Stage extends ResourceView {
 
     public void setContext(Context context) {
         setValue(GIS.REPRESENTS_CONTEXT, context);
+    }
+
+    // ----------------------------------------------------
+
+    public List<DevOpsItem> getTreeRootItems() {
+        final List<DevOpsItem> result = new ArrayList<DevOpsItem>();
+        for (Statement assoc : getAssociations()) {
+            if (assoc.getPredicate().equals(GIS.CONTAINS_TREE_ROOT_ITEM) && assoc.getObject().isResourceNode()) {
+                result.add(DevOpsItem.from(assoc.getObject()));
+            }
+        }
+        return result;
+    }
+
+    public void addTreeRootItem(DevOpsItem item) {
+        addAssociation(GIS.CONTAINS_TREE_ROOT_ITEM, item);
     }
 
     // ----------------------------------------------------

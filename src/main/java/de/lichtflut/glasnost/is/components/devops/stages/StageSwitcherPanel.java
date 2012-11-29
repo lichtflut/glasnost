@@ -1,4 +1,4 @@
-package de.lichtflut.glasnost.is.components.devops;
+package de.lichtflut.glasnost.is.components.devops.stages;
 
 import org.apache.wicket.markup.html.panel.Panel;
 

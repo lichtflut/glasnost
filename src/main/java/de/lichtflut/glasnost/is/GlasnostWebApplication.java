@@ -3,6 +3,10 @@
  */
 package de.lichtflut.glasnost.is;
 
+import de.lichtflut.glasnost.is.model.logic.DevOpsItem;
+import de.lichtflut.glasnost.is.pages.DevOpsPage;
+import de.lichtflut.rb.core.viewspec.MenuItem;
+import de.lichtflut.rb.webck.components.navigation.NavigationNode;
 import org.apache.wicket.Page;
 
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
@@ -23,6 +27,9 @@ import de.lichtflut.rb.application.graphvis.PeripheryViewPage;
 import de.lichtflut.rb.application.layout.Layout;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.application.styles.Style;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -88,6 +95,18 @@ public class GlasnostWebApplication extends RBApplication {
 		// Special pages
 		mountPage("login", LoginPage.class);
 		mountPage("logout", LogoutPage.class);
+
+        // Glasnost specific
+        mountPage("devops", DevOpsPage.class);
+
 	}
 
+    @Override
+    public List<NavigationNode> getFirstLevelNavigation(List<MenuItem> menuItems) {
+        final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
+        nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
+        nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
+        nodes.addAll(super.getFirstLevelNavigation(menuItems));
+        return nodes;
+    }
 }

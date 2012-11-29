@@ -1,4 +1,4 @@
-package de.lichtflut.glasnost.is.components.devops;
+package de.lichtflut.glasnost.is.components.devops.stages;
 
 import de.lichtflut.glasnost.is.model.logic.Stage;
 import de.lichtflut.glasnost.is.model.ui.StagesModel;
