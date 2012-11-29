@@ -26,6 +26,16 @@ div#application-logo {
     margin-left: -35px;
 }
 
+/* DEVOPS ITEMS */
+
+div.devops-item {
+    margin: 5px 0 2px 20px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
 /* TEASERS */
 
 div.teaser-logo {
@@ -71,7 +81,6 @@ ul.teaser {
 ul.teaser li {
     font-size: 8pt;
 }
-
 
 div.text-info {
     font-size: 10pt;

@@ -9,6 +9,7 @@ import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.InheritedDecorator;
 import org.arastreju.sge.model.nodes.views.SNClass;
+import org.arastreju.sge.model.nodes.views.SNProperty;
 import org.arastreju.sge.naming.QualifiedName;
 
 import java.util.ArrayList;
@@ -80,7 +81,8 @@ public class DevOpsItem extends InheritedDecorator {
     public List<DevOpsItem> getSubItems() {
         final List<DevOpsItem> result = new ArrayList<DevOpsItem>();
         for (Statement assoc : directAssociations()) {
-            if (assoc.getPredicate().equals(RB.HAS_CHILD_NODE) && assoc.getObject().isResourceNode()) {
+            SNProperty predicate = SNProperty.from(assoc.getPredicate());
+            if (predicate.isSubPropertyOf(RB.HAS_CHILD_NODE) && assoc.getObject().isResourceNode()) {
                 result.add(from(assoc.getObject()));
             }
         }
