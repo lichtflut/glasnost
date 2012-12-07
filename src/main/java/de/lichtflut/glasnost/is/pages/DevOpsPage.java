@@ -7,6 +7,7 @@ import de.lichtflut.glasnost.is.model.logic.Stage;
 import de.lichtflut.glasnost.is.services.DevOpsService;
 import de.lichtflut.glasnost.is.services.StageDefinitionService;
 import de.lichtflut.rb.application.base.RBBasePage;
+import de.lichtflut.rb.webck.models.basic.AbstractLoadableDetachableModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -46,8 +47,7 @@ public class DevOpsPage extends RBBasePage {
     public DevOpsPage(PageParameters parameters) {
         super(parameters);
 
-
-        ListView<Stage> listView = new ListView<Stage>("stages", stageService.findAllStages()) {
+        ListView<Stage> listView = new ListView<Stage>("stages", getStageListModel()) {
             @Override
             protected void populateItem(ListItem<Stage> item) {
                 item.add(createStage(item.getModel()));
@@ -93,4 +93,14 @@ public class DevOpsPage extends RBBasePage {
             }
         };
     }
+
+    private IModel<List<Stage>> getStageListModel() {
+        return new AbstractLoadableDetachableModel<List<Stage>>() {
+            @Override
+            public List<Stage> load() {
+                return stageService.findAllStages();
+            }
+        };
+    }
+
 }

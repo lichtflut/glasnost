@@ -82,6 +82,7 @@ public class DevOpsItem extends InheritedDecorator {
         final List<DevOpsItem> result = new ArrayList<DevOpsItem>();
         for (Statement assoc : directAssociations()) {
             SNProperty predicate = SNProperty.from(assoc.getPredicate());
+            Set<SNProperty> superProperties = predicate.getSuperProperties();
             if (predicate.isSubPropertyOf(RB.HAS_CHILD_NODE) && assoc.getObject().isResourceNode()) {
                 result.add(from(assoc.getObject()));
             }

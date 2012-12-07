@@ -3,14 +3,10 @@
  */
 package de.lichtflut.glasnost.is;
 
-import de.lichtflut.glasnost.is.model.logic.DevOpsItem;
-import de.lichtflut.glasnost.is.pages.DevOpsPage;
-import de.lichtflut.rb.core.viewspec.MenuItem;
-import de.lichtflut.rb.webck.components.navigation.NavigationNode;
-import org.apache.wicket.Page;
-
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
+import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
+import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
 import de.lichtflut.rb.application.RBApplication;
@@ -27,6 +23,9 @@ import de.lichtflut.rb.application.graphvis.PeripheryViewPage;
 import de.lichtflut.rb.application.layout.Layout;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.application.styles.Style;
+import de.lichtflut.rb.core.viewspec.MenuItem;
+import de.lichtflut.rb.webck.components.navigation.NavigationNode;
+import org.apache.wicket.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,12 @@ public class GlasnostWebApplication extends RBApplication {
 		return LoginPage.class;
 	}
 
-	@Override
+    @Override
+    public Class<? extends Page> getEntityDetailPage() {
+        return DevOpsItemPage.class;
+    }
+
+    @Override
 	public Layout getLayout() {
 		return new GlasnostLayout();
 	}
@@ -81,6 +85,7 @@ public class GlasnostWebApplication extends RBApplication {
 		mountPage("profile", getUserProfilePage());
 		mountPage("perspective", getPerspectivePage());
 		mountPage("entity", EntityDetailPage.class);
+        mountPage("item", DevOpsItemPage.class);
 		mountPage("browse", getBrowseAndSearchPage());
 		mountPage("treeview", HierarchyInfoVisPage.class);
 		mountPage("periphery", PeripheryViewPage.class);

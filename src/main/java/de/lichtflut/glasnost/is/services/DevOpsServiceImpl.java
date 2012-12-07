@@ -60,9 +60,9 @@ public class DevOpsServiceImpl implements DevOpsService {
 
     @Override
     public void addBaseItemToStage(DevOpsItem item, QualifiedName qn) {
-        Stage stage = Stage.from(conversation().findResource(qn));
-        if (stage != null) {
-            stage.addTreeRootItem(item);
+        Stage attachedStage = Stage.from(conversation().findResource(qn));
+        if (attachedStage != null) {
+            attachedStage.addTreeRootItem(item);
         } else {
             throw new IllegalArgumentException("Requested stage does not exist: " + qn);
         }

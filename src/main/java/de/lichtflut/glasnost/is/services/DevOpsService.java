@@ -7,16 +7,17 @@ import java.util.List;
 
 /**
  * <p>
- * DESCRITPION.
+ *  Service interface for DevOps.
  * </p>
- * <p/>
+ *
  * <p>
- * Created 29.11.12
+ *  Created 29.11.12
  * </p>
  *
  * @author Oliver Tigges
  */
 public interface DevOpsService {
+
     DevOpsItem findItemByID(QualifiedName qn);
 
     List<DevOpsItem> getBaseItemsOfStage(QualifiedName qn);
