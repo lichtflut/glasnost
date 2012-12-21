@@ -1,7 +1,7 @@
 package de.lichtflut.glasnost.is.components.devops.stages;
 
-import de.lichtflut.glasnost.is.model.logic.Stage;
-import de.lichtflut.glasnost.is.services.StageDefinitionService;
+import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.form.RBDefaultButton;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
@@ -31,10 +31,10 @@ import static de.lichtflut.rb.webck.models.ConditionalModel.isNull;
  *
  * @author Oliver Tigges
  */
-public class StageEditPanel extends TypedPanel<Stage> {
+public class StageEditPanel extends TypedPanel<Perception> {
 
     @SpringBean
-    private StageDefinitionService service;
+    private PerceptionDefinitionService service;
 
     // ----------------------------------------------------
 
@@ -43,7 +43,7 @@ public class StageEditPanel extends TypedPanel<Stage> {
      * @param id The component id.
      * @param model The model containing the stage.
      */
-    public StageEditPanel(String id, IModel<Stage> model) {
+    public StageEditPanel(String id, IModel<Perception> model) {
         super(id, model);
 
         setOutputMarkupId(true);
@@ -94,22 +94,22 @@ public class StageEditPanel extends TypedPanel<Stage> {
     }
 
     protected void store() {
-        Stage stage = getModelObject();
-        service.store(stage);
+        Perception perception = getModelObject();
+        service.store(perception);
         onUpdate();
     }
 
     // ----------------------------------------------------
 
-    private class ContextModel extends DerivedDetachableModel<Context, Stage> {
+    private class ContextModel extends DerivedDetachableModel<Context, Perception> {
 
-        public ContextModel(IModel<Stage> original) {
+        public ContextModel(IModel<Perception> original) {
             super(original);
         }
 
         @Override
-        protected Context derive(Stage stage) {
-            return stage.getContext();
+        protected Context derive(Perception perception) {
+            return perception.getContext();
         }
     }
 }

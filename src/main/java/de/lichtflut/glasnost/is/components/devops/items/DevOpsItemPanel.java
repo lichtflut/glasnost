@@ -1,15 +1,13 @@
 package de.lichtflut.glasnost.is.components.devops.items;
 
-import de.lichtflut.glasnost.is.model.logic.DevOpsItem;
+import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.rb.application.RBApplication;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
-import de.lichtflut.rb.webck.models.basic.AbstractLoadableDetachableModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -21,7 +19,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Panel displaying a DevOpsItem with it's main data:
+ *  Panel displaying a PerceptionItem with it's main data:
  *  <ul>
  *      <li>ID</li>
  *      <li>Name</li>
@@ -41,7 +39,7 @@ import java.util.List;
  *
  * @author Oliver Tigges
  */
-public class DevOpsItemPanel extends TypedPanel<DevOpsItem> {
+public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 
     private boolean expanded = true;
 
@@ -51,15 +49,15 @@ public class DevOpsItemPanel extends TypedPanel<DevOpsItem> {
      * @param id The component ID.
      * @param model The model.
      */
-    public DevOpsItemPanel(final String id, final IModel<DevOpsItem> model) {
+    public DevOpsItemPanel(final String id, final IModel<PerceptionItem> model) {
         super(id, model);
 
         add(new Label("itemID", new PropertyModel(model, "ID")));
         add(new Label("name", new PropertyModel(model, "name")));
 
-        ListView<DevOpsItem> subItemsView = new ListView<DevOpsItem>("children", getSubItems(model)) {
+        ListView<PerceptionItem> subItemsView = new ListView<PerceptionItem>("children", getSubItems(model)) {
             @Override
-            protected void populateItem(ListItem<DevOpsItem> item) {
+            protected void populateItem(ListItem<PerceptionItem> item) {
                 item.add(new DevOpsItemPanel("item", item.getModel()));
             }
         };
@@ -78,10 +76,10 @@ public class DevOpsItemPanel extends TypedPanel<DevOpsItem> {
 
     // ----------------------------------------------------
 
-    private IModel<List<DevOpsItem>> getSubItems(IModel<DevOpsItem> parent) {
-        return new DerivedDetachableModel<List<DevOpsItem>, DevOpsItem>(parent) {
+    private IModel<List<PerceptionItem>> getSubItems(IModel<PerceptionItem> parent) {
+        return new DerivedDetachableModel<List<PerceptionItem>, PerceptionItem>(parent) {
             @Override
-            protected List<DevOpsItem> derive(DevOpsItem parent) {
+            protected List<PerceptionItem> derive(PerceptionItem parent) {
                 return parent.getSubItems();
             }
         };

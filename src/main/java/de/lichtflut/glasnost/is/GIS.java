@@ -23,7 +23,7 @@ public interface GIS {
 
     String DEVOPS_NAMESPACE_URI = "http://rb.lichtflut.de/devops#";
 
-    String STAGE_CONTEXT_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/stage-contexts/";
+    String PERCEPTION_CONTEXT_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/perception-contexts/";
 
 
     // -- TYPES -------------------------------------------
@@ -31,7 +31,7 @@ public interface GIS {
     /**
      * A stage represents a contexts.
      */
-    ResourceID STAGE = new SimpleResourceID(GIS_NAMESPACE_URI, "Stage");
+    ResourceID PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "Perception");
 
 
     /**

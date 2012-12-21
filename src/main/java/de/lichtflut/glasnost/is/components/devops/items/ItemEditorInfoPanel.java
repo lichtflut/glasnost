@@ -2,7 +2,9 @@ package de.lichtflut.glasnost.is.components.devops.items;
 
 import de.lichtflut.rb.core.common.ResourceLabelBuilder;
 import de.lichtflut.rb.core.entity.RBEntity;
+import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.components.entity.EntityInfoPanel;
+import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -54,7 +56,7 @@ public class ItemEditorInfoPanel extends EntityInfoPanel {
                 return sb.toString();
             }
         };
-        return new Label(id, labelModel);
+        return new Label(id, labelModel).add(ConditionalBehavior.visibleIf(ConditionalModel.isNotBlank(labelModel)));
     }
 
 }

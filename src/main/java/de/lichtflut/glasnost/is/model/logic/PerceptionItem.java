@@ -1,26 +1,20 @@
 package de.lichtflut.glasnost.is.model.logic;
 
-import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.rb.core.RB;
-import org.arastreju.sge.SNOPS;
-import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.model.Statement;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.InheritedDecorator;
-import org.arastreju.sge.model.nodes.views.SNClass;
 import org.arastreju.sge.model.nodes.views.SNProperty;
 import org.arastreju.sge.naming.QualifiedName;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * <p>
- *  Represents an item of the devops model, may be a server, an application, a module, etc.
+ *  Represents an item of a perception, may be a server, an application, a module, etc.
  * </p>
  *
  * <p>
@@ -29,13 +23,13 @@ import java.util.Set;
  *
  * @author Oliver Tigges
  */
-public class DevOpsItem extends InheritedDecorator {
+public class PerceptionItem extends InheritedDecorator {
 
-    public static DevOpsItem from(SemanticNode node) {
-        if (node instanceof DevOpsItem) {
-            return (DevOpsItem) node;
+    public static PerceptionItem from(SemanticNode node) {
+        if (node instanceof PerceptionItem) {
+            return (PerceptionItem) node;
         } else if (node instanceof ResourceNode) {
-            return new DevOpsItem((ResourceNode) node);
+            return new PerceptionItem((ResourceNode) node);
         } else {
             return null;
         }
@@ -43,14 +37,14 @@ public class DevOpsItem extends InheritedDecorator {
 
     // ----------------------------------------------------
 
-    public DevOpsItem() {
+    public PerceptionItem() {
     }
 
-    public DevOpsItem(QualifiedName qn) {
+    public PerceptionItem(QualifiedName qn) {
         super(qn);
     }
 
-    public DevOpsItem(ResourceNode resource) {
+    public PerceptionItem(ResourceNode resource) {
         super(resource);
     }
 
@@ -78,8 +72,8 @@ public class DevOpsItem extends InheritedDecorator {
 
     // ----------------------------------------------------
 
-    public List<DevOpsItem> getSubItems() {
-        final List<DevOpsItem> result = new ArrayList<DevOpsItem>();
+    public List<PerceptionItem> getSubItems() {
+        final List<PerceptionItem> result = new ArrayList<PerceptionItem>();
         for (Statement assoc : directAssociations()) {
             SNProperty predicate = SNProperty.from(assoc.getPredicate());
             Set<SNProperty> superProperties = predicate.getSuperProperties();
@@ -93,7 +87,7 @@ public class DevOpsItem extends InheritedDecorator {
     // ----------------------------------------------------
 
     public String toString() {
-        return "DevOpsItem[" + getCanonicalName() + "]";
+        return "PerceptionItem[" + getCanonicalName() + "]";
     }
 
 

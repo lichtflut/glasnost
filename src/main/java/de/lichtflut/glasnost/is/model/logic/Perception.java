@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Representation of a stage.
+ *  Representation of a perception of some subject.
  * </p>
  *
  * <p>
@@ -25,13 +25,13 @@ import java.util.List;
  *
  * @author Oliver Tigges
  */
-public class Stage extends ResourceView {
+public class Perception extends ResourceView {
 
-    public static Stage from(SemanticNode node) {
-        if (node instanceof Stage) {
-            return (Stage) node;
+    public static Perception from(SemanticNode node) {
+        if (node instanceof Perception) {
+            return (Perception) node;
         } else if (node instanceof ResourceNode) {
-            return new Stage((ResourceNode) node);
+            return new Perception((ResourceNode) node);
         } else {
             return null;
         }
@@ -42,15 +42,15 @@ public class Stage extends ResourceView {
     /**
      * Create a new stage.
      */
-    public Stage() {
-        addAssociation(RDF.TYPE, GIS.STAGE);
+    public Perception() {
+        addAssociation(RDF.TYPE, GIS.PERCEPTION);
     }
 
     /**
      * Create a new stage object wrapping given resource.
      * @param resource The stage resource.
      */
-    public Stage(ResourceNode resource) {
+    public Perception(ResourceNode resource) {
         super(resource);
     }
 
@@ -71,17 +71,17 @@ public class Stage extends ResourceView {
 
     // ----------------------------------------------------
 
-    public List<DevOpsItem> getTreeRootItems() {
-        final List<DevOpsItem> result = new ArrayList<DevOpsItem>();
+    public List<PerceptionItem> getTreeRootItems() {
+        final List<PerceptionItem> result = new ArrayList<PerceptionItem>();
         for (Statement assoc : getAssociations()) {
             if (assoc.getPredicate().equals(GIS.CONTAINS_TREE_ROOT_ITEM) && assoc.getObject().isResourceNode()) {
-                result.add(DevOpsItem.from(assoc.getObject()));
+                result.add(PerceptionItem.from(assoc.getObject()));
             }
         }
         return result;
     }
 
-    public void addTreeRootItem(DevOpsItem item) {
+    public void addTreeRootItem(PerceptionItem item) {
         addAssociation(GIS.CONTAINS_TREE_ROOT_ITEM, item);
     }
 
@@ -114,7 +114,7 @@ public class Stage extends ResourceView {
     // ----------------------------------------------------
 
     public String toString() {
-        return "Stage[" + getID()  + "," + getName()+ "]-" + getContext();
+        return "Perception[" + getID()  + "," + getName()+ "]-" + getContext();
     }
 
 }

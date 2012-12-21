@@ -1,6 +1,6 @@
 package de.lichtflut.glasnost.is.components.devops.stages;
 
-import de.lichtflut.glasnost.is.model.logic.Stage;
+import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.StagesModel;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import org.apache.wicket.AttributeModifier;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class StageManagementPanel extends Panel {
 
-    private final IModel<Stage> selected = new Model<Stage>();
+    private final IModel<Perception> selected = new Model<Perception>();
 
     // ----------------------------------------------------
 
@@ -37,12 +37,12 @@ public class StageManagementPanel extends Panel {
         this(id, new StagesModel());
     }
 
-    public StageManagementPanel(String id, IModel<List<Stage>> model) {
+    public StageManagementPanel(String id, IModel<List<Perception>> model) {
         super(id, model);
 
         setOutputMarkupId(true);
 
-        final ListView<Stage> stageView = createListView(model);
+        final ListView<Perception> stageView = createListView(model);
         add(stageView);
 
         add(new StageEditPanel("editor", selected) {
@@ -58,17 +58,17 @@ public class StageManagementPanel extends Panel {
 
     // ----------------------------------------------------
 
-    private ListView<Stage> createListView(final IModel<List<Stage>> model) {
-        return new ListView<Stage>("stageView", model) {
+    private ListView<Perception> createListView(final IModel<List<Perception>> model) {
+        return new ListView<Perception>("stageView", model) {
             @Override
-            protected void populateItem(ListItem<Stage> item) {
-                Stage stage = item.getModelObject();
+            protected void populateItem(ListItem<Perception> item) {
+                Perception perception = item.getModelObject();
 
-                Label id = new Label("id", stage.getID());
-                id.add(new AttributeModifier("title", stage.getContext()));
+                Label id = new Label("id", perception.getID());
+                id.add(new AttributeModifier("title", perception.getContext()));
                 item.add(id);
 
-                Label name = new Label("name", stage.getName());
+                Label name = new Label("name", perception.getName());
                 item.add(name);
 
                 item.add(createEditLink(item.getModel()));
@@ -86,13 +86,13 @@ public class StageManagementPanel extends Panel {
         return new AjaxLink("createStageLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                selected.setObject(new Stage());
+                selected.setObject(new Perception());
                 updateEditor(target);
             }
         };
     }
 
-    private AjaxLink createDeleteLink(IModel<Stage> model) {
+    private AjaxLink createDeleteLink(IModel<Perception> model) {
         final AjaxLink link = new AjaxLink("delete") {
             @Override
             public void onClick(final AjaxRequestTarget target) {
@@ -101,7 +101,7 @@ public class StageManagementPanel extends Panel {
         return link;
     }
 
-    private AjaxLink createEditLink(final IModel<Stage> model) {
+    private AjaxLink createEditLink(final IModel<Perception> model) {
         return new AjaxLink("edit") {
             @Override
             public void onClick(final AjaxRequestTarget target) {
@@ -111,7 +111,7 @@ public class StageManagementPanel extends Panel {
         };
     }
 
-    private AjaxLink createUpLink(IModel<Stage> model) {
+    private AjaxLink createUpLink(IModel<Perception> model) {
         final AjaxLink link = new AjaxLink("up") {
             @Override
             public void onClick(final AjaxRequestTarget target) {
@@ -120,7 +120,7 @@ public class StageManagementPanel extends Panel {
         return link;
     }
 
-    private AjaxLink createDownLink(IModel<Stage> model) {
+    private AjaxLink createDownLink(IModel<Perception> model) {
         final AjaxLink link = new AjaxLink("down") {
             @Override
             public void onClick(final AjaxRequestTarget target) {

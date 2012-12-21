@@ -2,10 +2,10 @@ package de.lichtflut.glasnost.is.pages;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.DevOpsItemPanel;
-import de.lichtflut.glasnost.is.model.logic.DevOpsItem;
-import de.lichtflut.glasnost.is.model.logic.Stage;
-import de.lichtflut.glasnost.is.services.DevOpsService;
-import de.lichtflut.glasnost.is.services.StageDefinitionService;
+import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
+import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.glasnost.is.services.PerceptionService;
 import de.lichtflut.rb.application.base.RBBasePage;
 import de.lichtflut.rb.webck.models.basic.AbstractLoadableDetachableModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
@@ -37,19 +37,19 @@ import java.util.List;
 public class DevOpsPage extends RBBasePage {
 
     @SpringBean
-    private StageDefinitionService stageService;
+    private PerceptionDefinitionService perceptionDefinitionService;
 
     @SpringBean
-    private DevOpsService devOpsService;
+    private PerceptionService perceptionService;
 
     // ----------------------------------------------------
 
     public DevOpsPage(PageParameters parameters) {
         super(parameters);
 
-        ListView<Stage> listView = new ListView<Stage>("stages", getStageListModel()) {
+        ListView<Perception> listView = new ListView<Perception>("stages", getStageListModel()) {
             @Override
-            protected void populateItem(ListItem<Stage> item) {
+            protected void populateItem(ListItem<Perception> item) {
                 item.add(createStage(item.getModel()));
             }
         };
@@ -60,12 +60,12 @@ public class DevOpsPage extends RBBasePage {
 
     // ----------------------------------------------------
 
-    private Component createStage(final IModel<Stage> model) {
+    private Component createStage(final IModel<Perception> model) {
         WebMarkupContainer container = new WebMarkupContainer("stage");
         container.add(new Label("name", new PropertyModel(model, "name")));
-        ListView<DevOpsItem> listView = new ListView<DevOpsItem>("items", rootItemsModel(model)) {
+        ListView<PerceptionItem> listView = new ListView<PerceptionItem>("items", rootItemsModel(model)) {
             @Override
-            protected void populateItem(ListItem<DevOpsItem> item) {
+            protected void populateItem(ListItem<PerceptionItem> item) {
                 item.add(new DevOpsItemPanel("item", item.getModel()));
             }
         };
@@ -73,11 +73,11 @@ public class DevOpsPage extends RBBasePage {
         container.add(new Link("addRootItem") {
             @Override
             public void onClick() {
-                DevOpsItem item = new DevOpsItem();
+                PerceptionItem item = new PerceptionItem();
                 item.addAssociation(RDF.TYPE, GIS.DATA_CENTER);
                 item.setID("DCX");
                 item.setName("DataCenter X");
-                devOpsService.addBaseItemToStage(item, model.getObject().getQualifiedName());
+                perceptionService.addBaseItemToPerception(item, model.getObject().getQualifiedName());
             }
         });
         return container;
@@ -85,20 +85,20 @@ public class DevOpsPage extends RBBasePage {
 
     // ----------------------------------------------------
 
-    private IModel<List<DevOpsItem>> rootItemsModel(IModel<Stage> stage) {
-        return new DerivedDetachableModel<List<DevOpsItem>, Stage>(stage) {
+    private IModel<List<PerceptionItem>> rootItemsModel(IModel<Perception> stage) {
+        return new DerivedDetachableModel<List<PerceptionItem>, Perception>(stage) {
             @Override
-            protected List<DevOpsItem> derive(Stage stage) {
-                return stage.getTreeRootItems();
+            protected List<PerceptionItem> derive(Perception perception) {
+                return perception.getTreeRootItems();
             }
         };
     }
 
-    private IModel<List<Stage>> getStageListModel() {
-        return new AbstractLoadableDetachableModel<List<Stage>>() {
+    private IModel<List<Perception>> getStageListModel() {
+        return new AbstractLoadableDetachableModel<List<Perception>>() {
             @Override
-            public List<Stage> load() {
-                return stageService.findAllStages();
+            public List<Perception> load() {
+                return DevOpsPage.this.perceptionDefinitionService.findAllPerceptions();
             }
         };
     }

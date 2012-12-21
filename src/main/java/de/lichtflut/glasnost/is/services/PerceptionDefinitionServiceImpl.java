@@ -1,7 +1,7 @@
 package de.lichtflut.glasnost.is.services;
 
 import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.model.logic.Stage;
+import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
 import de.lichtflut.rb.core.services.ServiceContext;
 import org.arastreju.sge.Conversation;
@@ -29,9 +29,9 @@ import java.util.List;
  *
  * @author Oliver Tigges
  */
-public class StageDefinitionServiceImpl implements StageDefinitionService {
+public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StageDefinitionServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PerceptionDefinitionServiceImpl.class);
 
     private ServiceContext context;
 
@@ -39,7 +39,7 @@ public class StageDefinitionServiceImpl implements StageDefinitionService {
 
     // ----------------------------------------------------
 
-    public StageDefinitionServiceImpl(ServiceContext context, ArastrejuResourceFactory arasFactory) {
+    public PerceptionDefinitionServiceImpl(ServiceContext context, ArastrejuResourceFactory arasFactory) {
         this.context = context;
         this.arasFactory = arasFactory;
     }
@@ -47,42 +47,42 @@ public class StageDefinitionServiceImpl implements StageDefinitionService {
     // ----------------------------------------------------
 
     @Override
-    public void store(Stage stage) {
-        if (stage.getContext() == null) {
-            LOGGER.info("Creating new context for stage {}.", stage.getID());
-            Context ctx = new SimpleContextID(GIS.STAGE_CONTEXT_NAMESPACE_URI, stage.getID());
+    public void store(Perception perception) {
+        if (perception.getContext() == null) {
+            LOGGER.info("Creating new context for perception {}.", perception.getID());
+            Context ctx = new SimpleContextID(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI, perception.getID());
             arasFactory.getOrganizer().registerContext(ctx.getQualifiedName());
-            stage.setContext(ctx);
-            LOGGER.info("Registered new stage context {}.", ctx.getQualifiedName());
+            perception.setContext(ctx);
+            LOGGER.info("Registered new perception context {}.", ctx.getQualifiedName());
         } else {
-            LOGGER.info("Updating existing stage {}.", stage);
+            LOGGER.info("Updating existing perception {}.", perception);
 
         }
 
-        conversation().attach(stage);
+        conversation().attach(perception);
     }
 
     @Override
-    public Stage findByQualifiedName(QualifiedName qn) {
-        return Stage.from(conversation().findResource(qn));
+    public Perception findByQualifiedName(QualifiedName qn) {
+        return Perception.from(conversation().findResource(qn));
     }
 
     @Override
-    public Stage findByContext(Context context) {
+    public Perception findByContext(Context context) {
         QueryResult result = conversation().createQuery().addField(GIS.REPRESENTS_CONTEXT, context).getResult();
         if (result.size() > 1) {
             LOGGER.error("More than one stage registered for context {}.", context);
         }
-        return Stage.from(result.getSingleNode());
+        return Perception.from(result.getSingleNode());
     }
 
     @Override
-    public List<Stage> findAllStages() {
-        final List<Stage> result = new ArrayList<Stage>();
+    public List<Perception> findAllPerceptions() {
+        final List<Perception> result = new ArrayList<Perception>();
         final Query query = conversation().createQuery();
-        query.addField(RDF.TYPE, GIS.STAGE);
+        query.addField(RDF.TYPE, GIS.PERCEPTION);
         for (ResourceNode stageNode : query.getResult()) {
-            result.add(Stage.from(stageNode));
+            result.add(Perception.from(stageNode));
         }
         return result;
     }
