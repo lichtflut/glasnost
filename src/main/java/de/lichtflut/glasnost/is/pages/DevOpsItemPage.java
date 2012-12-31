@@ -71,16 +71,6 @@ public class DevOpsItemPage extends EntityDetailPage {
             }
 
             @Override
-            protected Component createRelationshipPanel(String id, RBEntityModel model) {
-                return super.createRelationshipPanel(id, model);
-            }
-
-            @Override
-            protected LocalButtonBar createLocalButtonBar(String id, RBEntityModel model) {
-                return super.createLocalButtonBar(id, model);
-            }
-
-            @Override
             protected void onSave(IModel<RBEntity> model) {
             }
         };
