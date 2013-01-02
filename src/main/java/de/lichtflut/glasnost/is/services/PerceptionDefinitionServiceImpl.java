@@ -3,6 +3,7 @@ package de.lichtflut.glasnost.is.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.lichtflut.infra.exceptions.NotYetImplementedException;
 import org.arastreju.sge.Conversation;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
@@ -89,7 +90,19 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 		return result;
 	}
 
-	// ----------------------------------------------------
+    // ----------------------------------------------------
+
+    @Override
+    public void definePerceptionBase(Perception perception, QualifiedName base) {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Perception cloneItems(QualifiedName target, QualifiedName base) {
+        throw new NotYetImplementedException();
+    }
+
+    // ----------------------------------------------------
 
 	private Conversation conversation() {
 		return arasFactory.getConversation();

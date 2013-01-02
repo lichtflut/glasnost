@@ -48,4 +48,9 @@ public interface GIS {
 	 */
 	ResourceID CONTAINS_TREE_ROOT_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsTreeRootItem");
 
+    /**
+     * Each perception item belongs to a perception..
+     */
+    ResourceID BELONGS_TO_PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "belongsToPerception");
+
 }

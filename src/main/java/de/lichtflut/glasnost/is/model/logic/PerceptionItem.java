@@ -3,6 +3,8 @@ package de.lichtflut.glasnost.is.model.logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.lichtflut.glasnost.is.GIS;
+import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.model.Statement;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
@@ -65,6 +67,14 @@ public class PerceptionItem extends InheritedDecorator {
 	public void setName(final String name) {
 		setValue(RB.HAS_NAME, name);
 	}
+
+    public Perception getPerception() {
+        return Perception.from(SNOPS.fetchObject(this, GIS.BELONGS_TO_PERCEPTION));
+    }
+
+    public void setPerception(Perception perception) {
+        setValue(GIS.BELONGS_TO_PERCEPTION, perception);
+    }
 
 	public String getCanonicalName() {
 		return "<no canonical name yet>";

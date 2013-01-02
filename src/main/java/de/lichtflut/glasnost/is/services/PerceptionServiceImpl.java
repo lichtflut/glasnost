@@ -1,9 +1,13 @@
 package de.lichtflut.glasnost.is.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import de.lichtflut.glasnost.is.GIS;
 import org.arastreju.sge.Conversation;
+import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.naming.QualifiedName;
+import org.arastreju.sge.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +53,29 @@ public class PerceptionServiceImpl implements PerceptionService {
 
 	// ----------------------------------------------------
 
+    @Override
+    public List<PerceptionItem> getItemsOfPerception(QualifiedName qn) {
+        List<PerceptionItem> result = new ArrayList<PerceptionItem>();
+        Query query = conversation().createQuery().addField(GIS.BELONGS_TO_PERCEPTION, qn);
+        for (ResourceNode node : query.getResult()) {
+            result.add(PerceptionItem.from(node));
+        }
+        return result;
+    }
+
+    @Override
+    public void addItemToPerception(PerceptionItem item, QualifiedName qn) {
+        Perception attachedPerception = Perception.from(conversation().findResource(qn));
+        PerceptionItem attachedItem = PerceptionItem.from(conversation().resolve(item));
+        if (attachedPerception != null) {
+            attachedItem.setPerception(attachedPerception);
+        } else {
+            throw new IllegalArgumentException("Requested perception does not exist: " + qn);
+        }
+    }
+
+    // ----------------------------------------------------
+
 	@Override
 	public List<PerceptionItem> getBaseItemsOfPerception(final QualifiedName qn) {
 		Perception perception = Perception.from(conversation().findResource(qn));
@@ -62,10 +89,12 @@ public class PerceptionServiceImpl implements PerceptionService {
 	@Override
 	public void addBaseItemToPerception(final PerceptionItem item, final QualifiedName qn) {
 		Perception attachedPerception = Perception.from(conversation().findResource(qn));
+        PerceptionItem attachedItem = PerceptionItem.from(conversation().resolve(item));
 		if (attachedPerception != null) {
+            attachedItem.setPerception(attachedPerception);
 			attachedPerception.addTreeRootItem(item);
 		} else {
-			throw new IllegalArgumentException("Requested stage does not exist: " + qn);
+			throw new IllegalArgumentException("Requested perception does not exist: " + qn);
 		}
 	}
 
