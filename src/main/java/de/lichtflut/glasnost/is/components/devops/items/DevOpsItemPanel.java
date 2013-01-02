@@ -1,10 +1,7 @@
 package de.lichtflut.glasnost.is.components.devops.items;
 
-import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
-import de.lichtflut.rb.application.RBApplication;
-import de.lichtflut.rb.application.common.CommonParams;
-import de.lichtflut.rb.webck.components.common.TypedPanel;
-import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
@@ -15,7 +12,11 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.arastreju.sge.naming.QualifiedName;
 
-import java.util.List;
+import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
+import de.lichtflut.rb.application.RBApplication;
+import de.lichtflut.rb.application.common.CommonParams;
+import de.lichtflut.rb.webck.components.common.TypedPanel;
+import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
  * <p>
@@ -41,47 +42,48 @@ import java.util.List;
  */
 public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 
-    private boolean expanded = true;
+	@SuppressWarnings("unused")
+	private final boolean expanded = true;
 
-    // ----------------------------------------------------
+	// ----------------------------------------------------
 
-    /**
-     * @param id The component ID.
-     * @param model The model.
-     */
-    public DevOpsItemPanel(final String id, final IModel<PerceptionItem> model) {
-        super(id, model);
+	/**
+	 * @param id The component ID.
+	 * @param model The model.
+	 */
+	public DevOpsItemPanel(final String id, final IModel<PerceptionItem> model) {
+		super(id, model);
 
-        add(new Label("itemID", new PropertyModel(model, "ID")));
-        add(new Label("name", new PropertyModel(model, "name")));
+		add(new Label("itemID", new PropertyModel<IModel<PerceptionItem>>(model, "ID")));
+		add(new Label("name", new PropertyModel<IModel<PerceptionItem>>(model, "name")));
 
-        ListView<PerceptionItem> subItemsView = new ListView<PerceptionItem>("children", getSubItems(model)) {
-            @Override
-            protected void populateItem(ListItem<PerceptionItem> item) {
-                item.add(new DevOpsItemPanel("item", item.getModel()));
-            }
-        };
-        add(subItemsView);
+		ListView<PerceptionItem> subItemsView = new ListView<PerceptionItem>("children", getSubItems(model)) {
+			@Override
+			protected void populateItem(final ListItem<PerceptionItem> item) {
+				item.add(new DevOpsItemPanel("item", item.getModel()));
+			}
+		};
+		add(subItemsView);
 
-        add(new AjaxEventBehavior("onclick") {
-            @Override
-            protected void onEvent(AjaxRequestTarget target) {
-                QualifiedName qn = model.getObject().getQualifiedName();
-                PageParameters params = new PageParameters();
-                params.add(CommonParams.PARAM_RESOURCE_ID, qn);
-                setResponsePage(RBApplication.get().getEntityDetailPage(), params);
-            }
-        });
-    }
+		add(new AjaxEventBehavior("onclick") {
+			@Override
+			protected void onEvent(final AjaxRequestTarget target) {
+				QualifiedName qn = model.getObject().getQualifiedName();
+				PageParameters params = new PageParameters();
+				params.add(CommonParams.PARAM_RESOURCE_ID, qn);
+				setResponsePage(RBApplication.get().getEntityDetailPage(), params);
+			}
+		});
+	}
 
-    // ----------------------------------------------------
+	// ----------------------------------------------------
 
-    private IModel<List<PerceptionItem>> getSubItems(IModel<PerceptionItem> parent) {
-        return new DerivedDetachableModel<List<PerceptionItem>, PerceptionItem>(parent) {
-            @Override
-            protected List<PerceptionItem> derive(PerceptionItem parent) {
-                return parent.getSubItems();
-            }
-        };
-    }
+	private IModel<List<PerceptionItem>> getSubItems(final IModel<PerceptionItem> parent) {
+		return new DerivedDetachableModel<List<PerceptionItem>, PerceptionItem>(parent) {
+			@Override
+			protected List<PerceptionItem> derive(final PerceptionItem parent) {
+				return parent.getSubItems();
+			}
+		};
+	}
 }

@@ -1,10 +1,7 @@
 package de.lichtflut.glasnost.is;
 
-import org.arastreju.sge.context.Context;
-import org.arastreju.sge.context.SimpleContextID;
 import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.SimpleResourceID;
-import org.arastreju.sge.naming.Namespace;
 
 /**
  * <p>
@@ -19,36 +16,36 @@ import org.arastreju.sge.naming.Namespace;
  */
 public interface GIS {
 
-    String GIS_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/";
+	String GIS_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/";
 
-    String DEVOPS_NAMESPACE_URI = "http://rb.lichtflut.de/devops#";
+	String DEVOPS_NAMESPACE_URI = "http://rb.lichtflut.de/devops#";
 
-    String PERCEPTION_CONTEXT_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/perception-contexts/";
-
-
-    // -- TYPES -------------------------------------------
-
-    /**
-     * A stage represents a contexts.
-     */
-    ResourceID PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "Perception");
+	String PERCEPTION_CONTEXT_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/perception-contexts/";
 
 
-    /**
-     * A data center DevOps item..
-     */
-    ResourceID DATA_CENTER = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "DataCenter");
+	// -- TYPES -------------------------------------------
 
-    // ----------------------------------------------------
+	/**
+	 * A stage represents a contexts.
+	 */
+	ResourceID PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "Perception");
 
-    /**
-     * A stage represents a contexts.
-     */
-    ResourceID REPRESENTS_CONTEXT = new SimpleResourceID(GIS_NAMESPACE_URI, "representsContext");
 
-    /**
-     * A stage contains one or more 'root' items.
-     */
-    ResourceID CONTAINS_TREE_ROOT_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsTreeRootItem");
+	/**
+	 * A data center DevOps item..
+	 */
+	ResourceID DATA_CENTER = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "DataCenter");
+
+	// ----------------------------------------------------
+
+	/**
+	 * A stage represents a contexts.
+	 */
+	ResourceID REPRESENTS_CONTEXT = new SimpleResourceID(GIS_NAMESPACE_URI, "representsContext");
+
+	/**
+	 * A stage contains one or more 'root' items.
+	 */
+	ResourceID CONTAINS_TREE_ROOT_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsTreeRootItem");
 
 }

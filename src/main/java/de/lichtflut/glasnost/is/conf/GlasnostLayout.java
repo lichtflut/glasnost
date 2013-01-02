@@ -1,7 +1,6 @@
 package de.lichtflut.glasnost.is.conf;
 
 import de.lichtflut.rb.application.layout.frugal.FrugalLayout;
-import de.lichtflut.rb.application.styles.frugal.FrugalStyle;
 
 /**
  * <p>
