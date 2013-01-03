@@ -1,8 +1,13 @@
 package de.lichtflut.glasnost.is.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import de.lichtflut.glasnost.is.model.logic.ItemCloner;
+import de.lichtflut.glasnost.is.model.logic.PerceptionCloner;
+import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.infra.exceptions.NotYetImplementedException;
 import org.arastreju.sge.Conversation;
 import org.arastreju.sge.apriori.RDF;
@@ -93,13 +98,28 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
     // ----------------------------------------------------
 
     @Override
-    public void definePerceptionBase(Perception perception, QualifiedName base) {
-        throw new NotYetImplementedException();
+    public void definePerceptionBase(Perception target, QualifiedName baseQN) {
+        Perception base = findByQualifiedName(baseQN);
+        if (base == null) {
+            throw new IllegalArgumentException("Base perception not found: " + baseQN);
+        }
+        target.setBasePerception(base);
     }
 
     @Override
-    public Perception cloneItems(QualifiedName target, QualifiedName base) {
-        throw new NotYetImplementedException();
+    public Perception cloneItems(QualifiedName targetQN, QualifiedName baseQN) {
+        Perception base = findByQualifiedName(baseQN);
+        Perception target = findByQualifiedName(targetQN);
+
+        if (base == null) {
+            throw new IllegalArgumentException("Base perception not found: " + baseQN);
+        }
+        if (target == null) {
+            target = new Perception(targetQN);
+        }
+
+        new PerceptionCloner(base).clone(target);
+        return target;
     }
 
     // ----------------------------------------------------

@@ -82,6 +82,10 @@ public class PerceptionItem extends InheritedDecorator {
 
 	// ----------------------------------------------------
 
+    public void addSubItem(PerceptionItem item) {
+        addAssociation(RB.HAS_CHILD_NODE, item);
+    }
+
 	public List<PerceptionItem> getSubItems() {
 		final List<PerceptionItem> result = new ArrayList<PerceptionItem>();
 		for (Statement assoc : directAssociations()) {
@@ -97,8 +101,18 @@ public class PerceptionItem extends InheritedDecorator {
 
 	@Override
 	public String toString() {
-		return "PerceptionItem[" + getCanonicalName() + "]";
+		return "PerceptionItem[" + getID() + "]";
 	}
 
 
+    public String printHierarchy(String delim) {
+        StringBuilder sb = new StringBuilder(delim);
+        sb.append(this);
+        sb.append("\n");
+        for (PerceptionItem sub : getSubItems()) {
+            sb.append(delim);
+            sb.append(sub.printHierarchy(delim + "  "));
+        }
+        return sb.toString();
+    }
 }
