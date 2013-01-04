@@ -4,17 +4,12 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
 import de.lichtflut.rb.core.services.ServiceContext;
-import de.lichtflut.rb.core.services.impl.EntityManagerImpl;
-import org.arastreju.sge.Conversation;
 import org.arastreju.sge.ModelingConversation;
 import org.arastreju.sge.naming.QualifiedName;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;

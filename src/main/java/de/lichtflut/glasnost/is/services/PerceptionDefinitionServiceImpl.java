@@ -1,14 +1,10 @@
 package de.lichtflut.glasnost.is.services;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import de.lichtflut.glasnost.is.model.logic.ItemCloner;
+import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.logic.PerceptionCloner;
-import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
-import de.lichtflut.infra.exceptions.NotYetImplementedException;
+import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
+import de.lichtflut.rb.core.services.ServiceContext;
 import org.arastreju.sge.Conversation;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
@@ -20,10 +16,8 @@ import org.arastreju.sge.query.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
-import de.lichtflut.rb.core.services.ServiceContext;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

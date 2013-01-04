@@ -1,9 +1,7 @@
 package de.lichtflut.glasnost.is.model.logic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.rb.core.RB;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.model.Statement;
 import org.arastreju.sge.model.nodes.ResourceNode;
@@ -12,7 +10,8 @@ import org.arastreju.sge.model.nodes.views.InheritedDecorator;
 import org.arastreju.sge.model.nodes.views.SNProperty;
 import org.arastreju.sge.naming.QualifiedName;
 
-import de.lichtflut.rb.core.RB;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
