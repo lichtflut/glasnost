@@ -6,7 +6,7 @@ package de.lichtflut.glasnost.is;
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
-import de.lichtflut.glasnost.is.pages.DevOpsListPage;
+import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
 import de.lichtflut.rb.application.RBApplication;
@@ -102,7 +102,7 @@ public class GlasnostWebApplication extends RBApplication {
 		mountPage("logout", LogoutPage.class);
 
         // Glasnost specific
-        mountPage("devops", DevOpsListPage.class);
+        mountPage("devops", DevOpsPage.class);
 
 	}
 
@@ -110,7 +110,7 @@ public class GlasnostWebApplication extends RBApplication {
     public List<NavigationNode> getFirstLevelNavigation(List<MenuItem> menuItems) {
         final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
         nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
-        nodes.add(createPageNode(DevOpsListPage.class, "navigation.devops-page"));
+        nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
         nodes.addAll(super.getFirstLevelNavigation(menuItems));
         return nodes;
     }

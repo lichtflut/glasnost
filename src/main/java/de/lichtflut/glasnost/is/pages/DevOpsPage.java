@@ -35,7 +35,7 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
  *
  * @author Oliver Tigges
  */
-public class DevOpsListPage extends RBBasePage {
+public class DevOpsPage extends RBBasePage {
 
 	@SpringBean
 	private PerceptionDefinitionService perceptionDefinitionService;
@@ -45,7 +45,7 @@ public class DevOpsListPage extends RBBasePage {
 
 	// ----------------------------------------------------
 
-	public DevOpsListPage(final PageParameters parameters) {
+	public DevOpsPage(final PageParameters parameters) {
 		super(parameters);
 
 		ListView<Perception> listView = new ListView<Perception>("stages", getStageListModel()) {
@@ -99,7 +99,7 @@ public class DevOpsListPage extends RBBasePage {
 		return new AbstractLoadableDetachableModel<List<Perception>>() {
 			@Override
 			public List<Perception> load() {
-				return DevOpsListPage.this.perceptionDefinitionService.findAllPerceptions();
+				return DevOpsPage.this.perceptionDefinitionService.findAllPerceptions();
 			}
 		};
 	}
