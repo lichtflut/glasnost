@@ -16,7 +16,6 @@ import org.apache.wicket.model.Model;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionPage;
-import de.lichtflut.rb.webck.common.RBAjaxTarget;
 
 /**
  * <p>
@@ -46,14 +45,6 @@ public class PerceptionManagementPanel extends Panel {
 
 		final ListView<Perception> perceptionView = createListView(model);
 		add(perceptionView);
-
-		add(new PerceptionEditPanel("editor", selected) {
-			@Override
-			public void onUpdate() {
-				selected.setObject(null);
-				RBAjaxTarget.add(PerceptionManagementPanel.this);
-			}
-		});
 
 		add(createNewLink());
 	}
@@ -108,7 +99,7 @@ public class PerceptionManagementPanel extends Panel {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				selected.setObject(model.getObject());
-				updateEditor(target);
+				setResponsePage(new PerceptionPage(model));
 			}
 		};
 	}

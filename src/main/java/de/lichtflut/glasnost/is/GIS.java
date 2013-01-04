@@ -30,11 +30,16 @@ public interface GIS {
 	 */
 	ResourceID PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "Perception");
 
+	/**
+	 * A type describing a perception.
+	 */
+	ResourceID PERCEPTION_TYPE = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "PerceptionType");
 
 	/**
-	 * A data center DevOps item..
+	 * A data center DevOps item.
 	 */
 	ResourceID DATA_CENTER = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "DataCenter");
+
 
 	// ----------------------------------------------------
 
@@ -62,5 +67,30 @@ public interface GIS {
 	 * A perception contains items.
 	 */
 	ResourceID CONTAINS_PERCEPTION_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsPerceptionItem");
+
+	/**
+	 * A perception mightbe of a specific type.
+	 */
+	ResourceID IS_OF_TYPE = new SimpleResourceID(GIS_NAMESPACE_URI, "isOfType");
+
+	/**
+	 * Describes the color of an object.
+	 */
+	ResourceID HAS_COLOR = new SimpleResourceID(GIS_NAMESPACE_URI, "hasColor");
+
+	/**
+	 * An entity can be represented by eg. an icon, avatar and so on.
+	 */
+	ResourceID IS_REPRESENTED_BY = new SimpleResourceID(GIS_NAMESPACE_URI, "isRepresentedBy");
+
+	/**
+	 * An entity can have an owner.
+	 */
+	ResourceID HAS_OWNER = new SimpleResourceID(GIS_NAMESPACE_URI, "hasOwner");
+
+	/**
+	 * A person can be responsible for an entity.
+	 */
+	ResourceID HAS_PERSON_RESPONSIBLE = new SimpleResourceID(GIS_NAMESPACE_URI, "hasPersonResponsible");
 
 }

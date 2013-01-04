@@ -14,10 +14,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.context.Context;
+import org.arastreju.sge.model.ResourceID;
 
+import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
+import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 import de.lichtflut.rb.webck.components.form.RBDefaultButton;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
@@ -53,12 +57,7 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		Form<?> form = new Form<Void>("form");
 		form.add(new FeedbackPanel("feedback"));
 
-		TextField<String> idField = new TextField<String>("id", new PropertyModel<String>(model, "ID"));
-		idField.add(enableIf(isNull(new ContextModel(model))));
-		form.add(idField);
-
-		TextField<String> nameField = new TextField<String>("name", new PropertyModel<String>(model, "name"));
-		form.add(nameField);
+		createFields(model, form);
 
 		form.add(createCancelButton());
 
@@ -69,12 +68,43 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		add(visibleIf(isNotNull(model)));
 	}
 
+
 	// ----------------------------------------------------
 
 	public void onUpdate() {
 	}
 
 	// ----------------------------------------------------
+
+	/**
+	 * Add input fields to form.
+	 * @param model IModel containing the perception
+	 * @param form
+	 */
+	protected void createFields(final IModel<Perception> model, final Form<?> form) {
+		TextField<String> idField = new TextField<String>("id", new PropertyModel<String>(model, "ID"));
+		idField.add(enableIf(isNull(new ContextModel(model))));
+		form.add(idField);
+
+		TextField<String> nameField = new TextField<String>("name", new PropertyModel<String>(model, "name"));
+		form.add(nameField);
+
+		EntityPickerField entityPicker = new EntityPickerField("type", new PropertyModel<ResourceID>(model, "type"), GIS.PERCEPTION_TYPE);
+		form.add(entityPicker);
+
+		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));
+		form.add(colorField);
+
+		TextField<String> fileuploadField = new TextField<String>("image", new PropertyModel<String>(model, "imagePath"));
+		//		AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", new PropertyModel<Object>(model, "imagePath"));
+		form.add(fileuploadField);
+
+		EntityPickerField ownerPicker = new EntityPickerField("owner", new PropertyModel<ResourceID>(model, "owner"), RB.PERSON);
+		form.add(ownerPicker);
+
+		EntityPickerField personResponsiblePicker = new EntityPickerField("personResponsible", new PropertyModel<ResourceID>(model, "personResponsible"), RB.PERSON);
+		form.add(personResponsiblePicker);
+	}
 
 	protected Button createSaveButton() {
 		return new RBDefaultButton("save") {

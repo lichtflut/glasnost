@@ -144,6 +144,46 @@ public class Perception extends ResourceView {
 		setValue(GIS.BASED_ON, base);
 	}
 
+	public void setType(final ResourceID type){
+		setValue(GIS.IS_OF_TYPE, type);
+	}
+
+	public ResourceID getType(){
+		return resourceValue(GIS.IS_OF_TYPE);
+	}
+
+	public String getColor(){
+		return stringValue(GIS.HAS_COLOR);
+	}
+
+	public void setColor(final String color){
+		setValue(GIS.HAS_COLOR, color);
+	}
+
+	public String getImagePath(){
+		return stringValue(GIS.IS_REPRESENTED_BY);
+	}
+
+	public void setImagePath(final String path){
+		setValue(GIS.IS_REPRESENTED_BY, path);
+	}
+
+	public ResourceID getOwner(){
+		return resourceValue(GIS.HAS_OWNER);
+	}
+
+	public void setOwner(final ResourceID owner){
+		setValue(GIS.HAS_OWNER, owner);
+	}
+
+	public ResourceID getPersonResponsible(){
+		return resourceValue(GIS.HAS_PERSON_RESPONSIBLE);
+	}
+
+	public void setPersonResponsible(final ResourceID person){
+		setValue(GIS.HAS_PERSON_RESPONSIBLE, person);
+	}
+
 	// ----------------------------------------------------
 
 	@Override

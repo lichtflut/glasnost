@@ -2,6 +2,7 @@ package de.lichtflut.glasnost.is;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Locale;
@@ -24,7 +25,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
-import de.lichtflut.rb.core.RBSystem;
 import de.lichtflut.rb.core.security.AuthModule;
 import de.lichtflut.rb.core.security.AuthenticationService;
 import de.lichtflut.rb.core.security.DomainManager;
@@ -175,8 +175,8 @@ public abstract class GlasnostWebTest {
 		RBDomain domain = createTestDomain();
 		when(authModule.getDomainManager()).thenReturn(domainManager);
 		when(serviceContext.getDomain()).thenReturn(domain.getQualifiedName().toURI());
-		when(pathBuilder.queryEntities(domain.getQualifiedName().toURI(), RBSystem.ENTITY.toURI())).thenReturn("some entities");
-		when(domainManager.findDomain(domain.getQualifiedName().toURI())).thenReturn(domain);
+		when(pathBuilder.queryEntities(anyString(), anyString())).thenReturn("some entities");
+		when(domainManager.findDomain(anyString())).thenReturn(domain);
 	}
 
 	/**
