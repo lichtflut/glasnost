@@ -1,10 +1,8 @@
 package de.lichtflut.glasnost.is.services;
 
-import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.model.logic.PerceptionCloner;
-import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
-import de.lichtflut.rb.core.services.ServiceContext;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.arastreju.sge.Conversation;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
@@ -16,12 +14,15 @@ import org.arastreju.sge.query.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.model.logic.PerceptionCloner;
+import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
+import de.lichtflut.rb.core.services.ServiceContext;
 
 /**
  * <p>
- *  Service for creating, changing and reading the stages.
+ *  Service for creating, changing and reading the perceptions.
  * </p>
  *
  * <p>
@@ -73,7 +74,7 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 	public Perception findByContext(final Context context) {
 		QueryResult result = conversation().createQuery().addField(GIS.REPRESENTS_CONTEXT, context).getResult();
 		if (result.size() > 1) {
-			LOGGER.error("More than one stage registered for context {}.", context);
+			LOGGER.error("More than one perception registered for context {}.", context);
 		}
 		return Perception.from(result.getSingleNode());
 	}
@@ -83,40 +84,40 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 		final List<Perception> result = new ArrayList<Perception>();
 		final Query query = conversation().createQuery();
 		query.addField(RDF.TYPE, GIS.PERCEPTION);
-		for (ResourceNode stageNode : query.getResult()) {
-			result.add(Perception.from(stageNode));
+		for (ResourceNode perceptionNode : query.getResult()) {
+			result.add(Perception.from(perceptionNode));
 		}
 		return result;
 	}
 
-    // ----------------------------------------------------
+	// ----------------------------------------------------
 
-    @Override
-    public void definePerceptionBase(Perception target, QualifiedName baseQN) {
-        Perception base = findByQualifiedName(baseQN);
-        if (base == null) {
-            throw new IllegalArgumentException("Base perception not found: " + baseQN);
-        }
-        target.setBasePerception(base);
-    }
+	@Override
+	public void definePerceptionBase(final Perception target, final QualifiedName baseQN) {
+		Perception base = findByQualifiedName(baseQN);
+		if (base == null) {
+			throw new IllegalArgumentException("Base perception not found: " + baseQN);
+		}
+		target.setBasePerception(base);
+	}
 
-    @Override
-    public Perception cloneItems(QualifiedName targetQN, QualifiedName baseQN) {
-        Perception base = findByQualifiedName(baseQN);
-        Perception target = findByQualifiedName(targetQN);
+	@Override
+	public Perception cloneItems(final QualifiedName targetQN, final QualifiedName baseQN) {
+		Perception base = findByQualifiedName(baseQN);
+		Perception target = findByQualifiedName(targetQN);
 
-        if (base == null) {
-            throw new IllegalArgumentException("Base perception not found: " + baseQN);
-        }
-        if (target == null) {
-            target = new Perception(targetQN);
-        }
+		if (base == null) {
+			throw new IllegalArgumentException("Base perception not found: " + baseQN);
+		}
+		if (target == null) {
+			target = new Perception(targetQN);
+		}
 
-        new PerceptionCloner(base).clone(target);
-        return target;
-    }
+		new PerceptionCloner(base).clone(target);
+		return target;
+	}
 
-    // ----------------------------------------------------
+	// ----------------------------------------------------
 
 	private Conversation conversation() {
 		return arasFactory.getConversation();

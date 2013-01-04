@@ -1,4 +1,4 @@
-package de.lichtflut.glasnost.is.components.devops.stages;
+package de.lichtflut.glasnost.is.components.devops.perceptions;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.model.ui.StagesModel;
+import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 
 /**
  * <p>
- *  This panel lists all registered stages and allows creation and editing.
+ *  This panel lists all registered perceptions and allows creation and editing.
  * </p>
  *
  * <p>
@@ -28,29 +28,29 @@ import de.lichtflut.rb.webck.common.RBAjaxTarget;
  *
  * @author Oliver Tigges
  */
-public class StageManagementPanel extends Panel {
+public class PerceptionManagementPanel extends Panel {
 
 	private final IModel<Perception> selected = new Model<Perception>();
 
 	// ----------------------------------------------------
 
-	public StageManagementPanel(final String id) {
-		this(id, new StagesModel());
+	public PerceptionManagementPanel(final String id) {
+		this(id, new PerceptionModel());
 	}
 
-	public StageManagementPanel(final String id, final IModel<List<Perception>> model) {
+	public PerceptionManagementPanel(final String id, final IModel<List<Perception>> model) {
 		super(id, model);
 
 		setOutputMarkupId(true);
 
-		final ListView<Perception> stageView = createListView(model);
-		add(stageView);
+		final ListView<Perception> perceptionView = createListView(model);
+		add(perceptionView);
 
-		add(new StageEditPanel("editor", selected) {
+		add(new PerceptionEditPanel("editor", selected) {
 			@Override
 			public void onUpdate() {
 				selected.setObject(null);
-				RBAjaxTarget.add(StageManagementPanel.this);
+				RBAjaxTarget.add(PerceptionManagementPanel.this);
 			}
 		});
 
@@ -60,7 +60,7 @@ public class StageManagementPanel extends Panel {
 	// ----------------------------------------------------
 
 	private ListView<Perception> createListView(final IModel<List<Perception>> model) {
-		return new ListView<Perception>("stageView", model) {
+		return new ListView<Perception>("perceptionView", model) {
 			@Override
 			protected void populateItem(final ListItem<Perception> item) {
 				Perception perception = item.getModelObject();
@@ -84,7 +84,7 @@ public class StageManagementPanel extends Panel {
 	// ----------------------------------------------------
 
 	private AbstractLink createNewLink() {
-		return new AjaxLink<Void>("createStageLink") {
+		return new AjaxLink<Void>("createPerceptionLink") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				selected.setObject(new Perception());

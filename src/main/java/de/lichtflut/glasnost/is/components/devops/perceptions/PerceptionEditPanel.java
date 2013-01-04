@@ -1,4 +1,4 @@
-package de.lichtflut.glasnost.is.components.devops.stages;
+package de.lichtflut.glasnost.is.components.devops.perceptions;
 
 import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.enableIf;
 import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
@@ -23,7 +23,7 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
  * <p>
- *  Panel for editing of a stage.
+ *  Panel for editing of a perception.
  * </p>
  *
  * <p>
@@ -32,7 +32,7 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
  *
  * @author Oliver Tigges
  */
-public class StageEditPanel extends TypedPanel<Perception> {
+public class PerceptionEditPanel extends TypedPanel<Perception> {
 
 	@SpringBean
 	private PerceptionDefinitionService service;
@@ -42,9 +42,9 @@ public class StageEditPanel extends TypedPanel<Perception> {
 	/**
 	 * Constructor.
 	 * @param id The component id.
-	 * @param model The model containing the stage.
+	 * @param model The model containing the perception.
 	 */
-	public StageEditPanel(final String id, final IModel<Perception> model) {
+	public PerceptionEditPanel(final String id, final IModel<Perception> model) {
 		super(id, model);
 
 		setOutputMarkupId(true);

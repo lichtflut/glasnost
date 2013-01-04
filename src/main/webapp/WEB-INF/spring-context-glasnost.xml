@@ -58,7 +58,7 @@
 
     <!-- Glasnost specific services -->
 
-    <bean id="stageDefinitionService" class="de.lichtflut.glasnost.is.services.PerceptionDefinitionServiceImpl"
+    <bean id="perceptionDefinitionService" class="de.lichtflut.glasnost.is.services.PerceptionDefinitionServiceImpl"
             scope="request">
         <constructor-arg index="0" ref="context"/>
         <constructor-arg index="1" ref="arasResourceFactory"/>

@@ -26,7 +26,7 @@ public interface GIS {
 	// -- TYPES -------------------------------------------
 
 	/**
-	 * A stage represents a contexts.
+	 * A perception represents a contexts.
 	 */
 	ResourceID PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "Perception");
 
@@ -43,24 +43,24 @@ public interface GIS {
 	 */
 	ResourceID REPRESENTS_CONTEXT = new SimpleResourceID(GIS_NAMESPACE_URI, "representsContext");
 
-    /**
-     * A perception can be based on another perception, or an item on another item.
-     */
-    ResourceID BASED_ON = new SimpleResourceID(GIS_NAMESPACE_URI, "basedOn");
+	/**
+	 * A perception can be based on another perception, or an item on another item.
+	 */
+	ResourceID BASED_ON = new SimpleResourceID(GIS_NAMESPACE_URI, "basedOn");
 
 	/**
-	 * A stage contains one or more 'root' items.
+	 * A perception contains one or more 'root' items.
 	 */
 	ResourceID CONTAINS_TREE_ROOT_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsTreeRootItem");
 
-    /**
-     * Each perception item belongs to a perception.
-     */
-    ResourceID BELONGS_TO_PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "belongsToPerception");
+	/**
+	 * Each perception item belongs to a perception.
+	 */
+	ResourceID BELONGS_TO_PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "belongsToPerception");
 
-    /**
-     * A perception contains items.
-     */
-    ResourceID CONTAINS_PERCEPTION_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsPerceptionItem");
+	/**
+	 * A perception contains items.
+	 */
+	ResourceID CONTAINS_PERCEPTION_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "containsPerceptionItem");
 
 }

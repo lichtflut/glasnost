@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Model loading all stages.
+ *  Model loading all perceptions.
  * </p>
  *
  * <p>
@@ -19,14 +19,14 @@ import java.util.List;
  *
  * @author Oliver Tigges
  */
-public class StagesModel extends AbstractLoadableDetachableModel<List<Perception>> {
+public class PerceptionModel extends AbstractLoadableDetachableModel<List<Perception>> {
 
     @SpringBean
     private PerceptionDefinitionService perceptionDefinitionService;
 
     // ----------------------------------------------------
 
-    public StagesModel() {
+    public PerceptionModel() {
         super();
         Injector.get().inject(this);
     }
