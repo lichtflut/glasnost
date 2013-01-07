@@ -3,7 +3,13 @@
  */
 package de.lichtflut.glasnost.is.components.devops.perceptions;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -18,7 +24,10 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
+import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
+import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
+import de.lichtflut.rb.webck.components.entity.VisualizationMode;
 import de.lichtflut.rb.webck.components.fields.FilePreviewLink;
 
 /**
@@ -37,6 +46,9 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 	@SpringBean
 	private EntityManager entityManager;
 
+	@SpringBean
+	private ResourceLinkProvider resourceLinkProvider;
+
 	// ---------------- Constructor -------------------------
 
 	/**
@@ -46,23 +58,68 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 	 */
 	public PerceptionDisplayPanel(final String id, final IModel<Perception> model) {
 		super(id, model);
-		createDisplayComponents(model);
+		if(null == model || null == model.getObject()){
+			throw new IllegalArgumentException("Perception must not be null");
+		}
+		Form<?> form = new Form<Void>("form");
+
+		addDisplayComponents(model, form);
+
+		add(form);
+
+		setOutputMarkupId(true);
 	}
 
 	// ------------------------------------------------------
 
-	private void createDisplayComponents(final IModel<Perception> model) {
-		add(new Label("id", new PropertyModel<Perception>(model,"id")));
-		add(new Label("name", new PropertyModel<Perception>(model,"name")));
-		add(new Label("type", getLabelForType(model)));
-		add(new Label("color", new PropertyModel<Perception>(model,"color")));
-		add(new FilePreviewLink("Image", new Model<String>(model.getObject().getImagePath())));
-		add(new Label("owner", getLabelForEntity(model.getObject().getOwner())));
-		add(new Label("personResponsible", getLabelForEntity(model.getObject().getPersonResponsible())));
+	/**
+	 * Gets triggert when 'edit'-button is clicked.
+	 * @param target
+	 * @param form
+	 */
+	protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+	}
 
+	// ------------------------------------------------------
+
+	private void addDisplayComponents(final IModel<Perception> model, final Form<?> form) {
+		form.add(new Label("id", new PropertyModel<Perception>(model,"ID")));
+		form.add(new Label("name", new PropertyModel<Perception>(model,"name")));
+		form.add(new Label("type", getLabelForType(model)));
+		form.add(new Label("color", new PropertyModel<Perception>(model,"color")));
+		form.add(new FilePreviewLink("image", new Model<String>(model.getObject().getImagePath())));
+		form.add(createLinkForEntity("owner", model.getObject().getOwner()));
+		form.add(createLinkForEntity("personResponsible", model.getObject().getPersonResponsible()));
+		form.add(createEditButton("edit", model));
+	}
+
+	private Component createLinkForEntity(final String id, final ResourceID resourceID) {
+		if(null == resourceID){
+			return new WebMarkupContainer(id).setVisible(false);
+		}
+		ExternalLink link = new ExternalLink(id, new Model<String>(getUrlTo(resourceID)));
+		link.add(new Label("label", new Model<String>(getLabelForEntity(resourceID))));
+		return link;
+	}
+
+	private String getUrlTo(final ResourceID ref) {
+		return resourceLinkProvider.getUrlToResource(ref, VisualizationMode.DETAILS, DisplayMode.VIEW);
+	}
+
+	private Component createEditButton(final String id, final IModel<Perception> model) {
+		AjaxButton edit = new AjaxButton(id) {
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+				PerceptionDisplayPanel.this.onSubmit(target,form);
+			}
+		};
+		return edit;
 	}
 
 	private String getLabelForEntity(final ResourceID id) {
+		if(null == id){
+			return null;
+		}
 		RBEntity entity = entityManager.find(id);
 		if(entity == null){
 			return id.toURI();

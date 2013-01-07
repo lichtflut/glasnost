@@ -67,7 +67,8 @@ public class PerceptionPageTest extends GlasnostWebTest{
 		tester.startPage(page);
 
 		tester.assertRenderedPage(PerceptionPage.class);
-		tester.assertComponent("perception", PerceptionEditPanel.class);
+		tester.assertComponent("perceptionEditor", PerceptionEditPanel.class);
+		tester.assertInvisible("perceptionDisplay");
 	}
 
 	/**

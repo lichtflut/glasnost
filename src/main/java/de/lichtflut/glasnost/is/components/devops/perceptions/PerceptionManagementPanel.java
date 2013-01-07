@@ -65,7 +65,7 @@ public class PerceptionManagementPanel extends Panel {
 				Label name = new Label("name", perception.getName());
 				item.add(name);
 
-				item.add(createEditLink(item.getModel()));
+				item.add(createViewLink(item.getModel()));
 				item.add(createDeleteLink(item.getModel()));
 				item.add(createUpLink(item.getModel()));
 				item.add(createDownLink(item.getModel()));
@@ -95,7 +95,7 @@ public class PerceptionManagementPanel extends Panel {
 		return link;
 	}
 
-	private AjaxLink<?> createEditLink(final IModel<Perception> model) {
+	private AjaxLink<?> createViewLink(final IModel<Perception> model) {
 		return new AjaxLink<Void>("view") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {

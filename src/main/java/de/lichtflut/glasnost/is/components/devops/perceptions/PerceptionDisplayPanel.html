@@ -2,14 +2,14 @@
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
 <wicket:panel>
 
-		<div class="input-panel">
-
+	<div class="input-panel">
+		<form wicket:id="form">
 			<div class="row">
 				<div class="cell">
 					<wicket:message key="perception.id" />
 				</div>
 				<div class="cell">
-					<input wicket:id="id" />
+					<span wicket:id="id"></span>
 				</div>
 			</div>
 			
@@ -18,7 +18,7 @@
 					<wicket:message key="perception.name" />
 				</div>
 				<div class="cell">
-					<input wicket:id="name" />
+					<span wicket:id="name"></span>
 				</div>
 			</div>
 
@@ -36,7 +36,7 @@
 					<wicket:message key="perception.color" />
 				</div>
 				<div class="cell">
-					<input wicket:id="color" />
+					<span wicket:id="color"></span>
 				</div>
 			</div>
 
@@ -45,7 +45,7 @@
 					<wicket:message key="perception.image" />
 				</div>
 				<div class="cell">
-					<input wicket:id="image" />
+					<div wicket:id="image"></div>
 				</div>
 			</div>
 
@@ -54,7 +54,7 @@
 					<wicket:message key="perception.owner" />
 				</div>
 				<div class="cell">
-					<div wicket:id="owner"></div>
+					<a wicket:id="owner" href="#"><wicket:container wicket:id="label"></wicket:container></a>
 				</div>
 			</div>
 
@@ -63,7 +63,7 @@
 					<wicket:message key="perception.personResponsible" />
 				</div>
 				<div class="cell">
-					<div wicket:id="personResponsible"></div>
+					<a wicket:id="personResponsible"href="#"><wicket:container wicket:id="label"></wicket:container></a>
 				</div>
 			</div>
 
@@ -72,7 +72,7 @@
 					<wicket:message key="button.edit">[edit]</wicket:message>
 				</button>
 			</div>
-
-		</div>
+		</form>
+	</div>
 </wicket:panel>
 </html>
