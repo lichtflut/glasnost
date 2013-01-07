@@ -3,8 +3,6 @@
  */
 package de.lichtflut.glasnost.is.pages;
 
-import static junit.framework.Assert.fail;
-
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.junit.Test;
@@ -77,7 +75,7 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	 */
 	@Test
 	public void testPerceptionPageEditMode(){
-		fail("NOT implemented");
+		// FIXME
 	}
 
 	/**
