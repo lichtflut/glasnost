@@ -5,6 +5,7 @@ package de.lichtflut.glasnost.is.pages;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GlasnostWebTest;
@@ -42,10 +43,10 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	 */
 	@Test
 	public void testPerceptionPageNotLoggedIn(){
-		IModel<Perception> model = new Model<Perception>(new Perception());
-		PerceptionPage page = new PerceptionPage(model, CREATE_MODE);
+		PageParameters parameters = new PageParameters();
+		parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
 
-		tester.startPage(page);
+		tester.startPage(PerceptionPage.class, parameters);
 
 		tester.assertRenderedPage(LoginPage.class);
 	}
@@ -57,6 +58,7 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	public void testPerceptionPageCreateMode(){
 		initNeccessaryPageData();
 		IModel<Perception> model = new Model<Perception>(new Perception());
+
 		PerceptionPage page = new PerceptionPage(model, CREATE_MODE){
 			@Override
 			protected boolean needsAuthentication() {
@@ -72,17 +74,31 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	}
 
 	/**
-	 * Scenario: Load page with existing perception.
+	 * Scenario: Load page with PageParameters.
 	 */
+	// FIXME Fix Authentication issue for page call with page parameters
 	@Test
 	public void testPerceptionPageEditMode(){
-		// FIXME
+		//		when(serviceContext.getUser()).thenReturn(new RBUser());
+		//		PageParameters parameters = new PageParameters();
+		//		parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
+		//
+		//		tester.startPage(PerceptionPage.class, parameters);
+		initNeccessaryPageData();
+		IModel<Perception> model = new Model<Perception>(new Perception());
+
+		PerceptionPage page = new PerceptionPage(model, CREATE_MODE){
+			@Override
+			protected boolean needsAuthentication() {
+				return false;
+			}
+		};
+
+		tester.startPage(page);
+
+		tester.assertRenderedPage(PerceptionPage.class);
+		tester.assertComponent("perceptionEditor", PerceptionEditPanel.class);
+		tester.assertInvisible("perceptionDisplay");
 	}
 
-	/**
-	 * Scenario: Load page without perception.
-	 */
-	@Test
-	public void testPerceptionPageNoPerception(){
-	}
 }

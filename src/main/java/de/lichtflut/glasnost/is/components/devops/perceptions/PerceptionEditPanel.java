@@ -60,7 +60,6 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		createFields(model, form);
 
 		form.add(createCancelButton());
-
 		form.add(createSaveButton());
 
 		add(form);

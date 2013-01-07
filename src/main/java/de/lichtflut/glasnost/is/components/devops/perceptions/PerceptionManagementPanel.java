@@ -12,10 +12,12 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionPage;
+import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.common.DisplayMode;
 
 /**
@@ -80,8 +82,9 @@ public class PerceptionManagementPanel extends Panel {
 		return new AjaxLink<Void>("createPerceptionLink") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				selected.setObject(new Perception());
-				setResponsePage(new PerceptionPage(selected, new Model<DisplayMode>(DisplayMode.CREATE)));
+				PageParameters parameters = new PageParameters();
+				parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
+				setResponsePage(PerceptionPage.class, parameters);
 			}
 		};
 	}
@@ -99,8 +102,10 @@ public class PerceptionManagementPanel extends Panel {
 		return new AjaxLink<Void>("view") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				selected.setObject(model.getObject());
-				setResponsePage(new PerceptionPage(model, new Model<DisplayMode>(DisplayMode.VIEW)));
+				PageParameters parameters = new PageParameters();
+				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().toURI());
+				parameters.add(DisplayMode.PARAMETER, DisplayMode.VIEW);
+				setResponsePage(PerceptionPage.class, parameters);
 			}
 		};
 	}

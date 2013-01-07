@@ -156,10 +156,10 @@ public abstract class GlasnostWebTest {
 			}
 
 		};
+		registerMocks();
 		tester = new WicketTester(application);
 		tester.getSession().setLocale(Locale.ENGLISH);
 		localizer = tester.getApplication().getResourceSettings().getLocalizer();
-		registerMocks();
 		setupTest();
 	}
 
