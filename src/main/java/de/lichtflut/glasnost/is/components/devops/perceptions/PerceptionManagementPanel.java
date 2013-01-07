@@ -16,6 +16,7 @@ import org.apache.wicket.model.Model;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionPage;
+import de.lichtflut.rb.webck.common.DisplayMode;
 
 /**
  * <p>
@@ -80,7 +81,7 @@ public class PerceptionManagementPanel extends Panel {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				selected.setObject(new Perception());
-				setResponsePage(new PerceptionPage(selected));
+				setResponsePage(new PerceptionPage(selected, new Model<DisplayMode>(DisplayMode.CREATE)));
 			}
 		};
 	}
@@ -95,11 +96,11 @@ public class PerceptionManagementPanel extends Panel {
 	}
 
 	private AjaxLink<?> createEditLink(final IModel<Perception> model) {
-		return new AjaxLink<Void>("edit") {
+		return new AjaxLink<Void>("view") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				selected.setObject(model.getObject());
-				setResponsePage(new PerceptionPage(model));
+				setResponsePage(new PerceptionPage(model, new Model<DisplayMode>(DisplayMode.VIEW)));
 			}
 		};
 	}
@@ -128,10 +129,6 @@ public class PerceptionManagementPanel extends Panel {
 	protected void onDetach() {
 		super.onDetach();
 		selected.detach();
-	}
-
-	private void updateEditor(final AjaxRequestTarget target) {
-		target.add(get("editor"));
 	}
 
 }

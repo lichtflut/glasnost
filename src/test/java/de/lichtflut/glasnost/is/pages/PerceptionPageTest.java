@@ -3,6 +3,8 @@
  */
 package de.lichtflut.glasnost.is.pages;
 
+import static junit.framework.Assert.fail;
+
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.junit.Test;
@@ -10,6 +12,7 @@ import org.junit.Test;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionEditPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.webck.common.DisplayMode;
 
 
 /**
@@ -21,6 +24,8 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
  * @author Ravi Knox
  */
 public class PerceptionPageTest extends GlasnostWebTest{
+
+	private static final Model<DisplayMode> CREATE_MODE = new Model<DisplayMode>(DisplayMode.CREATE);
 
 	// ------------- SetUp & tearDown -----------------------
 
@@ -35,12 +40,12 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	// ------------------------------------------------------
 
 	/**
-	 * Scenario: User is not logged in.
+	 * Scenario: User is not logged in, calls Perception {@link PerceptionPage} ind create mode.
 	 */
 	@Test
 	public void testPerceptionPageNotLoggedIn(){
 		IModel<Perception> model = new Model<Perception>(new Perception());
-		PerceptionPage page = new PerceptionPage(model);
+		PerceptionPage page = new PerceptionPage(model, CREATE_MODE);
 
 		tester.startPage(page);
 
@@ -48,13 +53,13 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	}
 
 	/**
-	 * Scenario: Load page with non-existing (blank) perception.
+	 * Scenario: Load page with non-existing (blank) perception in create mode.
 	 */
 	@Test
 	public void testPerceptionPageCreateMode(){
 		initNeccessaryPageData();
 		IModel<Perception> model = new Model<Perception>(new Perception());
-		PerceptionPage page = new PerceptionPage(model){
+		PerceptionPage page = new PerceptionPage(model, CREATE_MODE){
 			@Override
 			protected boolean needsAuthentication() {
 				return false;
@@ -64,7 +69,7 @@ public class PerceptionPageTest extends GlasnostWebTest{
 		tester.startPage(page);
 
 		tester.assertRenderedPage(PerceptionPage.class);
-		tester.assertComponent("perceptionEditor", PerceptionEditPanel.class);
+		tester.assertComponent("perception", PerceptionEditPanel.class);
 	}
 
 	/**
@@ -72,6 +77,7 @@ public class PerceptionPageTest extends GlasnostWebTest{
 	 */
 	@Test
 	public void testPerceptionPageEditMode(){
+		fail("NOT implemented");
 	}
 
 	/**

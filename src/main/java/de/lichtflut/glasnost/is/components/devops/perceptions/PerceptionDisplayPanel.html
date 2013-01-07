@@ -2,23 +2,20 @@
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
 <wicket:panel>
 
-	<form wicket:id="form">
 		<div class="input-panel">
-
-			<div wicket:id="feedback"></div>
 
 			<div class="row">
 				<div class="cell">
-					<label wicket:for="id"><wicket:message key="perception.id" /></label>
+					<wicket:message key="perception.id" />
 				</div>
 				<div class="cell">
 					<input wicket:id="id" />
 				</div>
 			</div>
+			
 			<div class="row">
 				<div class="cell">
-					<label wicket:for="name"><wicket:message
-							key="perception.name" /></label>
+					<wicket:message key="perception.name" />
 				</div>
 				<div class="cell">
 					<input wicket:id="name" />
@@ -27,8 +24,7 @@
 
 			<div class="row">
 				<div class="cell">
-					<label wicket:for="type"><wicket:message
-							key="perception.type" /></label>
+					<wicket:message key="perception.type" />
 				</div>
 				<div class="cell">
 					<div wicket:id="type"></div>
@@ -37,8 +33,7 @@
 
 			<div class="row">
 				<div class="cell">
-					<label wicket:for="color"><wicket:message
-							key="perception.color" /></label>
+					<wicket:message key="perception.color" />
 				</div>
 				<div class="cell">
 					<input wicket:id="color" />
@@ -47,8 +42,7 @@
 
 			<div class="row">
 				<div class="cell">
-					<label wicket:for=image><wicket:message
-							key="perception.image" /></label>
+					<wicket:message key="perception.image" />
 				</div>
 				<div class="cell">
 					<input wicket:id="image" />
@@ -57,8 +51,7 @@
 
 			<div class="row">
 				<div class="cell">
-					<label wicket:for="owner"><wicket:message
-							key="perception.owner" /></label>
+					<wicket:message key="perception.owner" />
 				</div>
 				<div class="cell">
 					<div wicket:id="owner"></div>
@@ -67,8 +60,7 @@
 
 			<div class="row">
 				<div class="cell">
-					<label wicket:for="personResponsible"><wicket:message
-							key="perception.personResponsible" /></label>
+					<wicket:message key="perception.personResponsible" />
 				</div>
 				<div class="cell">
 					<div wicket:id="personResponsible"></div>
@@ -76,15 +68,11 @@
 			</div>
 
 			<div class="button-bar">
-				<button type="button" wicket:id="cancel">
-					<wicket:message key="button.cancel">[cancel]</wicket:message>
-				</button>
-				<button type="button" wicket:id="save" class="default-button">
-					<wicket:message key="button.save">[save]</wicket:message>
+				<button type="button" wicket:id="edit">
+					<wicket:message key="button.edit">[edit]</wicket:message>
 				</button>
 			</div>
 
 		</div>
-	</form>
 </wicket:panel>
 </html>
