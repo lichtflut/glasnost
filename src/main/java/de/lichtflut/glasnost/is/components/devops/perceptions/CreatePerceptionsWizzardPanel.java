@@ -7,15 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.PropertyModel;
 
 import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 
 /**
  * <p>
@@ -51,10 +54,22 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 		ListView<Perception> listView = new PropertyListView<Perception>(id, new ArrayList<Perception>(perceptionKey.values())) {
 			@Override
 			protected void populateItem(final ListItem<Perception> item) {
-				item.add(new TextField<String>("ID"));
-				item.add(new TextField<String>("name", new PropertyModel<String>(item.getModel(), "name")));
-				item.add(new TextField<String>("color", new PropertyModel<String>(item.getModel(), "color")));
+				final WebMarkupContainer container = new WebMarkupContainer("container");
+				container.add(new TextField<String>("ID"));
+				container.add(new TextField<String>("name"));
+				container.add(new TextField<String>("color"));
+				container.setVisible(false);
+				container.setOutputMarkupId(true);
+				item.add(new AjaxLink<Void>("link"){
+					@Override
+					public void onClick(final AjaxRequestTarget target) {
+						container.setVisible(true);
+						RBAjaxTarget.add(item);
+					}
+				});
 
+				item.add(container);
+				item.setOutputMarkupId(true);
 			}
 
 		};
