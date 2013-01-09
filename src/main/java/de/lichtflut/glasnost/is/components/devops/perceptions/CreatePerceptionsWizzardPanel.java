@@ -10,12 +10,14 @@ import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.ResourceModel;
 
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
@@ -31,6 +33,8 @@ import de.lichtflut.rb.webck.common.RBAjaxTarget;
 public class CreatePerceptionsWizzardPanel extends Panel {
 
 	private final Map<String, Perception> perceptionKey = new HashMap<String, Perception>();
+	// TODO change how current label is retrieved in Listview
+	private final ArrayList<String> keys;
 
 	// ---------------- Constructor -------------------------
 
@@ -41,9 +45,11 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 	public CreatePerceptionsWizzardPanel(final String id) {
 		super(id);
 		fillPerceptions();
+		keys = new ArrayList<String>(perceptionKey.keySet());
 		Form<?> form = new Form<Void>("form");
 
 		addPerceptions("list", form);
+
 
 		add(form);
 		// For each perception type (dev, copt, qa) add perception. onclick perception type set visible true
@@ -60,14 +66,17 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 				container.add(new TextField<String>("color"));
 				container.setVisible(false);
 				container.setOutputMarkupId(true);
-				item.add(new AjaxLink<Void>("link"){
+
+				AjaxLink<?> link = new AjaxLink<Void>("link"){
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
 						container.setVisible(true);
 						RBAjaxTarget.add(item);
 					}
-				});
+				};
+				link.add(new Label("label", new ResourceModel(keys.get(item.getIndex()))));
 
+				item.add(link);
 				item.add(container);
 				item.setOutputMarkupId(true);
 			}
