@@ -22,6 +22,7 @@ import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.fields.EntityPickerField;
+import de.lichtflut.rb.webck.components.form.RBCancelButton;
 import de.lichtflut.rb.webck.components.form.RBDefaultButton;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
@@ -68,12 +69,21 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 	}
 
 
-	// ----------------------------------------------------
+	// ------------------------------------------------------
 
-	public void onUpdate() {
+	/**
+	 * Gets called when form gets submitted.
+	 * @param target
+	 * @param form
+	 */
+	protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+		store();
+		onUpdate(target, form);
 	}
 
-	// ----------------------------------------------------
+	protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
+	}
+
 
 	/**
 	 * Add input fields to form.
@@ -109,16 +119,17 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		return new RBDefaultButton("save") {
 			@Override
 			protected void applyActions(final AjaxRequestTarget target, final Form<?> form) {
-				store();
+				PerceptionEditPanel.this.onSubmit(target, form);
 			}
 		};
 	}
 
+
 	protected Button createCancelButton() {
-		return new RBDefaultButton("cancel") {
+		return new RBCancelButton("cancel") {
 			@Override
 			protected void applyActions(final AjaxRequestTarget target, final Form<?> form) {
-				onUpdate();
+				onUpdate(target, form);
 			}
 		};
 	}
@@ -126,7 +137,6 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 	protected void store() {
 		Perception perception = getModelObject();
 		service.store(perception);
-		onUpdate();
 	}
 
 	// ----------------------------------------------------

@@ -69,8 +69,8 @@ public class PerceptionPageTest extends GlasnostWebTest{
 		tester.startPage(page);
 
 		tester.assertRenderedPage(PerceptionPage.class);
-		tester.assertComponent("perceptionEditor", PerceptionEditPanel.class);
-		tester.assertInvisible("perceptionDisplay");
+		tester.assertComponent("container:perceptionEditor", PerceptionEditPanel.class);
+		tester.assertInvisible("container:perceptionDisplay");
 	}
 
 	/**
@@ -97,8 +97,8 @@ public class PerceptionPageTest extends GlasnostWebTest{
 		tester.startPage(page);
 
 		tester.assertRenderedPage(PerceptionPage.class);
-		tester.assertComponent("perceptionEditor", PerceptionEditPanel.class);
-		tester.assertInvisible("perceptionDisplay");
+		tester.assertComponent("container:perceptionEditor", PerceptionEditPanel.class);
+		tester.assertInvisible("container:perceptionDisplay");
 	}
 
 }

@@ -165,6 +165,13 @@ public abstract class GlasnostWebTest {
 
 	// ------------------------------------------------------
 
+	/**
+	 * Override this method to add some custom configuration.
+	 */
+	protected void setupTest() {
+	}
+
+
 	protected void assertRenderedPanel(final Class<? extends Panel> panelClass, final String path) {
 		if (!getLastRenderedPanel(path).getClass().isAssignableFrom(panelClass)) {
 			assertThat(panelClass.getSimpleName(), equalTo(getLastRenderedPanel(path).getClass().getSimpleName()));
@@ -177,12 +184,6 @@ public abstract class GlasnostWebTest {
 		when(serviceContext.getDomain()).thenReturn(domain.getQualifiedName().toURI());
 		when(pathBuilder.queryEntities(anyString(), anyString())).thenReturn("some entities");
 		when(domainManager.findDomain(anyString())).thenReturn(domain);
-	}
-
-	/**
-	 * Override this method to add some custom configuration.
-	 */
-	protected void setupTest() {
 	}
 
 	/**

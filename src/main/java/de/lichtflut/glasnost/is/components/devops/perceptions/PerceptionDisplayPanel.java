@@ -29,6 +29,7 @@ import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.entity.VisualizationMode;
 import de.lichtflut.rb.webck.components.fields.FilePreviewLink;
+import de.lichtflut.rb.webck.models.basic.DerivedModel;
 
 /**
  * <p>
@@ -88,18 +89,28 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 		form.add(new Label("type", getLabelForType(model)));
 		form.add(new Label("color", new PropertyModel<Perception>(model,"color")));
 		form.add(new FilePreviewLink("image", new Model<String>(model.getObject().getImagePath())));
-		form.add(createLinkForEntity("owner", model.getObject().getOwner()));
-		form.add(createLinkForEntity("personResponsible", model.getObject().getPersonResponsible()));
+		form.add(createLinkForEntity("owner", model,"owner"));
+		form.add(createLinkForEntity("personResponsible", model, "personResponsible"));
 		form.add(createEditButton("edit", model));
 	}
 
-	private Component createLinkForEntity(final String id, final ResourceID resourceID) {
-		if(null == resourceID){
+	private Component createLinkForEntity(final String id, final IModel<?> model, final String propertyKey) {
+		IModel<ResourceID> propertyModel = new PropertyModel<ResourceID>(model, propertyKey);
+		if(null == propertyModel.getObject()){
 			return new WebMarkupContainer(id).setVisible(false);
 		}
-		ExternalLink link = new ExternalLink(id, new Model<String>(getUrlTo(resourceID)));
-		link.add(new Label("label", new Model<String>(getLabelForEntity(resourceID))));
+		ExternalLink link = new ExternalLink(id, getLinkModelForEntity(propertyModel));
+		link.add(new Label("label", getLabelModelForEntity(propertyModel)));
 		return link;
+	}
+
+	private IModel<String> getLinkModelForEntity(final IModel<ResourceID> model) {
+		return new DerivedModel<String, IModel<ResourceID>>(model) {
+			@Override
+			protected String derive(final IModel<ResourceID> original) {
+				return getUrlTo(model.getObject());
+			}
+		};
 	}
 
 	private String getUrlTo(final ResourceID ref) {
@@ -116,15 +127,21 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 		return edit;
 	}
 
-	private String getLabelForEntity(final ResourceID id) {
-		if(null == id){
+	private IModel<String> getLabelModelForEntity(final IModel<ResourceID> id) {
+		if(null == id.getObject()){
 			return null;
 		}
-		RBEntity entity = entityManager.find(id);
-		if(entity == null){
-			return id.toURI();
-		}
-		return entity.getLabel();
+		return new DerivedModel<String, IModel<ResourceID>>(id) {
+
+			@Override
+			protected String derive(final IModel<ResourceID> original) {
+				RBEntity entity = entityManager.find(id.getObject());
+				if(entity == null){
+					return id.getObject().toURI();
+				}
+				return entity.getLabel();
+			}
+		};
 	}
 
 	private String getLabelForType(final IModel<Perception> model) {

@@ -9,6 +9,7 @@ import static de.lichtflut.rb.webck.models.ConditionalModel.not;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -25,6 +26,7 @@ import de.lichtflut.rb.application.base.RBBasePage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.webck.common.DisplayMode;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 
 /**
  * <p>
@@ -78,13 +80,18 @@ public class PerceptionPage extends RBBasePage {
 	 * @param model Model containing the perception
 	 */
 	private void initPage(final IModel<Perception> model) {
-		Component perceptionDisplay = createPerceptionDisplay("perceptionDisplay", model);
-		Component perceptionEditor = createPerceptionEditor("perceptionEditor", model);
+		WebMarkupContainer container = new WebMarkupContainer("container");
+
+		Component perceptionDisplay = createPerceptionDisplay("perceptionDisplay", model, container);
+		Component perceptionEditor = createPerceptionEditor("perceptionEditor", model, container);
 
 		perceptionDisplay.add(visibleIf(areEqual(displayMode, DisplayMode.VIEW)));
 		perceptionEditor.add(visibleIf(not(areEqual(displayMode, DisplayMode.VIEW))));
 
-		add(perceptionDisplay, perceptionEditor);
+		container.setOutputMarkupId(true);
+		container.add(perceptionDisplay, perceptionEditor);
+
+		add(container);
 	}
 
 	/**
@@ -92,14 +99,15 @@ public class PerceptionPage extends RBBasePage {
 	 * 
 	 * @param id Component id
 	 * @param model IModel of the perception
+	 * @param container Container for the display component
 	 * @return
 	 */
-	private Component createPerceptionDisplay(final String id, final IModel<Perception> model) {
+	private Component createPerceptionDisplay(final String id, final IModel<Perception> model, final WebMarkupContainer container) {
 		return new PerceptionDisplayPanel(id, model) {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				displayMode.setObject(DisplayMode.EDIT);
-				target.add(PerceptionPage.this);
+				target.add(container);
 			}
 		};
 	}
@@ -109,10 +117,17 @@ public class PerceptionPage extends RBBasePage {
 	 * 
 	 * @param id Component id
 	 * @param model IModel of the perception
+	 * @param container Container for the edit component
 	 * @return
 	 */
-	private Component createPerceptionEditor(final String id, final IModel<Perception> model) {
-		return new PerceptionEditPanel(id, model);
+	private Component createPerceptionEditor(final String id, final IModel<Perception> model, final WebMarkupContainer container) {
+		return new PerceptionEditPanel(id, model){
+			@Override
+			protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
+				displayMode.setObject(DisplayMode.VIEW);
+				RBAjaxTarget.add(container);
+			}
+		};
 	}
 
 	private IModel<Perception> getPerceptionFromParam(final PageParameters parameters, final IModel<DisplayMode> displayMode) {
