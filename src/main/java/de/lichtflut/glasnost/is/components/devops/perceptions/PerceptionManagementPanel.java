@@ -14,11 +14,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import de.lichtflut.glasnost.is.dialog.CreatePerceptionsWizzardDialog;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionPage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.common.DisplayMode;
+import de.lichtflut.rb.webck.components.common.DialogHoster;
 
 /**
  * <p>
@@ -50,6 +52,7 @@ public class PerceptionManagementPanel extends Panel {
 		add(perceptionView);
 
 		add(createNewLink());
+		add(createPerceptionWizzardLink("openWizzardLink"));
 	}
 
 	// ----------------------------------------------------
@@ -85,6 +88,16 @@ public class PerceptionManagementPanel extends Panel {
 				PageParameters parameters = new PageParameters();
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
 				setResponsePage(PerceptionPage.class, parameters);
+			}
+		};
+	}
+
+	private AbstractLink createPerceptionWizzardLink(final String id) {
+		return new AjaxLink<Void>(id) {
+			@Override
+			public void onClick(final AjaxRequestTarget target) {
+				DialogHoster dialogHoster = findParent(DialogHoster.class);
+				dialogHoster.openDialog(new CreatePerceptionsWizzardDialog(dialogHoster.getDialogID()));
 			}
 		};
 	}

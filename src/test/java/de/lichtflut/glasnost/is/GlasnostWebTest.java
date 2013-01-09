@@ -7,9 +7,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Locale;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -172,9 +172,9 @@ public abstract class GlasnostWebTest {
 	}
 
 
-	protected void assertRenderedPanel(final Class<? extends Panel> panelClass, final String path) {
-		if (!getLastRenderedPanel(path).getClass().isAssignableFrom(panelClass)) {
-			assertThat(panelClass.getSimpleName(), equalTo(getLastRenderedPanel(path).getClass().getSimpleName()));
+	protected void assertRenderedPanel(final Class<? extends Component> panelClass, final String path) {
+		if (!getLastRenderedComponent(path).getClass().isAssignableFrom(panelClass)) {
+			assertThat(panelClass.getSimpleName(), equalTo(getLastRenderedComponent(path).getClass().getSimpleName()));
 		}
 	}
 
@@ -232,8 +232,8 @@ public abstract class GlasnostWebTest {
 		addMock("viewSpecificationService", viewSpecificationService);
 	}
 
-	private Panel getLastRenderedPanel(final String path) {
-		return (Panel) tester.getLastRenderedPage().get(path);
+	private Component getLastRenderedComponent(final String path) {
+		return tester.getLastRenderedPage().get(path);
 	}
 
 	/**
