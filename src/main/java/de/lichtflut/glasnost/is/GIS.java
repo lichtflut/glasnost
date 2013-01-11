@@ -30,6 +30,11 @@ public interface GIS {
 	 */
 	ResourceID PERCEPTION = new SimpleResourceID(GIS_NAMESPACE_URI, "Perception");
 
+    /**
+     * A item of a perception.
+     */
+    ResourceID PERCEPTION_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "PerceptionItem");
+
 
 	/**
 	 * A data center DevOps item..
