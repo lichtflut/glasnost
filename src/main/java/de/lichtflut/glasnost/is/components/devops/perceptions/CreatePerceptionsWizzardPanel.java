@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -19,8 +20,13 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.rb.webck.components.form.RBCancelButton;
+import de.lichtflut.rb.webck.components.form.RBStandardButton;
 
 /**
  * <p>
@@ -32,7 +38,10 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
  */
 public class CreatePerceptionsWizzardPanel extends Panel {
 
-	private final Map<String, List<Perception>> perceptionKey = new LinkedHashMap<String, List<Perception>>();
+	@SpringBean
+	private PerceptionDefinitionService perceptionDefinitionService;
+
+	private final Map<String, List<Perception>> perceptionsMap = new LinkedHashMap<String, List<Perception>>();
 	// TODO change how current label is retrieved in Listview
 	private final ArrayList<String> keys;
 
@@ -46,20 +55,61 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 	public CreatePerceptionsWizzardPanel(final String id) {
 		super(id);
 		fillPerceptions();
-		keys = new ArrayList<String>(perceptionKey.keySet());
+		keys = new ArrayList<String>(perceptionsMap.keySet());
 
 		Form<?> form = new Form<Void>("form");
 		addPerceptions("list", form);
 		add(form);
+		addSaveButton("save", form);
+		addCancelButton("cancel", form);
 
 		setOutputMarkupId(true);
 	}
 
 	// ------------------------------------------------------
 
+	protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+	}
+
+	protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+		for (List<Perception> list : perceptionsMap.values()) {
+			for (Perception perception : list) {
+				perceptionDefinitionService.store(perception);
+			}
+		}
+		send(this, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.PERCEPTION));
+	}
+
+	// ------------------------------------------------------
+
+	private void addCancelButton(final String string, final Form<?> form) {
+		RBCancelButton button = new RBCancelButton("cancel"){
+			@Override
+			protected void applyActions(final AjaxRequestTarget target, final Form<?> form) {
+				CreatePerceptionsWizzardPanel.this.onCancel(target, form);
+			}
+		};
+		button.add(new Label("cancelLabel", new ResourceModel("button.cancel")));
+
+		form.add(button);
+	}
+
+
+	private void addSaveButton(final String id, final Form<?> form) {
+		RBStandardButton button = new RBStandardButton(id){
+			@Override
+			protected void applyActions(final AjaxRequestTarget target, final Form<?> form) {
+				CreatePerceptionsWizzardPanel.this.onSubmit(target, form);
+			}
+		};
+		button.add(new Label("saveLabel", new ResourceModel("button.save")));
+		form.add(button);
+	}
+
+
 	private void addPerceptions(final String id, final Form<?> form) {
 		ListView<List<Perception>> listView = new ListView<List<Perception>>(id, new ArrayList<List<Perception>>(
-				perceptionKey.values())) {
+				perceptionsMap.values())) {
 			@Override
 			protected void populateItem(final ListItem<List<Perception>> item) {
 				addSecondLvlListView(item);
@@ -143,12 +193,20 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 	};
 
 	private void fillPerceptions() {
-		//Initially load from Entities/RDF:Label
-		perceptionKey.put("perception.conceptual", new ArrayList<Perception>());
-		perceptionKey.put("perception.development", new ArrayList<Perception>());
-		perceptionKey.put("perception.test", new ArrayList<Perception>());
-		perceptionKey.put("perception.pre-prod", new ArrayList<Perception>());
-		perceptionKey.put("perception.production", new ArrayList<Perception>());
+		//TODO Initially load from Entities/RDF:Label
+		perceptionsMap.put("perception.conceptual", new ArrayList<Perception>());
+		perceptionsMap.put("perception.development", new ArrayList<Perception>());
+		perceptionsMap.put("perception.test", new ArrayList<Perception>());
+		perceptionsMap.put("perception.pre-prod", new ArrayList<Perception>());
+		perceptionsMap.put("perception.production", new ArrayList<Perception>());
+	}
+
+	// ------------------------------------------------------
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		perceptionsMap.clear();
 	}
 
 }

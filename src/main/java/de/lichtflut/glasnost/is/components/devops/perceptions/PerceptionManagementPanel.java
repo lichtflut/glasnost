@@ -5,37 +5,42 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import de.lichtflut.glasnost.is.dialog.CreatePerceptionsWizzardDialog;
+import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionPage;
+import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 
 /**
  * <p>
- *  This panel lists all registered perceptions and allows creation and editing.
+ * This panel lists all registered perceptions and allows creation and editing.
  * </p>
- *
+ * 
  * <p>
- *  Created 16.11.12
+ * Created 16.11.12
  * </p>
- *
+ * 
  * @author Oliver Tigges
  */
 public class PerceptionManagementPanel extends Panel {
 
-	private final IModel<Perception> selected = new Model<Perception>();
+	@SpringBean
+	private PerceptionDefinitionService perceptionDefinitionService;
 
 	// ----------------------------------------------------
 
@@ -74,7 +79,6 @@ public class PerceptionManagementPanel extends Panel {
 				item.add(createDeleteLink(item.getModel()));
 				item.add(createUpLink(item.getModel()));
 				item.add(createDownLink(item.getModel()));
-
 			}
 		};
 	}
@@ -96,8 +100,13 @@ public class PerceptionManagementPanel extends Panel {
 		return new AjaxLink<Void>(id) {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				DialogHoster dialogHoster = findParent(DialogHoster.class);
-				dialogHoster.openDialog(new CreatePerceptionsWizzardDialog(dialogHoster.getDialogID()));
+				final DialogHoster dialogHoster = findParent(DialogHoster.class);
+				dialogHoster.openDialog(new CreatePerceptionsWizzardDialog(dialogHoster.getDialogID()) {
+					@Override
+					protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
+						dialogHoster.closeDialog(this);
+					}
+				});
 			}
 		};
 	}
@@ -144,9 +153,10 @@ public class PerceptionManagementPanel extends Panel {
 	// ----------------------------------------------------
 
 	@Override
-	protected void onDetach() {
-		super.onDetach();
-		selected.detach();
+	public void onEvent(final IEvent<?> event) {
+		ModelChangeEvent<?> mce = ModelChangeEvent.from(event);
+		if (mce.isAbout(ModelChangeEvent.PERCEPTION)) {
+		}
 	}
 
 }
