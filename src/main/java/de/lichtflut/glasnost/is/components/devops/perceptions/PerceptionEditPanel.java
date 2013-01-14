@@ -98,7 +98,7 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		TextField<String> nameField = new TextField<String>("name", new PropertyModel<String>(model, "name"));
 		form.add(nameField);
 
-		EntityPickerField entityPicker = new EntityPickerField("type", new PropertyModel<ResourceID>(model, "type"), GIS.PERCEPTION_TYPE);
+		EntityPickerField entityPicker = new EntityPickerField("type", new PropertyModel<ResourceID>(model, "type"), GIS.PERCEPTION_CATEGORY);
 		form.add(entityPicker);
 
 		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));

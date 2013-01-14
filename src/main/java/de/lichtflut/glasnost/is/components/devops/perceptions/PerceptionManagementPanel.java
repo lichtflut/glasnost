@@ -24,6 +24,7 @@ import de.lichtflut.glasnost.is.pages.PerceptionPage;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.common.DisplayMode;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 
 /**
@@ -156,6 +157,7 @@ public class PerceptionManagementPanel extends Panel {
 	public void onEvent(final IEvent<?> event) {
 		ModelChangeEvent<?> mce = ModelChangeEvent.from(event);
 		if (mce.isAbout(ModelChangeEvent.PERCEPTION)) {
+			RBAjaxTarget.add(PerceptionManagementPanel.this);
 		}
 	}
 

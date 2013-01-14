@@ -24,7 +24,7 @@ import org.apache.wicket.event.IEvent;
 public class ModelChangeEvent<T> {
 
 
-	public static final String PERCEPTION = "start-timer-behavior";
+	public static final String PERCEPTION = "perception-event";
 
 	private static final ModelChangeEvent EMPTY = new ModelChangeEvent(new String[0]);
 

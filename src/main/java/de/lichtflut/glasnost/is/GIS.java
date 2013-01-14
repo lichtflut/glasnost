@@ -33,7 +33,7 @@ public interface GIS {
 	/**
 	 * A type describing a perception.
 	 */
-	ResourceID PERCEPTION_TYPE = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "PerceptionType");
+	ResourceID PERCEPTION_CATEGORY = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "PerceptionCategory");
 
 	/**
 	 * A data center DevOps item.

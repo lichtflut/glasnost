@@ -5,6 +5,7 @@ package de.lichtflut.glasnost.is.dialog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.ResourceModel;
 
 import de.lichtflut.glasnost.is.components.devops.perceptions.CreatePerceptionsWizzardPanel;
 import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
@@ -39,9 +40,12 @@ public class CreatePerceptionsWizzardDialog extends AbstractRBDialog {
 				CreatePerceptionsWizzardDialog.this.onUpdate(target, form);
 			}
 		});
+
+		setTitle(new ResourceModel("dialog.title"));
 	}
 
 	// ------------------------------------------------------
+
 
 	protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
 	}

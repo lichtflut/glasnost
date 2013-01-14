@@ -1,10 +1,12 @@
 package de.lichtflut.glasnost.is.services;
 
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import java.util.List;
+
 import org.arastreju.sge.context.Context;
+import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.naming.QualifiedName;
 
-import java.util.List;
+import de.lichtflut.glasnost.is.model.logic.Perception;
 
 /**
  * <p>
@@ -19,29 +21,35 @@ import java.util.List;
  */
 public interface PerceptionDefinitionService {
 
-    void store(Perception perception);
+	void store(Perception perception);
 
-    Perception findByQualifiedName(QualifiedName qn);
+	Perception findByQualifiedName(QualifiedName qn);
 
-    Perception findByContext(Context context);
+	Perception findByContext(Context context);
 
-    List<Perception> findAllPerceptions();
+	List<Perception> findAllPerceptions();
 
-    // ----------------------------------------------------
+	// ----------------------------------------------------
 
-    /**
-     * Define the base perception of the given perception.
-     * @param perception The perception.
-     * @param base The qualified base perception.
-     */
-    void definePerceptionBase(Perception perception, QualifiedName base);
+	/**
+	 * Define the base perception of the given perception.
+	 * @param perception The perception.
+	 * @param base The qualified base perception.
+	 */
+	void definePerceptionBase(Perception perception, QualifiedName base);
 
-    /**
-     * Clone all items (not yet cloned) from base perception.
-     * @param target The target perception to contain the cloned items.
-     * @param base The base perception containing the original items.
-     * @return The perception containing the cloned items.
-     */
-    Perception cloneItems(QualifiedName target, QualifiedName base);
+	/**
+	 * Clone all items (not yet cloned) from base perception.
+	 * @param target The target perception to contain the cloned items.
+	 * @param base The base perception containing the original items.
+	 * @return The perception containing the cloned items.
+	 */
+	Perception cloneItems(QualifiedName target, QualifiedName base);
+
+	/**
+	 * Retrieves a List of all known perception categories.
+	 * @return a List of ResourceNodes
+	 */
+	List<ResourceNode> findAllPerceptionCategories();
 
 }

@@ -117,6 +117,13 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 		return target;
 	}
 
+	@Override
+	public List<ResourceNode> findAllPerceptionCategories() {
+		final Query query = conversation().createQuery();
+		query.addField(RDF.TYPE, GIS.PERCEPTION_CATEGORY);
+		return query.getResult().toList(2000);
+	}
+
 	// ----------------------------------------------------
 
 	private Conversation conversation() {

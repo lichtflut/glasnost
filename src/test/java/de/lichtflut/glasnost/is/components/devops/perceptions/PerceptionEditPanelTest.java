@@ -36,7 +36,7 @@ public class PerceptionEditPanelTest extends GlasnostWebTest{
 		PerceptionEditPanel panel = new PerceptionEditPanel("panel", new Model<Perception>(perception));
 
 		initNeccessaryPageData();
-		when(pathBuilder.queryEntities(DOMAIN_ID.toURI(), GIS.PERCEPTION_TYPE.toURI())).thenReturn("some perception types");
+		when(pathBuilder.queryEntities(DOMAIN_ID.toURI(), GIS.PERCEPTION_CATEGORY.toURI())).thenReturn("some perception types");
 		when(pathBuilder.queryEntities(DOMAIN_ID.toURI(), RB.PERSON.toURI())).thenReturn("some persons");
 
 		tester.startComponentInPage(panel);

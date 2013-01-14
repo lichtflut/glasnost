@@ -116,7 +116,7 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	}
 
 	private ResourceNode createPerceptionTypeNode() {
-		ResourceNode perceptionyTypeNode = new SNResource(new QualifiedName(GIS.PERCEPTION_TYPE + "#Development"));
+		ResourceNode perceptionyTypeNode = new SNResource(new QualifiedName(GIS.PERCEPTION_CATEGORY + "#Development"));
 		perceptionyTypeNode.addAssociation(RDFS.LABEL, new SNValue(ElementaryDataType.STRING, "Development"));
 		return perceptionyTypeNode;
 	}
