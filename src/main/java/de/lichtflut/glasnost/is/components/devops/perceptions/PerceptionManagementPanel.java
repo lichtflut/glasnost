@@ -22,13 +22,14 @@ import de.lichtflut.glasnost.is.dialog.CreatePerceptionsWizzardDialog;
 import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
-import de.lichtflut.glasnost.is.pages.PerceptionPage;
+import de.lichtflut.glasnost.is.pages.PerceptionDetailPage;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.dialogs.ConfirmationDialog;
+import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
  * <p>
@@ -79,6 +80,9 @@ public class PerceptionManagementPanel extends Panel {
 				Label name = new Label("name", perception.getName());
 				item.add(name);
 
+				Label owner = new Label("owner", new ResourceLabelModel(perception.getOwner()));
+				item.add(owner);
+
 				item.add(createViewLink(item.getModel()));
 				item.add(createDeleteLink(item.getModel()));
 				item.add(createUpLink(item.getModel()));
@@ -95,7 +99,7 @@ public class PerceptionManagementPanel extends Panel {
 			public void onClick(final AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
-				setResponsePage(PerceptionPage.class, parameters);
+				setResponsePage(PerceptionDetailPage.class, parameters);
 			}
 		};
 	}
@@ -149,7 +153,7 @@ public class PerceptionManagementPanel extends Panel {
 				PageParameters parameters = new PageParameters();
 				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().toURI());
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.VIEW);
-				setResponsePage(PerceptionPage.class, parameters);
+				setResponsePage(PerceptionDetailPage.class, parameters);
 			}
 		};
 	}
