@@ -21,6 +21,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import de.lichtflut.glasnost.is.dialog.CreatePerceptionsWizzardDialog;
 import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.model.logic.PerceptionOrder;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionDetailPage;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
@@ -83,10 +84,13 @@ public class PerceptionManagementPanel extends Panel {
 				Label owner = new Label("owner", new ResourceLabelModel(perception.getOwner()));
 				item.add(owner);
 
+				Label color = new Label("color", perception.getColor());
+				item.add(color);
+
 				item.add(createViewLink(item.getModel()));
 				item.add(createDeleteLink(item.getModel()));
-				item.add(createUpLink(item.getModel()));
-				item.add(createDownLink(item.getModel()));
+				item.add(createUpLink(item.getModel(), model));
+				item.add(createDownLink(item.getModel(), model));
 			}
 		};
 	}
@@ -127,15 +131,17 @@ public class PerceptionManagementPanel extends Panel {
 			}
 
 			private void openConfirmationDialog(final IModel<Perception> model) {
-				final String confirmation = getString("dialog.confirmation.delete") + " '" + model.getObject().getID() + "'";
+				final String confirmation = getString("dialog.confirmation.delete") + " '" + model.getObject().getID()
+						+ "'";
 				final DialogHoster hoster = findParent(DialogHoster.class);
-				hoster.openDialog(new ConfirmationDialog(hoster.getDialogID(), Model.of(confirmation)){
+				hoster.openDialog(new ConfirmationDialog(hoster.getDialogID(), Model.of(confirmation)) {
 
 					@Override
 					public void onConfirm() {
 						perceptionDefinitionService.delete(model.getObject());
 						send(getPage(), Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.PERCEPTION));
 					}
+
 					@Override
 					public void onCancel() {
 						hoster.closeDialog(this);
@@ -158,22 +164,54 @@ public class PerceptionManagementPanel extends Panel {
 		};
 	}
 
-	private AjaxLink<?> createUpLink(final IModel<Perception> model) {
+	private AjaxLink<?> createUpLink(final IModel<Perception> model, final IModel<List<Perception>> perceptions) {
 		final AjaxLink<?> link = new AjaxLink<Void>("up") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
+				swapAndStore(model, perceptions, -1);
+				update();
+			}
+
+
+		};
+		return link;
+	}
+
+	private AjaxLink<?> createDownLink(final IModel<Perception> model, final IModel<List<Perception>> perceptions) {
+		final AjaxLink<?> link = new AjaxLink<Void>("down") {
+			@Override
+			public void onClick(final AjaxRequestTarget target) {
+				swapAndStore(model, perceptions, +1);
+				update();
 			}
 		};
 		return link;
 	}
 
-	private AjaxLink<?> createDownLink(final IModel<Perception> model) {
-		final AjaxLink<?> link = new AjaxLink<Void>("down") {
-			@Override
-			public void onClick(final AjaxRequestTarget target) {
+	private void swapAndStore(final IModel<Perception> model, final IModel<List<Perception>> perceptions,
+			final int positions) {
+		List<Perception> list = perceptions.getObject();
+		int pos = list.indexOf(model.getObject());
+		if(checḱRange(pos, positions, list)){
+			Perception actual = list.get(pos);
+			Perception wanted = list.get(pos + positions);
+			new PerceptionOrder(list).swap(actual, wanted);
+			perceptionDefinitionService.store(list);
+		}
+	}
+
+	private boolean checḱRange(final int pos, final int positions, final List<Perception> list) {
+		boolean valid = false;
+		if (pos > 0 || positions > pos){
+			if(list.size()-1 > pos || positions < 1) {
+				valid=true;
 			}
-		};
-		return link;
+		}
+		return valid;
+	}
+
+	private void update() {
+		RBAjaxTarget.add(PerceptionManagementPanel.this);
 	}
 
 	// ----------------------------------------------------

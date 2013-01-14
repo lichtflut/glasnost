@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.arastreju.sge.SNOPS;
+import org.arastreju.sge.apriori.Aras;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
 import org.arastreju.sge.context.SimpleContextID;
+import org.arastreju.sge.model.ElementaryDataType;
 import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.Statement;
 import org.arastreju.sge.model.nodes.ResourceNode;
+import org.arastreju.sge.model.nodes.SNValue;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.ResourceView;
 import org.arastreju.sge.naming.QualifiedName;
@@ -47,6 +50,7 @@ public class Perception extends ResourceView {
 	 */
 	public Perception() {
 		addAssociation(RDF.TYPE, GIS.PERCEPTION);
+		checkSerialNumber();
 	}
 
 	/**
@@ -55,6 +59,7 @@ public class Perception extends ResourceView {
 	public Perception(final QualifiedName qn) {
 		super(qn);
 		addAssociation(RDF.TYPE, GIS.PERCEPTION);
+		checkSerialNumber();
 	}
 
 	/**
@@ -63,6 +68,7 @@ public class Perception extends ResourceView {
 	 */
 	public Perception(final ResourceNode resource) {
 		super(resource);
+		checkSerialNumber();
 	}
 
 	// ----------------------------------------------------
@@ -200,4 +206,11 @@ public class Perception extends ResourceView {
 		return sb.toString();
 	}
 
+	// ------------------------------------------------------
+
+	private void checkSerialNumber() {
+		if(null == SNOPS.singleObject(this, Aras.HAS_SERIAL_NUMBER)){
+			addAssociation(Aras.HAS_SERIAL_NUMBER, new SNValue(ElementaryDataType.INTEGER, System.currentTimeMillis()));
+		}
+	}
 }
