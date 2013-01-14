@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -13,6 +14,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -26,6 +28,7 @@ import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
+import de.lichtflut.rb.webck.components.dialogs.ConfirmationDialog;
 
 /**
  * <p>
@@ -116,6 +119,24 @@ public class PerceptionManagementPanel extends Panel {
 		final AjaxLink<?> link = new AjaxLink<Void>("delete") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
+				openConfirmationDialog(model);
+			}
+
+			private void openConfirmationDialog(final IModel<Perception> model) {
+				final String confirmation = getString("dialog.confirmation.delete") + " '" + model.getObject().getID() + "'";
+				final DialogHoster hoster = findParent(DialogHoster.class);
+				hoster.openDialog(new ConfirmationDialog(hoster.getDialogID(), Model.of(confirmation)){
+
+					@Override
+					public void onConfirm() {
+						perceptionDefinitionService.delete(model.getObject());
+						send(getPage(), Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.PERCEPTION));
+					}
+					@Override
+					public void onCancel() {
+						hoster.closeDialog(this);
+					}
+				});
 			}
 		};
 		return link;

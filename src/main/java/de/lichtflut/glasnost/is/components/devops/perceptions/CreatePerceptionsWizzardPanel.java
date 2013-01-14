@@ -25,13 +25,14 @@ import org.arastreju.sge.model.nodes.ResourceNode;
 import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.form.RBCancelButton;
 import de.lichtflut.rb.webck.components.form.RBStandardButton;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
  * <p>
- * This Panel allows you to create multiple perceptions at once.
+ * This Panel allows you to create multiple perceptions at once for each perception category
  * </p>
  * Created: Jan 9, 2013
  * 
@@ -57,7 +58,8 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 		initializeModel();
 
 		Form<?> form = new Form<Void>("form");
-		addPerceptions("list", form);
+		addPerceptionsContainer("list", form);
+
 		add(form);
 		addSaveButton("save", form);
 		addCancelButton("cancel", form);
@@ -71,34 +73,31 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 	}
 
 	protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-		// TODO overload store(List<Perception) method.
 		for (List<Perception> list : model.getObject()) {
-			for (Perception perception : list) {
-				perceptionDefinitionService.store(perception);
-			}
+			perceptionDefinitionService.store(list);
 		}
 		send(getPage(), Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.PERCEPTION));
 	}
 
 	// ------------------------------------------------------
 
-	private void addPerceptions(final String id, final Form<?> form) {
+	private void addPerceptionsContainer(final String id, final Form<?> form) {
 		ListView<List<Perception>> listView = new ListView<List<Perception>>(id, model) {
 			@Override
 			protected void populateItem(final ListItem<List<Perception>> item) {
-				addSecondLvlListView(item);
+				createPerceptionsList(item);
 			}
 		};
 		form.add(listView);
 	}
 
-	private void addSecondLvlListView(final ListItem<List<Perception>> item) {
+	private void createPerceptionsList(final ListItem<List<Perception>> item) {
 		final ListView<Perception> list = createListView(item);
 		final WebMarkupContainer container = new WebMarkupContainer("container");
 		container.setOutputMarkupId(true);
 		container.add(list);
 
-		AjaxSubmitLink link = new AjaxSubmitLink("link") {
+		AjaxSubmitLink link = new AjaxSubmitLink("createPerception") {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				model.addPerceptionFor(categories.getObject().get(item.getIndex()));
@@ -106,20 +105,29 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 			}
 		};
 		IModel<String> labelModel = new ResourceLabelModel(categories.getObject().get(item.getIndex()));
-		link.add(new Label("label", labelModel));
+		item.add(new Label("label", labelModel));
 
 		item.add(link);
 		item.add(container);
 	}
 
-	private PropertyListView<Perception> createListView(final ListItem<List<Perception>> item) {
+	private PropertyListView<Perception> createListView(final ListItem<List<Perception>> perceptionList) {
 		final PropertyListView<Perception> list = new PropertyListView<Perception>("list",
-				item.getModelObject()) {
+				perceptionList.getModelObject()) {
 			@Override
 			protected void populateItem(final ListItem<Perception> item) {
 				item.add(new TextField<String>("ID"));
 				item.add(new TextField<String>("name"));
 				item.add(new TextField<String>("color"));
+
+				AjaxSubmitLink deleteLink = new AjaxSubmitLink("deletePerception") {
+					@Override
+					protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+						perceptionList.getModelObject().remove(item.getModelObject());
+						RBAjaxTarget.add(CreatePerceptionsWizzardPanel.this);
+					}
+				};
+				item.add(deleteLink);
 			}
 		};
 		return list;

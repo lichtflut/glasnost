@@ -5,7 +5,9 @@
 	<div>
 		<form wicket:id="form">
 			<div wicket:id="list">
-				<a wicket:id="link"><wicket:container wicket:id="label"></wicket:container></a>
+					<span wicket:id="label"></span> 
+					<a wicket:id="createPerception"
+						href="#"><span class="create-value-link"></span></a>
 				<div wicket:id="container">
 					<div wicket:id="list">
 						<div class="cell">
@@ -17,12 +19,20 @@
 						<div class="cell">
 							<input wicket:id="color" />
 						</div>
+						<div class="cell">
+							<a wicket:id="deletePerception" href="#"><span
+								class="remove-value-link"></span></a>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="button-bar">
-				<button wicket:id="cancel"><wicket:container wicket:id="cancelLabel"></wicket:container></button>
-				<button wicket:id="save" class="default-button"><wicket:container wicket:id="saveLabel"></wicket:container></button>
+				<button wicket:id="cancel">
+					<wicket:container wicket:id="cancelLabel"></wicket:container>
+				</button>
+				<button wicket:id="save" class="default-button">
+					<wicket:container wicket:id="saveLabel"></wicket:container>
+				</button>
 			</div>
 		</form>
 	</div>

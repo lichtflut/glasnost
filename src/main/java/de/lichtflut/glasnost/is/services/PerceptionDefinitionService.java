@@ -21,7 +21,23 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
  */
 public interface PerceptionDefinitionService {
 
+	/**
+	 * Store a single perception.
+	 * @param perception
+	 */
 	void store(Perception perception);
+
+	/**
+	 * Overloads {@link PerceptionDefinitionService#store(Perception)}.
+	 * @param list A list of perceptions
+	 */
+	void store(List<Perception> list);
+
+	/**
+	 * Deletes a perception.
+	 * @param perception Perception to delete
+	 */
+	void delete(Perception perception);
 
 	Perception findByQualifiedName(QualifiedName qn);
 

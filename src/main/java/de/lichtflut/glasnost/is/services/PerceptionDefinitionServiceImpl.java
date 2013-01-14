@@ -66,6 +66,18 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 	}
 
 	@Override
+	public void store(final List<Perception> perceptions) {
+		for (Perception perception : perceptions) {
+			store(perception);
+		}
+	}
+
+	@Override
+	public void delete(final Perception perception) {
+		conversation().remove(perception);
+	}
+
+	@Override
 	public Perception findByQualifiedName(final QualifiedName qn) {
 		return Perception.from(conversation().findResource(qn));
 	}
