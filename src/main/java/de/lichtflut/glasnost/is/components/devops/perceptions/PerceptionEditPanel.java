@@ -12,11 +12,13 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.context.Context;
 import org.arastreju.sge.model.ResourceID;
 
 import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
@@ -57,6 +59,7 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 
 		Form<?> form = new Form<Void>("form");
 		form.add(new FeedbackPanel("feedback"));
+		form.add(new GlasnostTitle("title", new ResourceModel("title")));
 
 		createFields(model, form);
 

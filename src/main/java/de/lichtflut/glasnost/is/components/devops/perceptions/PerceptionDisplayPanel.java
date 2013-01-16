@@ -16,6 +16,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 
+import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
@@ -61,7 +62,7 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 			throw new IllegalArgumentException("Perception must not be null");
 		}
 
-		add(new Label("title", new StringResourceModel("title", new PropertyModel<String>(model.getObject(), "ID"))));
+		add(new GlasnostTitle("title", new StringResourceModel("title", new PropertyModel<String>(model.getObject(), "ID"))));
 
 		Form<?> form = new Form<Void>("form");
 

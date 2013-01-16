@@ -5,14 +5,15 @@ package de.lichtflut.glasnost.is.components.devops.perceptions;
 
 import static org.mockito.Mockito.when;
 
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.RB;
+import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 
 /**
  * <p>
@@ -29,8 +30,6 @@ public class PerceptionEditPanelTest extends GlasnostWebTest{
 	 * Scenario: Panel is started in creation-mode with an empty {@link Perception}
 	 */
 	@Test
-	@Ignore
-	// FIXME serviceContext mock does not get called and returns null to EntityPicker!?
 	public void testPerceptionEditPanel() {
 		Perception perception = new Perception();
 		PerceptionEditPanel panel = new PerceptionEditPanel("panel", new Model<Perception>(perception));
@@ -42,6 +41,12 @@ public class PerceptionEditPanelTest extends GlasnostWebTest{
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(PerceptionEditPanel.class, "panel");
+		tester.assertComponent("panel:form:id", TextField.class);
+		tester.assertComponent("panel:form:name", TextField.class);
+		tester.assertComponent("panel:form:color", TextField.class);
+		//		tester.assertComponent("panel:form:image", FileUploadField.class);
+		tester.assertComponent("panel:form:owner", EntityPickerField.class);
+		tester.assertComponent("panel:form:personResponsible", EntityPickerField.class);
 	}
 
 	/**
@@ -72,4 +77,10 @@ public class PerceptionEditPanelTest extends GlasnostWebTest{
 	public void testStore() {
 	}
 
+	// ------------------------------------------------------
+
+	@Override
+	protected void earlyInitialize() {
+		super.initNeccessaryPageData();
+	}
 }

@@ -142,6 +142,7 @@ public abstract class GlasnostWebTest {
 	@Before
 	public void setUp() throws Exception {
 		applicationContextMock = new ApplicationContextMock();
+		earlyInitialize();
 		GlasnostWebApplication application = new GlasnostWebApplication() {
 			@Override
 			public Session newSession(final Request request, final Response response) {
@@ -154,7 +155,6 @@ public abstract class GlasnostWebTest {
 				// Overwrite so that SpringComponentInjector(this) will not be called from super!
 				// Instead it will be added a few lines below.
 			}
-
 		};
 		registerMocks();
 		tester = new WicketTester(application);
@@ -164,6 +164,10 @@ public abstract class GlasnostWebTest {
 	}
 
 	// ------------------------------------------------------
+
+	protected void earlyInitialize() {
+
+	}
 
 	/**
 	 * Override this method to add some custom configuration.
