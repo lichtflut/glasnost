@@ -6,6 +6,8 @@ package de.lichtflut.glasnost.is.data;
 
 import java.util.Locale;
 
+import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.core.schema.model.Datatype;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
@@ -76,6 +78,17 @@ public class ResourceSchemaFactory {
 		} catch (LabelExpressionParseException e) {
 			e.printStackTrace();
 		}
+		return schema;
+	}
+
+	public static ResourceSchema buildPerceptionCategory() {
+		ResourceSchema schema = new ResourceSchemaImpl(GIS.PERCEPTION_CATEGORY);
+
+		PropertyDeclaration nameProperty = new PropertyDeclarationImpl(RB.HAS_NAME, Datatype.STRING);
+		nameProperty.setCardinality(CardinalityBuilder.hasExcactlyOne());
+		nameProperty.setFieldLabelDefinition(new FieldLabelDefinitionImpl("Perception type"));
+
+		schema.addPropertyDeclaration(nameProperty);
 		return schema;
 	}
 }

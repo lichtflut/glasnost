@@ -8,12 +8,7 @@ import static org.mockito.Mockito.when;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.Model;
-import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.context.SimpleContextID;
-import org.arastreju.sge.model.ElementaryDataType;
-import org.arastreju.sge.model.nodes.ResourceNode;
-import org.arastreju.sge.model.nodes.SNResource;
-import org.arastreju.sge.model.nodes.SNValue;
 import org.arastreju.sge.naming.QualifiedName;
 import org.junit.Test;
 
@@ -34,9 +29,7 @@ import de.lichtflut.rb.webck.components.fields.FilePreviewLink;
  */
 public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 
-	private RBEntity owner;
-	private RBEntity personResponsible;
-	private ResourceNode perceptionyTypeNode;
+	private RBEntity owner, personResponsible, perceptionCategory;
 	private Perception perception;
 
 	// ------------- SetUp & tearDown -----------------------
@@ -45,8 +38,7 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	protected void setupTest() {
 		owner = RBEntityFactory.createPersonEntity();
 		personResponsible = RBEntityFactory.createPersonEntity();
-
-		perceptionyTypeNode = createPerceptionTypeNode();
+		perceptionCategory = RBEntityFactory.createPerceptionType();
 		perception = createPerception();
 	}
 
@@ -57,7 +49,7 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	@Test
 	public void testPerceptionsDisplayPanelFullyDefinedPerception() {
 		initNeccessaryPageData();
-		when(networkService.find(perception.getType().getQualifiedName())).thenReturn(perceptionyTypeNode);
+		when(networkService.find(perception.getType().getQualifiedName())).thenReturn(perceptionCategory.getNode());
 		when(entityManager.find(owner.getID())).thenReturn(owner);
 		when(entityManager.find(personResponsible.getID())).thenReturn(personResponsible);
 		PerceptionDisplayPanel panel = new PerceptionDisplayPanel("panel", new Model<Perception>(perception));
@@ -81,7 +73,7 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	@Test
 	public void testPerceptionsDisplayPanelNotFullyDefinedPerception() {
 		initNeccessaryPageData();
-		when(networkService.find(perception.getType().getQualifiedName())).thenReturn(perceptionyTypeNode);
+		when(networkService.find(perception.getType().getQualifiedName())).thenReturn(perceptionCategory.getNode());
 		PerceptionDisplayPanel panel = new PerceptionDisplayPanel("panel", new Model<Perception>(new Perception()));
 
 		tester.startComponentInPage(panel);
@@ -117,18 +109,12 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 		perception.setContext(new SimpleContextID(contextQN));
 		perception.setImagePath("/home/glasnost/testpath");
 		perception.setName("Glasnost test Perception");
-		perception.setType(perceptionyTypeNode);
+		perception.setType(perceptionCategory.getNode());
 		perception.setColor("#fff");
 		perception.setDescription("Glasnost test perception");
 		perception.setOwner(owner.getID());
 		perception.setPersonResponsible(personResponsible.getID());
 		return perception;
-	}
-
-	private ResourceNode createPerceptionTypeNode() {
-		ResourceNode perceptionyTypeNode = new SNResource(new QualifiedName(GIS.PERCEPTION_CATEGORY + "#Development"));
-		perceptionyTypeNode.addAssociation(RDFS.LABEL, new SNValue(ElementaryDataType.STRING, "Development"));
-		return perceptionyTypeNode;
 	}
 
 }
