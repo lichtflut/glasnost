@@ -23,10 +23,12 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
+import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
 import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 import de.lichtflut.rb.webck.components.form.RBCancelButton;
 import de.lichtflut.rb.webck.components.form.RBDefaultButton;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
+import de.lichtflut.rb.webck.models.fields.FileUploadModel;
 
 /**
  * <p>
@@ -58,6 +60,8 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		setOutputMarkupPlaceholderTag(true);
 
 		Form<?> form = new Form<Void>("form");
+		form.setMultiPart(true);
+
 		form.add(new FeedbackPanel("feedback"));
 		form.add(new GlasnostTitle("title", new ResourceModel("title")));
 
@@ -107,9 +111,8 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));
 		form.add(colorField);
 
-		TextField<String> fileuploadField = new TextField<String>("image", new PropertyModel<String>(model, "imagePath"));
-		//		AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", new PropertyModel<Object>(model, "imagePath"));
-		form.add(fileuploadField);
+		AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", new FileUploadModel(new PropertyModel<Object>(model, "imagePath")));
+		form.add(fileUpload);
 
 		EntityPickerField ownerPicker = new EntityPickerField("owner", new PropertyModel<ResourceID>(model, "owner"), RB.PERSON);
 		form.add(ownerPicker);

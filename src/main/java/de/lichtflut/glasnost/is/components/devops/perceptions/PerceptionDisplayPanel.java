@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -90,10 +89,20 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 		form.add(new Label("name", new PropertyModel<Perception>(model,"name")));
 		form.add(createLinkForEntity("type", model, "type"));
 		form.add(new Label("color", new PropertyModel<Perception>(model,"color")));
-		form.add(new FilePreviewLink("image", new Model<String>(model.getObject().getImagePath())));
+		form.add(new FilePreviewLink("image", getImagePath(model)));
 		form.add(createLinkForEntity("owner", model,"owner"));
 		form.add(createLinkForEntity("personResponsible", model, "personResponsible"));
 		form.add(createEditButton("edit", model));
+	}
+
+	private IModel<String> getImagePath(final IModel<Perception> model) {
+		return new DerivedModel<String, IModel<Perception>>(model){
+
+			@Override
+			protected String derive(final IModel<Perception> original) {
+				return model.getObject().getImagePath();
+			}
+		};
 	}
 
 	private Component createLinkForEntity(final String id, final IModel<?> model, final String propertyKey) {
