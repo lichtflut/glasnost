@@ -1,5 +1,6 @@
 package de.lichtflut.glasnost.is.pages;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.Component;
@@ -13,6 +14,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.apriori.RDF;
+import org.arastreju.sge.structure.OrderBySerialNumber;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.DevOpsItemPanel;
@@ -99,7 +101,9 @@ public class DevOpsPage extends RBBasePage {
 		return new AbstractLoadableDetachableModel<List<Perception>>() {
 			@Override
 			public List<Perception> load() {
-				return DevOpsPage.this.perceptionDefinitionService.findAllPerceptions();
+				List<Perception> perceptions = DevOpsPage.this.perceptionDefinitionService.findAllPerceptions();
+				Collections.sort(perceptions, new OrderBySerialNumber());
+				return perceptions;
 			}
 		};
 	}

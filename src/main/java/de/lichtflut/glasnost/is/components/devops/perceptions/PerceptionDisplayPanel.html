@@ -3,6 +3,9 @@
 <wicket:panel>
 
 	<div class="input-panel">
+		<div class="entity-info">
+			<span wicket:id="title" class="title"></span>
+		</div>
 		<form wicket:id="form">
 			<div class="row">
 				<div class="cell">
@@ -27,7 +30,7 @@
 					<wicket:message key="perception.type" />
 				</div>
 				<div class="cell">
-					<div wicket:id="type"></div>
+					<a wicket:id="type" href="#"><wicket:container wicket:id="label"></wicket:container></a>
 				</div>
 			</div>
 

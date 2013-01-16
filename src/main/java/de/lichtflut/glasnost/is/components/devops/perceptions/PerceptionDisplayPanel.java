@@ -12,12 +12,9 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.arastreju.sge.SNOPS;
-import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ResourceID;
-import org.arastreju.sge.model.nodes.ResourceNode;
-import org.arastreju.sge.model.nodes.SemanticNode;
 
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
@@ -63,6 +60,9 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 		if(null == model || null == model.getObject()){
 			throw new IllegalArgumentException("Perception must not be null");
 		}
+
+		add(new Label("title", new StringResourceModel("title", new PropertyModel<String>(model.getObject(), "ID"))));
+
 		Form<?> form = new Form<Void>("form");
 
 		addDisplayComponents(model, form);
@@ -87,7 +87,7 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 	private void addDisplayComponents(final IModel<Perception> model, final Form<?> form) {
 		form.add(new Label("id", new PropertyModel<Perception>(model,"ID")));
 		form.add(new Label("name", new PropertyModel<Perception>(model,"name")));
-		form.add(new Label("type", getLabelForType(model)));
+		form.add(createLinkForEntity("type", model, "type"));
 		form.add(new Label("color", new PropertyModel<Perception>(model,"color")));
 		form.add(new FilePreviewLink("image", new Model<String>(model.getObject().getImagePath())));
 		form.add(createLinkForEntity("owner", model,"owner"));
@@ -143,25 +143,6 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 				return entity.getLabel();
 			}
 		};
-	}
-
-	private String getLabelForType(final IModel<Perception> model) {
-		// TODO throw exeption if node could not be found? (Data inconsistentency)
-		ResourceID type = model.getObject().getType();
-		if(null == type){
-			return null;
-		}
-		ResourceNode node = networkService.find(type.getQualifiedName());
-		return getLabelFromNode(node);
-	}
-
-	private String getLabelFromNode(final ResourceNode node) {
-		// TODO internationalization of labels
-		SemanticNode label = SNOPS.singleObject(node, RDFS.LABEL);
-		if(label == null){
-			return node.toURI();
-		}
-		return label.asValue().getStringValue();
 	}
 
 }

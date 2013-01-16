@@ -5,6 +5,8 @@ package de.lichtflut.glasnost.is.components.devops.perceptions;
 
 import static org.mockito.Mockito.when;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.Model;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.context.SimpleContextID;
@@ -20,6 +22,7 @@ import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.data.RBEntityFactory;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
+import de.lichtflut.rb.webck.components.fields.FilePreviewLink;
 
 /**
  * <p>
@@ -62,6 +65,13 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(PerceptionDisplayPanel.class, "panel");
+		tester.assertComponent("panel:form:id", Label.class);
+		tester.assertComponent("panel:form:name", Label.class);
+		tester.assertComponent("panel:form:type", ExternalLink.class);
+		tester.assertComponent("panel:form:color", Label.class);
+		tester.assertComponent("panel:form:image", FilePreviewLink.class);
+		tester.assertComponent("panel:form:owner", ExternalLink.class);
+		tester.assertComponent("panel:form:personResponsible", ExternalLink.class);
 	}
 
 	/**
