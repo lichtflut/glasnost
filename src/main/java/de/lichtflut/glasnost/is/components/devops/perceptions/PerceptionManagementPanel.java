@@ -85,8 +85,8 @@ public class PerceptionManagementPanel extends Panel {
 				Label owner = new Label("owner", new ResourceLabelModel(perception.getOwner()));
 				item.add(owner);
 
-				Label color = new Label("color", Model.of(""));
-				color.add(CssModifier.appendStyle("background-color : " + perception.getColor()));
+				Label color = new Label("color", "");
+				color.add(CssModifier.appendStyle("background-color : #" + perception.getColor()));
 				item.add(color);
 
 				item.add(createViewLink(item.getModel()));

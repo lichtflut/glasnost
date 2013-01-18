@@ -22,6 +22,7 @@ import org.arastreju.sge.model.ResourceID;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
@@ -111,9 +112,10 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		EntityPickerField entityPicker = new EntityPickerField("type", new PropertyModel<ResourceID>(model, "type"), GIS.PERCEPTION_CATEGORY);
 		form.add(entityPicker);
 
-		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));
+		ColorPickerPanel colorPicker = new ColorPickerPanel("color", new PropertyModel<String>(model, "color"));
+		//		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));
 		//		colorField.add(new ColorPickerBehavior());
-		form.add(colorField);
+		form.add(colorPicker);
 
 		IModel<String> prefix = Model.<String>of(UUID.randomUUID().toString());
 		FileUploadModel uploadModel = new FileUploadModel(new PropertyModel<Object>(model, "imagePath"), prefix);

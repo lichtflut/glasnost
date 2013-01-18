@@ -55,7 +55,7 @@ public class PerceptionWizzardListModel extends LoadableDetachableModel<List<Lis
 	public Perception createPerceptionFor(final ResourceNode category) {
 		Perception perception = new Perception();
 		perception.setType(category);
-		perception.setColor("#fff");
+		perception.setColor("ffffff");
 		perception.setID(getSubstring(category, 3));
 		perception.setName(getLabel(category));
 		return perception;

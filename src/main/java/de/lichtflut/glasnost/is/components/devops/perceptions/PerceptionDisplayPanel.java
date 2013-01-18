@@ -21,6 +21,7 @@ import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
+import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
@@ -88,11 +89,24 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 		form.add(new Label("id", new PropertyModel<Perception>(model,"ID")));
 		form.add(new Label("name", new PropertyModel<Perception>(model,"name")));
 		form.add(createLinkForEntity("type", model, "type"));
-		form.add(new Label("color", new PropertyModel<Perception>(model,"color")));
+		form.add(createColorLabel(model));
 		form.add(new FilePreviewLink("image", getImagePath(model)));
 		form.add(createLinkForEntity("owner", model,"owner"));
 		form.add(createLinkForEntity("personResponsible", model, "personResponsible"));
 		form.add(createEditButton("edit", model));
+	}
+
+	private Label createColorLabel(final IModel<Perception> model) {
+		IModel<String> color =	new DerivedModel<String, Perception>(model) {
+
+			@Override
+			protected String derive(final Perception original) {
+				return "#" + original.getColor();
+			}
+		};
+		Label label = new Label("color", "");
+		label.add(CssModifier.appendStyle("background-color: " + color));
+		return label;
 	}
 
 	private IModel<String> getImagePath(final IModel<Perception> model) {

@@ -18,10 +18,12 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.nodes.ResourceNode;
 
+import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
@@ -118,7 +120,8 @@ public class CreatePerceptionsWizzardPanel extends Panel {
 			protected void populateItem(final ListItem<Perception> item) {
 				item.add(new TextField<String>("ID"));
 				item.add(new TextField<String>("name"));
-				item.add(new TextField<String>("color"));
+				item.add(new ColorPickerPanel("color", new PropertyModel<String>(item.getModel(), "color")));
+				//				item.add(new TextField<String>("color"));
 
 				AjaxSubmitLink deleteLink = new AjaxSubmitLink("deletePerception") {
 					@Override

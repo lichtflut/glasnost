@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
+import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
@@ -44,7 +45,7 @@ public class PerceptionEditPanelTest extends GlasnostWebTest{
 		assertRenderedPanel(PerceptionEditPanel.class, "panel");
 		tester.assertComponent("panel:form:id", TextField.class);
 		tester.assertComponent("panel:form:name", TextField.class);
-		tester.assertComponent("panel:form:color", TextField.class);
+		tester.assertComponent("panel:form:color", ColorPickerPanel.class);
 		tester.assertComponent("panel:form:image", AjaxEditableUploadField.class);
 		tester.assertComponent("panel:form:owner", EntityPickerField.class);
 		tester.assertComponent("panel:form:personResponsible", EntityPickerField.class);
