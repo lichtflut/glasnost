@@ -36,6 +36,11 @@ public interface GIS {
 	ResourceID PERCEPTION_CATEGORY = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "PerceptionCategory");
 
 	/**
+	 * A item of a perception.
+	 */
+	ResourceID PERCEPTION_ITEM = new SimpleResourceID(GIS_NAMESPACE_URI, "PerceptionItem");
+
+	/**
 	 * A data center DevOps item.
 	 */
 	ResourceID DATA_CENTER = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "DataCenter");
