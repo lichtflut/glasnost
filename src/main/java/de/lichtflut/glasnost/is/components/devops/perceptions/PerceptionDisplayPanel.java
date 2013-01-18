@@ -96,11 +96,11 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 	}
 
 	private IModel<String> getImagePath(final IModel<Perception> model) {
-		return new DerivedModel<String, IModel<Perception>>(model){
+		return new DerivedModel<String, Perception>(model){
 
 			@Override
-			protected String derive(final IModel<Perception> original) {
-				return model.getObject().getImagePath();
+			protected String derive(final Perception original) {
+				return original.getImagePath();
 			}
 		};
 	}

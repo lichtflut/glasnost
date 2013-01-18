@@ -26,6 +26,7 @@ import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionDetailPage;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.application.common.CommonParams;
+import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
@@ -84,7 +85,8 @@ public class PerceptionManagementPanel extends Panel {
 				Label owner = new Label("owner", new ResourceLabelModel(perception.getOwner()));
 				item.add(owner);
 
-				Label color = new Label("color", perception.getColor());
+				Label color = new Label("color", Model.of(""));
+				color.add(CssModifier.appendStyle("background-color : " + perception.getColor()));
 				item.add(color);
 
 				item.add(createViewLink(item.getModel()));

@@ -9,6 +9,16 @@ div.title-container {
 	padding: 2px;
 }
 
+.float-right{
+	float: right;
+}
+
+.color-code{
+	border : 1px solid #E6E8E3;
+	display: inline-block;
+    min-height: 12px;
+    min-width: 12px;
+}
 /* LOGOS */
 div#site-header {
 	margin-left: 27px;

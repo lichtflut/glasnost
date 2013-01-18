@@ -3,6 +3,9 @@
  */
 package de.lichtflut.glasnost.is.pages;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -34,6 +37,7 @@ public class PerceptionDetailPageTest extends GlasnostWebTest{
 	@Override
 	protected void setupTest() {
 		initNeccessaryPageData();
+		when(fileService.getData(anyString())).thenReturn(null);
 	}
 
 	// ------------------------------------------------------

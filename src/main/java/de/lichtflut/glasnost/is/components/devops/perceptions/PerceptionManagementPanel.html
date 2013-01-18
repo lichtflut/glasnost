@@ -3,7 +3,10 @@
 
     <div class="input-panel">
 
-        <h4><wicket:message key="header">[header]</wicket:message></h4>
+        <div class="title-container">
+        	<span class="title"><wicket:message  key="header">[header]</wicket:message></span>
+			<a class="float-right" wicket:id="openWizzardLink"><wicket:message key="link.open-wizzard">[START WIZZARD]</wicket:message></a>
+        </div>
 
         <table class="entity-list">
             <tr>
@@ -30,7 +33,7 @@
                     <td class="entity-list-cell" wicket:id="id"></td>
                     <td class="entity-list-cell" wicket:id="name"></td>
                     <td class="entity-list-cell" wicket:id="owner"></td>
-                    <td class="entity-list-cell" wicket:id="color"></td>
+                    <td class="entity-list-cell"><span class="color-code" wicket:id="color"></span></td>
                     <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
                     <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
                     <td class="entity-list-action"><a wicket:id="view" class="action-view">[edit]</a></td>
@@ -41,7 +44,6 @@
 
         <div>
             <a wicket:id="createPerceptionLink"><wicket:message key="link.create-perception">[create]</wicket:message></a>
-            <a wicket:id="openWizzardLink"><wicket:message key="link.open-wizzard">[OPEN WIZZARD]</wicket:message></a>
         </div>
 
     </div>
