@@ -14,14 +14,12 @@ import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionEditPanel;
 import de.lichtflut.glasnost.is.data.RBEntityFactory;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.webck.common.DisplayMode;
-import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 
 /**
  * <p>
@@ -104,8 +102,6 @@ public class PerceptionEditPageTest extends GlasnostWebTest{
 
 		tester.assertRenderedPage(page.getPageClass());
 		tester.assertComponent("perceptionEditor", PerceptionEditPanel.class);
-		tester.assertComponent("perceptionEditor:form:color", ColorPickerPanel.class);
-		tester.assertComponent("perceptionEditor:form:owner", EntityPickerField.class);
 	}
 
 	// ------------------------------------------------------
