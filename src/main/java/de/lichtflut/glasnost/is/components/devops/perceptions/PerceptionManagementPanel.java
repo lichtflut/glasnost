@@ -138,9 +138,10 @@ public class PerceptionManagementPanel extends Panel {
 
 					@Override
 					public void onConfirm() {
-						perceptionDefinitionService.delete(model.getObject());
+						removePerception(model);
 						send(getPage(), Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.PERCEPTION));
 					}
+
 
 					@Override
 					public void onCancel() {
@@ -150,6 +151,12 @@ public class PerceptionManagementPanel extends Panel {
 			}
 		};
 		return link;
+	}
+
+	private void removePerception(final IModel<Perception> model) {
+		perceptionDefinitionService.delete(model.getObject());
+		PerceptionModel perceptions = (PerceptionModel) getDefaultModel();
+		perceptions.remove(model.getObject());
 	}
 
 	private AjaxLink<?> createViewLink(final IModel<Perception> model) {
@@ -172,7 +179,6 @@ public class PerceptionManagementPanel extends Panel {
 				update();
 			}
 
-
 		};
 		return link;
 	}
@@ -192,19 +198,23 @@ public class PerceptionManagementPanel extends Panel {
 			final int positions) {
 		List<Perception> list = perceptions.getObject();
 		int pos = list.indexOf(model.getObject());
-		if(checḱRange(pos, positions, list)){
-			Perception actual = list.get(pos);
-			Perception wanted = list.get(pos + positions);
-			new PerceptionOrder(list).swap(actual, wanted);
+		if (checḱRange(pos, positions, list)) {
+			swap(positions, list, pos);
 			perceptionDefinitionService.store(list);
 		}
 	}
 
+	private void swap(final int positions, final List<Perception> list, final int pos) {
+		Perception actual = list.get(pos);
+		Perception wanted = list.get(pos + positions);
+		new PerceptionOrder(list).swap(actual, wanted);
+	}
+
 	private boolean checḱRange(final int pos, final int positions, final List<Perception> list) {
 		boolean valid = false;
-		if (pos > 0 || positions > pos){
-			if(list.size()-1 > pos || positions < 1) {
-				valid=true;
+		if (pos > 0 || positions > pos) {
+			if (list.size() - 1 > pos || positions < 1) {
+				valid = true;
 			}
 		}
 		return valid;

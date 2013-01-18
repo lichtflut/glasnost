@@ -2,12 +2,15 @@ package de.lichtflut.glasnost.is.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.arastreju.sge.Conversation;
+import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
 import org.arastreju.sge.context.SimpleContextID;
 import org.arastreju.sge.model.nodes.ResourceNode;
+import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.naming.QualifiedName;
 import org.arastreju.sge.query.Query;
 import org.arastreju.sge.query.QueryResult;
@@ -74,7 +77,12 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 
 	@Override
 	public void delete(final Perception perception) {
+		Set<SemanticNode> items = SNOPS.objects(perception, GIS.BELONGS_TO_PERCEPTION);
+		for (SemanticNode semanticNode : items) {
+			conversation().remove(semanticNode.asResource());
+		}
 		conversation().remove(perception);
+		LOGGER.info("Removed perception: " + perception.toURI());
 	}
 
 	@Override

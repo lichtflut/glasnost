@@ -43,4 +43,9 @@ public class PerceptionModel extends AbstractLoadableDetachableModel<List<Percep
 		return perceptions;
 	}
 
+	public void remove(final Perception perception){
+		int indexOf = getObject().indexOf(perception);
+		getObject().remove(indexOf);
+	}
+
 }

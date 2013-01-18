@@ -5,12 +5,15 @@ import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
 import static de.lichtflut.rb.webck.models.ConditionalModel.isNotNull;
 import static de.lichtflut.rb.webck.models.ConditionalModel.isNull;
 
+import java.util.UUID;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -109,9 +112,12 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		form.add(entityPicker);
 
 		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));
+		//		colorField.add(new ColorPickerBehavior());
 		form.add(colorField);
 
-		AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", new FileUploadModel(new PropertyModel<Object>(model, "imagePath")));
+		IModel<String> prefix = Model.<String>of(UUID.randomUUID().toString());
+		FileUploadModel uploadModel = new FileUploadModel(new PropertyModel<Object>(model, "imagePath"), prefix);
+		AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", uploadModel);
 		form.add(fileUpload);
 
 		EntityPickerField ownerPicker = new EntityPickerField("owner", new PropertyModel<ResourceID>(model, "owner"), RB.PERSON);
