@@ -97,15 +97,8 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 	}
 
 	private Label createColorLabel(final IModel<Perception> model) {
-		IModel<String> color =	new DerivedModel<String, Perception>(model) {
-
-			@Override
-			protected String derive(final Perception original) {
-				return "#" + original.getColor();
-			}
-		};
 		Label label = new Label("color", "");
-		label.add(CssModifier.appendStyle("background-color: " + color));
+		label.add(CssModifier.appendStyle("background-color: #" + model.getObject().getColor()));
 		return label;
 	}
 

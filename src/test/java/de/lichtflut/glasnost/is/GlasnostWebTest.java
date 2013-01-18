@@ -151,9 +151,9 @@ public abstract class GlasnostWebTest {
 
 			@Override
 			public void init() {
-				getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContextMock));
 				// Overwrite so that SpringComponentInjector(this) will not be called from super!
 				// Instead it will be added a few lines below.
+				getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContextMock));
 			}
 		};
 		registerMocks();
