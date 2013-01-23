@@ -113,8 +113,6 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		form.add(entityPicker);
 
 		ColorPickerPanel colorPicker = new ColorPickerPanel("color", new PropertyModel<String>(model, "color"));
-		//		TextField<String> colorField = new TextField<String>("color", new PropertyModel<String>(model, "color"));
-		//		colorField.add(new ColorPickerBehavior());
 		form.add(colorPicker);
 
 		IModel<String> prefix = Model.<String>of(UUID.randomUUID().toString());

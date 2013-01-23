@@ -83,7 +83,7 @@ public class PerceptionDisplayPage extends RBBasePage {
 		StringValue id = parameters.get(CommonParams.PARAM_RESOURCE_ID);
 		DisplayMode displayMode = DisplayMode.fromParams(parameters);
 		IModel<Perception> model;
-		if(DisplayMode.EDIT.name().equals(displayMode.name())){
+		if(DisplayMode.VIEW.name().equals(displayMode.name())){
 			ResourceNode node = networkService.find(new QualifiedName(id.toString()));
 			model = new Model<Perception>(new Perception(node));
 		}else{

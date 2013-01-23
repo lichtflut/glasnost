@@ -81,7 +81,6 @@ public class PerceptionEditPage extends RBBasePage {
 		return new PerceptionEditPanel(id, model){
 			@Override
 			protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
-				displayMode.setObject(DisplayMode.VIEW);
 				PageParameters parameters = new PageParameters();
 				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getQualifiedName());
 				setResponsePage(PerceptionDisplayPage.class, parameters);

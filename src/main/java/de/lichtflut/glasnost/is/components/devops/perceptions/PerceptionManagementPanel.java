@@ -24,6 +24,7 @@ import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.logic.PerceptionOrder;
 import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
 import de.lichtflut.glasnost.is.pages.PerceptionDisplayPage;
+import de.lichtflut.glasnost.is.pages.PerceptionEditPage;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.behaviors.CssModifier;
@@ -105,7 +106,7 @@ public class PerceptionManagementPanel extends Panel {
 			public void onClick(final AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
-				setResponsePage(PerceptionDisplayPage.class, parameters);
+				setResponsePage(PerceptionEditPage.class, parameters);
 			}
 		};
 	}
