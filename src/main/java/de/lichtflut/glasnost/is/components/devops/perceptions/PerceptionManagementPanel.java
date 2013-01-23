@@ -201,7 +201,7 @@ public class PerceptionManagementPanel extends Panel {
 			final int positions) {
 		List<Perception> list = perceptions.getObject();
 		int pos = list.indexOf(model.getObject());
-		if (checḱRange(pos, positions, list)) {
+		if (checkRange(pos, positions, list)) {
 			swap(positions, list, pos);
 			perceptionDefinitionService.store(list);
 		}
@@ -213,7 +213,7 @@ public class PerceptionManagementPanel extends Panel {
 		new PerceptionOrder(list).swap(actual, wanted);
 	}
 
-	private boolean checḱRange(final int pos, final int positions, final List<Perception> list) {
+	private boolean checkRange(final int pos, final int positions, final List<Perception> list) {
 		boolean valid = false;
 		if (pos > 0 || positions > pos) {
 			if (list.size() - 1 > pos || positions < 1) {
