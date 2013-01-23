@@ -19,6 +19,10 @@ div.title-container {
     min-height: 12px;
     min-width: 12px;
 }
+.inline-block{
+	display: inline-block
+}
+}
 /* LOGOS */
 div#site-header {
 	margin-left: 27px;

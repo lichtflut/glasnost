@@ -8,6 +8,7 @@ import static de.lichtflut.rb.webck.models.ConditionalModel.isNull;
 import java.util.UUID;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -26,6 +27,7 @@ import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
 import de.lichtflut.rb.webck.components.fields.EntityPickerField;
@@ -115,16 +117,30 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		ColorPickerPanel colorPicker = new ColorPickerPanel("color", new PropertyModel<String>(model, "color"));
 		form.add(colorPicker);
 
-		IModel<String> prefix = Model.<String>of(UUID.randomUUID().toString());
-		FileUploadModel uploadModel = new FileUploadModel(new PropertyModel<Object>(model, "imagePath"), prefix);
-		AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", uploadModel);
-		form.add(fileUpload);
+		addUploadField(model, form);
 
 		EntityPickerField ownerPicker = new EntityPickerField("owner", new PropertyModel<ResourceID>(model, "owner"), RB.PERSON);
 		form.add(ownerPicker);
 
 		EntityPickerField personResponsiblePicker = new EntityPickerField("personResponsible", new PropertyModel<ResourceID>(model, "personResponsible"), RB.PERSON);
 		form.add(personResponsiblePicker);
+	}
+
+
+	private void addUploadField(final IModel<Perception> model, final Form<?> form) {
+		IModel<String> prefix = Model.<String>of(UUID.randomUUID().toString());
+		FileUploadModel uploadModel = new FileUploadModel(new PropertyModel<Object>(model, "imagePath"), prefix);
+		final AjaxEditableUploadField fileUpload = new AjaxEditableUploadField("image", uploadModel);
+		form.add(fileUpload);
+
+		AjaxSubmitLink link = new AjaxSubmitLink("deleteFile") {
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+				model.getObject().setImagePath(null);
+				RBAjaxTarget.add(fileUpload);
+			}
+		};
+		form.add(link);
 	}
 
 	protected Button createSaveButton() {
