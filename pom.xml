@@ -11,6 +11,7 @@
     
 	<properties>
 		<rb.version>0.5.1-SNAPSHOT</rb.version>
+        <arastreju.version>0.8.1-SNAPSHOT</arastreju.version>
 		<jetty.version>6.1.25</jetty.version>
         <jackson.version>1.9.10</jackson.version>
 		<maven.build.timestamp.format>yyyy-MM-dd-HH:mm:ss</maven.build.timestamp.format>
@@ -20,6 +21,12 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.arastreju</groupId>
+                <artifactId>arastreju-neo4j</artifactId>
+                <version>${arastreju.version}</version>
+            </dependency>
 
             <!-- Jackson JSON -->
 
@@ -219,6 +226,33 @@
 			</plugin>
 		</plugins>
 	</build>
+
+    <profiles>
+        <profile>
+            <id>distribution</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arastreju</groupId>
+                    <artifactId>arastreju-neo4j</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>standalone</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arastreju</groupId>
+                    <artifactId>arastreju-neo4j</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
 	<distributionManagement>
 		<repository>
 			<id>lf-releases</id>
@@ -231,8 +265,10 @@
 			<url>http://nexus.lichtflut.de/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 	<scm>
 		<developerConnection>scm:git:git@github.com:lichtflut/glasnost.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+
 </project>
