@@ -1,29 +1,5 @@
 package de.lichtflut.glasnost.is;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
-import java.util.Locale;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.Localizer;
-import org.apache.wicket.Session;
-import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Response;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.spring.test.ApplicationContextMock;
-import org.apache.wicket.util.tester.WicketTester;
-import org.arastreju.sge.ModelingConversation;
-import org.arastreju.sge.model.ResourceID;
-import org.arastreju.sge.model.SimpleResourceID;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.security.AuthModule;
 import de.lichtflut.rb.core.security.AuthenticationService;
@@ -41,6 +17,29 @@ import de.lichtflut.rb.core.services.ViewSpecificationService;
 import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.config.QueryServicePathBuilder;
+import org.apache.wicket.Component;
+import org.apache.wicket.Localizer;
+import org.apache.wicket.Session;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.spring.test.ApplicationContextMock;
+import org.apache.wicket.util.tester.WicketTester;
+import org.arastreju.sge.Conversation;
+import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.SimpleResourceID;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Locale;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 /*
  * Copyright 2012 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
@@ -108,7 +107,7 @@ public abstract class GlasnostWebTest {
 	protected FileService fileService;
 
 	@Mock
-	protected ModelingConversation conversation;
+	protected Conversation conversation;
 
 	@Mock
 	protected PerceptionDefinitionService perceptionDefinitionService;
