@@ -7,19 +7,20 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ElementaryDataType;
-import org.arastreju.sge.model.nodes.ResourceNode;
-import org.arastreju.sge.model.nodes.SNResource;
 import org.arastreju.sge.model.nodes.SNValue;
-import org.junit.Ignore;
+import org.arastreju.sge.model.nodes.views.SNClass;
 import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
+import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
  * <p>
@@ -31,15 +32,13 @@ import de.lichtflut.glasnost.is.GlasnostWebTest;
  */
 public class SoftwareCatalogPanelTest extends GlasnostWebTest {
 
-	private List<ResourceNode> categories;
-	private ResourceNode root;
+	private Set<SNClass> categories;
 
 	// ------------- SetUp & tearDown -----------------------
 
 	@Override
 	protected void setupTest() {
 		categories = getCategories();
-		root = getRoot();
 	}
 
 	// ------------------------------------------------------
@@ -51,7 +50,6 @@ public class SoftwareCatalogPanelTest extends GlasnostWebTest {
 	 */
 	@Test
 	public void testSoftwareCatalogPanel() {
-		when(networkService.resolve(GIS.SOFTWARE_ITEM)).thenReturn(root);
 		SoftwareCatalogPanel panel = new SoftwareCatalogPanel("panel");
 
 		tester.startComponentInPage(panel);
@@ -62,11 +60,9 @@ public class SoftwareCatalogPanelTest extends GlasnostWebTest {
 		tester.assertListView("panel:categoriesList", Collections.EMPTY_LIST);
 	}
 
-
 	@Test
-	@Ignore
 	public void testGetAllCategories(){
-		when(networkService.resolve(GIS.SOFTWARE_ITEM)).thenReturn(root);
+		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(categories);
 		SoftwareCatalogPanel panel = new SoftwareCatalogPanel("panel");
 
 		tester.startComponentInPage(panel);
@@ -74,31 +70,28 @@ public class SoftwareCatalogPanelTest extends GlasnostWebTest {
 		assertRenderedPanel(SoftwareCatalogPanel.class, "panel");
 
 		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
-		tester.assertListView("panel:categoriesList", getCategories());
+		tester.assertListView("panel:categoriesList", new ArrayList<SNClass>(categories));
+		Iterator<SNClass> iterator = categories.iterator();
+		tester.assertLabel("panel:categoriesList:0:link:label", new ResourceLabelModel(iterator.next()).getObject());
+		tester.assertLabel("panel:categoriesList:1:link:label", new ResourceLabelModel(iterator.next()).getObject());
 	}
+
+
 
 	// ------------------------------------------------------
 
-	private List<ResourceNode> getCategories(){
-		List<ResourceNode> list = new ArrayList<ResourceNode>();
+	private Set<SNClass> getCategories(){
+		Set<SNClass> set = new HashSet<SNClass>();
 
-		ResourceNode appServer = new SNResource();
+		SNClass appServer = new SNClass();
 		SNOPS.assure(appServer, RDFS.LABEL, new SNValue(ElementaryDataType.STRING, "Application Server"));
-		list.add(appServer);
+		set.add(appServer);
 
-		ResourceNode dataStore = new SNResource();
+		SNClass dataStore = new SNClass();
 		SNOPS.assure(dataStore, RDFS.LABEL, new SNValue(ElementaryDataType.STRING, "Datastore"));
-		list.add(dataStore);
+		set.add(dataStore);
 
-		return list;
-	}
-
-	private ResourceNode getRoot(){
-		ResourceNode root = new SNResource(GIS.SOFTWARE_ITEM.getQualifiedName());
-		for (ResourceNode node : categories) {
-			node.addAssociation(RDFS.SUB_CLASS_OF, root);
-		}
-		return root;
+		return set;
 	}
 
 }

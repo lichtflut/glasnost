@@ -6,10 +6,18 @@
 		<div class="categories">
 			<wicket:container wicket:id="categoriesTitle"></wicket:container>
 			<div wicket:id="categoriesList">
-				<a href="#"><wicket:container wicket:id="label"></wicket:container></a>
+				<a href="#" wicket:id="link"><wicket:container wicket:id="label"></wicket:container></a>
 			</div>
 		</div>
 	
+		<div wicket:id="containerList">
+			<wicket:container wicket:id="itemListTitle" />
+			<div class="table">
+				<div wicket:id="list">
+					<span wicket:id="item"></span>
+				</div>
+			</div>
+		</div>
 	</div>
 </wicket:panel>
 </html>
