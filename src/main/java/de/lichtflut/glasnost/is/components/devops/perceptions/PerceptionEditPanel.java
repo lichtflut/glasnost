@@ -97,6 +97,10 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 	protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
 	}
 
+	protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+	}
+
+	// ------------------------------------------------------
 
 	/**
 	 * Add input fields to form.
@@ -157,7 +161,7 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		return new RBCancelButton("cancel") {
 			@Override
 			protected void applyActions(final AjaxRequestTarget target, final Form<?> form) {
-				onUpdate(target, form);
+				onCancel(target, form);
 			}
 		};
 	}
