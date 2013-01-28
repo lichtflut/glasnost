@@ -30,14 +30,6 @@ public class PerceptionOrder extends SerialNumberOrderedNodesContainer {
 
 	// ------------------------------------------------------
 
-	public void moveUp(final Perception perception, final int positions){
-		super.moveUp(perception.asResource(), positions);
-	}
-
-	public void moveDown(final Perception perception, final int positions){
-		super.moveDown(perception, positions);
-	}
-
 	public void swap(final Perception a, final Perception b){
 		new SerialNumberOrderedNodesContainer() {
 			@Override
