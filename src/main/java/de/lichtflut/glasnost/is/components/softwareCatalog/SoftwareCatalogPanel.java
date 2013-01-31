@@ -112,9 +112,9 @@ public class SoftwareCatalogPanel extends Panel {
 
 			@Override
 			protected void applyActions(final ListItem<ResourceNode> item, final AjaxRequestTarget target) {
-				ResourceNode object = item.getModelObject();
-				root.getObject().add(object);
-				RBAjaxTarget.add(SoftwareCatalogPanel.this);
+				if(addToList(item)){
+					RBAjaxTarget.add(SoftwareCatalogPanel.this);
+				}
 			}
 		};
 		add(panel);
@@ -130,7 +130,6 @@ public class SoftwareCatalogPanel extends Panel {
 			}
 		};
 		list.add(ConditionalBehavior.visibleIf(ConditionalModel.isNotEmpty(root)));
-		//		list.setReuseItems(true);
 		add(list);
 	}
 
@@ -143,7 +142,9 @@ public class SoftwareCatalogPanel extends Panel {
 				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-
+						if(addToList(item)){
+							RBAjaxTarget.add(SoftwareCatalogPanel.this);
+						}
 					}
 				};
 				link.add(new Label("subLabel", new ResourceLabelModel(item.getModel())));
@@ -151,6 +152,15 @@ public class SoftwareCatalogPanel extends Panel {
 			}
 		};
 		return subList;
+	}
+
+	private boolean addToList(final ListItem<ResourceNode> item) {
+		boolean success = false;
+		if(!root.getObject().contains(item.getModelObject())){
+			root.getObject().add(item.getModelObject());
+			success = true;
+		}
+		return success;
 	}
 
 }

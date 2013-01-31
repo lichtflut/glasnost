@@ -2,16 +2,17 @@
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
 <wicket:panel>
 
-	<div>
-		<div wicket:id="categories" class="categories">
+	<div class="layout-1-4-0">
+		<div wicket:id="categories" id="sidebar-left">
 		</div>
-	
-		<div wicket:id="specifyingList">
-			<div wicket:id="itemListTitle"></div>
-			<div class="table">
-				<div wicket:id="subList">
-					<div class="table-cell cell">
-						<a href="#" wicket:id="subLink"><wicket:container wicket:id="subLabel"></wicket:container></a>
+		<div id="column-center">
+			<div wicket:id="specifyingList" class="common-background">
+				<div wicket:id="itemListTitle"></div>
+				<div class="table">
+					<div wicket:id="subList">
+						<div class="cell">
+							<a href="#" wicket:id="subLink"><wicket:container wicket:id="subLabel"></wicket:container></a>
+						</div>
 					</div>
 				</div>
 			</div>
