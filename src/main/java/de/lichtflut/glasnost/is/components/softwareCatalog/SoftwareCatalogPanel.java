@@ -40,6 +40,7 @@ import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
  * 
  * @author Ravi Knox
  */
+// TODO remove style tag from html, create table dynamically
 public class SoftwareCatalogPanel extends Panel {
 
 	@SpringBean
@@ -112,9 +113,9 @@ public class SoftwareCatalogPanel extends Panel {
 
 			@Override
 			protected void applyActions(final ListItem<ResourceNode> item, final AjaxRequestTarget target) {
-				if(addToList(item)){
-					RBAjaxTarget.add(SoftwareCatalogPanel.this);
-				}
+				root.getObject().clear();
+				root.getObject().add(item.getModelObject());
+				RBAjaxTarget.add(SoftwareCatalogPanel.this);
 			}
 		};
 		add(panel);
@@ -142,7 +143,7 @@ public class SoftwareCatalogPanel extends Panel {
 				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-						if(addToList(item)){
+						if(addToList(item, model)){
 							RBAjaxTarget.add(SoftwareCatalogPanel.this);
 						}
 					}
@@ -154,8 +155,12 @@ public class SoftwareCatalogPanel extends Panel {
 		return subList;
 	}
 
-	private boolean addToList(final ListItem<ResourceNode> item) {
+	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceNode> superClass) {
 		boolean success = false;
+		int index = root.getObject().indexOf(superClass.getObject());
+		while(root.getObject().size() > index+1){
+			root.getObject().remove(index+1);
+		}
 		if(!root.getObject().contains(item.getModelObject())){
 			root.getObject().add(item.getModelObject());
 			success = true;
