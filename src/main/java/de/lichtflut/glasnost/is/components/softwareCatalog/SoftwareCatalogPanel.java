@@ -1,0 +1,158 @@
+/*
+ * Copyright 2012 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
+ */
+package de.lichtflut.glasnost.is.components.softwareCatalog;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.nodes.ResourceNode;
+import org.arastreju.sge.model.nodes.SemanticNode;
+import org.arastreju.sge.model.nodes.views.SNClass;
+
+import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.core.services.TypeManager;
+import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.models.ConditionalModel;
+import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
+
+/**
+ * <p>
+ * This Panel offers some predefined SoftwareItems to choose from.
+ * </p>
+ * Created: Jan 28, 2013
+ * 
+ * @author Ravi Knox
+ */
+public class SoftwareCatalogPanel extends Panel {
+
+	@SpringBean
+	private TypeManager typeManager;
+
+	private final IModel<List<ResourceNode>> root = new ListModel<ResourceNode>(new LinkedList<ResourceNode>());
+
+	// ---------------- Constructor -------------------------
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param id Component id
+	 */
+	public SoftwareCatalogPanel(final String id) {
+		super(id);
+		//		add(new SoftwareItemsCategoriesPanel("categories"));
+		addCategoriesTitle("categoriesTitle", new ResourceModel("title.category"));
+		createCategoriesList("categoriesList");
+
+		addSpecifyingList("specifyingList");
+
+		setOutputMarkupId(true);
+	}
+
+	// ------------------------------------------------------
+
+	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+		return new LoadableDetachableModel<List<ResourceNode>>() {
+			@Override
+			protected List<ResourceNode> load() {
+				List<ResourceNode> list = new LinkedList<ResourceNode>();
+				Set<SNClass> categories = typeManager.getSubClasses(base);
+				for (SemanticNode temp : categories) {
+					list.add(SNClass.from(temp));
+				}
+				Collections.sort(list, getNodeComparator());
+				return list;
+			}
+		};
+	}
+
+	/**
+	 * @return a comparator for all SoftwareItems
+	 */
+	Comparator<ResourceNode> getNodeComparator(){
+		return new Comparator<ResourceNode>() {
+			@Override
+			public int compare(final ResourceNode o1, final ResourceNode o2) {
+				return o1.getQualifiedName().toURI().compareTo(o2.getQualifiedName().toURI());
+			}
+		};
+	}
+
+	// ------------------------------------------------------
+
+	private void addSpecifyingList(final String id) {
+		ListView<ResourceNode> list = new ListView<ResourceNode>(id, root) {
+			@Override
+			protected void populateItem(final ListItem<ResourceNode> item) {
+				// TODO onClick-title remove all below
+				item.add(new GlasnostTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
+				item.add(createSubListForType("subList", item.getModel()));
+			}
+		};
+		list.add(ConditionalBehavior.visibleIf(ConditionalModel.isNotEmpty(root)));
+		//		list.setReuseItems(true);
+		add(list);
+	}
+
+	private Component createSubListForType(final String id, final IModel<ResourceNode> model) {
+		// get all nodes of type model and list 'em up
+		IModel<? extends List<ResourceNode>> subClasses = getAllSubClassesFor(model.getObject());
+		ListView<ResourceNode> subList = new ListView<ResourceNode>(id,subClasses) {
+			@Override
+			protected void populateItem(final ListItem<ResourceNode> item) {
+				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
+					@Override
+					public void onClick(final AjaxRequestTarget target) {
+
+					}
+				};
+				link.add(new Label("subLabel", new ResourceLabelModel(item.getModel())));
+				item.add(link);
+			}
+		};
+		return subList;
+	}
+
+	private void addCategoriesTitle(final String id, final ResourceModel resourceModel) {
+		add(new GlasnostTitle(id, resourceModel));
+	}
+
+	private void createCategoriesList(final String id) {
+		ListView<ResourceNode> list = new ListView<ResourceNode>(id, getAllSubClassesFor(GIS.SOFTWARE_ITEM)) {
+			@Override
+			protected void populateItem(final ListItem<ResourceNode> item) {
+				ResourceNode category = item.getModelObject();
+				AjaxLink<?> link = new AjaxLink<Void>("link") {
+					@Override
+					public void onClick(final AjaxRequestTarget target) {
+						ResourceNode object = item.getModelObject();
+						root.getObject().add(object);
+						RBAjaxTarget.add(SoftwareCatalogPanel.this);
+					}
+				};
+				link.add(new Label("label", new ResourceLabelModel(category)));
+				item.add(link);
+			}
+		};
+		add(list);
+	}
+
+}
