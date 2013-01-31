@@ -18,7 +18,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
@@ -26,7 +25,6 @@ import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
-import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
@@ -58,10 +56,8 @@ public class SoftwareCatalogPanel extends Panel {
 	 */
 	public SoftwareCatalogPanel(final String id) {
 		super(id);
-		//		add(new SoftwareItemsCategoriesPanel("categories"));
-		addCategoriesTitle("categoriesTitle", new ResourceModel("title.category"));
-		createCategoriesList("categoriesList");
 
+		addCategoriesPanel("categories");
 		addSpecifyingList("specifyingList");
 
 		setOutputMarkupId(true);
@@ -69,6 +65,10 @@ public class SoftwareCatalogPanel extends Panel {
 
 	// ------------------------------------------------------
 
+	/**
+	 * @param base Base class
+	 * @return a IModel containing all subclasses for a given type
+	 */
 	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
 		return new LoadableDetachableModel<List<ResourceNode>>() {
 			@Override
@@ -97,6 +97,28 @@ public class SoftwareCatalogPanel extends Panel {
 	}
 
 	// ------------------------------------------------------
+
+	private void addCategoriesPanel(final String id) {
+		Component panel = new SoftwareCategoriesPanel(id){
+			@Override
+			protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+				return SoftwareCatalogPanel.this.getAllSubClassesFor(base);
+			}
+
+			@Override
+			Comparator<ResourceNode> getNodeComparator() {
+				return SoftwareCatalogPanel.this.getNodeComparator();
+			}
+
+			@Override
+			protected void applyActions(final ListItem<ResourceNode> item, final AjaxRequestTarget target) {
+				ResourceNode object = item.getModelObject();
+				root.getObject().add(object);
+				RBAjaxTarget.add(SoftwareCatalogPanel.this);
+			}
+		};
+		add(panel);
+	}
 
 	private void addSpecifyingList(final String id) {
 		ListView<ResourceNode> list = new ListView<ResourceNode>(id, root) {
@@ -129,30 +151,6 @@ public class SoftwareCatalogPanel extends Panel {
 			}
 		};
 		return subList;
-	}
-
-	private void addCategoriesTitle(final String id, final ResourceModel resourceModel) {
-		add(new GlasnostTitle(id, resourceModel));
-	}
-
-	private void createCategoriesList(final String id) {
-		ListView<ResourceNode> list = new ListView<ResourceNode>(id, getAllSubClassesFor(GIS.SOFTWARE_ITEM)) {
-			@Override
-			protected void populateItem(final ListItem<ResourceNode> item) {
-				ResourceNode category = item.getModelObject();
-				AjaxLink<?> link = new AjaxLink<Void>("link") {
-					@Override
-					public void onClick(final AjaxRequestTarget target) {
-						ResourceNode object = item.getModelObject();
-						root.getObject().add(object);
-						RBAjaxTarget.add(SoftwareCatalogPanel.this);
-					}
-				};
-				link.add(new Label("label", new ResourceLabelModel(category)));
-				item.add(link);
-			}
-		};
-		add(list);
 	}
 
 }
