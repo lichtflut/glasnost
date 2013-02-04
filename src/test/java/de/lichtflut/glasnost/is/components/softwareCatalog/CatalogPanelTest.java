@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ElementaryDataType;
@@ -22,6 +23,7 @@ import org.junit.Test;
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.webck.components.fields.ClassPickerField;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -54,6 +56,7 @@ public class CatalogPanelTest extends GlasnostWebTest {
 	 */
 	@Test
 	public void testSoftwareCatalogPanel() {
+		simulatePathbuilder();
 		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
 
 		tester.startComponentInPage(panel);
@@ -61,11 +64,14 @@ public class CatalogPanelTest extends GlasnostWebTest {
 		assertRenderedPanel(CatalogPanel.class, "panel");
 
 		tester.assertComponent("panel:categories", CategoriesPanel.class);
+		tester.assertComponent("panel:form:searchbox", ClassPickerField.class);
+		tester.assertComponent("panel:form:create", AjaxButton.class);
 		tester.assertInvisible("panel:specifyingList");
 	}
 
 	@Test
 	public void testShowSubCategoryOnClick(){
+		simulatePathbuilder();
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 		when(typeManager.getSubClasses(superCategories.iterator().next())).thenReturn(lvlOneCategories);
 

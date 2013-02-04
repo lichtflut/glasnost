@@ -12,13 +12,16 @@ import java.util.Set;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
@@ -34,6 +37,7 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
+import de.lichtflut.rb.webck.components.fields.ClassPickerField;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -72,11 +76,26 @@ public class CatalogPanel extends Panel {
 
 		addCategoriesPanel("categories",type);
 		addSpecifyingList("specifyingList", type);
+		addSearchbox("searchbox",type);
 
 		setOutputMarkupId(true);
 	}
 
 	// ------------------------------------------------------
+
+	private void addSearchbox(final String string, final ResourceID type) {
+		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
+		Form<?> form = new Form<Void>("form");
+		final Model<ResourceID> model = new Model<ResourceID>();
+		form.add(new ClassPickerField("searchbox", model, Model.of(type)));
+		form.add(new AjaxButton("create") {
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+				openDialog(model);
+			}
+		});
+		add(form);
+	}
 
 	/**
 	 * @param base Base class
@@ -156,18 +175,11 @@ public class CatalogPanel extends Panel {
 					public void onClick(final AjaxRequestTarget target) {
 						// nomore subclasses, try to find a schema
 						if(typeManager.getSubClasses(item.getModelObject()).isEmpty()){
-							openDialog(item.getModel());
+							openDialog(new Model<ResourceID>(item.getModelObject()));
 						}
 						else if(addToList(item, model)){
 							RBAjaxTarget.add(CatalogPanel.this);
 						}
-					}
-
-					private void openDialog(final IModel<ResourceNode> model) {
-						ResourceNode node = networkService.find(model.getObject().getQualifiedName());
-						SNClass identifyingType = SchemaIdentifyingType.of(node);
-						final DialogHoster dialogHoster = findParent(DialogHoster.class);
-						dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)));
 					}
 				};
 				link.add(new Label("subLabel", new ResourceLabelModel(item.getModel())));
@@ -175,6 +187,13 @@ public class CatalogPanel extends Panel {
 			}
 		};
 		return subList;
+	}
+
+	private void openDialog(final IModel<ResourceID> model) {
+		ResourceNode node = networkService.find(model.getObject().getQualifiedName());
+		SNClass identifyingType = SchemaIdentifyingType.of(node);
+		final DialogHoster dialogHoster = findParent(DialogHoster.class);
+		dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)));
 	}
 
 	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceNode> superClass) {

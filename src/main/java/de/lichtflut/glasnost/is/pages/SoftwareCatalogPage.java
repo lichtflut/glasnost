@@ -15,12 +15,12 @@ import de.lichtflut.rb.application.base.RBBasePage;
  *
  * @author Ravi Knox
  */
-public class SoftwareCatalog extends RBBasePage {
+public class SoftwareCatalogPage extends RBBasePage {
 
 	/**
 	 * Constructor
 	 */
-	public SoftwareCatalog() {
+	public SoftwareCatalogPage() {
 		add(new CatalogPanel("catalog",GIS.SOFTWARE_ITEM));
 	}
 

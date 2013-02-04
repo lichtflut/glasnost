@@ -5,7 +5,8 @@
 	<div class="layout-1-3-1">
 		<div wicket:id="categories" id="sidebar-left">
 		</div>
-		<div id="column-center">
+		
+		<div id="column-center" class="minimal-height">
 			<div wicket:id="specifyingList" class="common-background">
 				<div wicket:id="itemListTitle"></div>
 				<div>
@@ -13,6 +14,18 @@
 						<a href="#" wicket:id="subLink"><wicket:container wicket:id="subLabel"></wicket:container></a>
 					</span>
 				</div>
+			</div>
+		</div>
+		
+		<div id="sidebar-right" >
+			<div class="common-background catalog">
+				<wicket:container wicket:id="searchbox-title" />
+				<form wicket:id="form">
+					<wicket:container wicket:id="searchbox" />
+					<div class="button-bar">
+						<button wicket:id="create" class="default-button"><wicket:message key="button.create" /></button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

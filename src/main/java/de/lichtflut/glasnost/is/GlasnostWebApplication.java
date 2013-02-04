@@ -13,7 +13,7 @@ import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
-import de.lichtflut.glasnost.is.pages.SoftwareCatalog;
+import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
 import de.lichtflut.rb.application.RBApplication;
 import de.lichtflut.rb.application.admin.AdminBasePage;
@@ -113,7 +113,7 @@ public class GlasnostWebApplication extends RBApplication {
 		final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
 		nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
 		nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
-		nodes.add(createPageNode(SoftwareCatalog.class, "navigation.catalog"));
+		nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
 		nodes.addAll(super.getFirstLevelNavigation(menuItems));
 		return nodes;
 	}

@@ -39,6 +39,15 @@ span.floating-table {
 	padding: 5px 0;
 }
 
+.minimal-height{
+	min-height: 1px;
+}
+
+.catalog .data-picker-field {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
 /* LOGOS */
 div#site-header {
 	margin-left: 27px;
