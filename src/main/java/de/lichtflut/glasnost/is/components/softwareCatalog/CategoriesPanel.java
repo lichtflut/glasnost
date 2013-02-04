@@ -25,20 +25,19 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.arastreju.sge.structure.OrderBySerialNumber;
 
-import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
  * <p>
- * Display all direct subclasses of {@link GIS#SOFTWARE_ITEM}
+ * Display all direct subclasses of a given class.
  * </p>
  * Created: Jan 31, 2013
  *
  * @author Ravi Knox
  */
-public class SoftwareCategoriesPanel extends Panel {
+public class CategoriesPanel extends Panel {
 
 	@SpringBean
 	private TypeManager typeManager;
@@ -49,12 +48,13 @@ public class SoftwareCategoriesPanel extends Panel {
 	 * Constructor.
 	 * 
 	 * @param id Componet id
+	 * @param superclass The superclass for this List
 	 */
-	public SoftwareCategoriesPanel(final String id) {
+	public CategoriesPanel(final String id, final ResourceID superclass) {
 		super(id);
 
 		addCategoriesTitle("categoriesTitle", new ResourceModel("title.category"));
-		createCategoriesList("categoriesList");
+		createCategoriesList("categoriesList", superclass);
 	}
 
 	// ------------------------------------------------------
@@ -94,8 +94,8 @@ public class SoftwareCategoriesPanel extends Panel {
 		add(new GlasnostTitle(id, resourceModel));
 	}
 
-	private void createCategoriesList(final String id) {
-		ListView<ResourceNode> list = new ListView<ResourceNode>(id, getAllSubClassesFor(GIS.SOFTWARE_ITEM)) {
+	private void createCategoriesList(final String id, final ResourceID superclass) {
+		ListView<ResourceNode> list = new ListView<ResourceNode>(id, getAllSubClassesFor(superclass)) {
 			@Override
 			protected void populateItem(final ListItem<ResourceNode> item) {
 				ResourceNode category = item.getModelObject();

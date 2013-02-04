@@ -46,7 +46,7 @@ import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
  * @author Ravi Knox
  */
 // TODO remove style tag from html, create table dynamically
-public class SoftwareCatalogPanel extends Panel {
+public class CatalogPanel extends Panel {
 
 	@SpringBean
 	private TypeManager typeManager;
@@ -65,12 +65,13 @@ public class SoftwareCatalogPanel extends Panel {
 	 * Constructor.
 	 * 
 	 * @param id Component id
+	 * @param type Superclass of all catalog items
 	 */
-	public SoftwareCatalogPanel(final String id) {
+	public CatalogPanel(final String id, final ResourceID type) {
 		super(id);
 
-		addCategoriesPanel("categories");
-		addSpecifyingList("specifyingList");
+		addCategoriesPanel("categories",type);
+		addSpecifyingList("specifyingList", type);
 
 		setOutputMarkupId(true);
 	}
@@ -110,29 +111,29 @@ public class SoftwareCatalogPanel extends Panel {
 
 	// ------------------------------------------------------
 
-	private void addCategoriesPanel(final String id) {
-		Component panel = new SoftwareCategoriesPanel(id){
+	private void addCategoriesPanel(final String id, final ResourceID type) {
+		Component panel = new CategoriesPanel(id, type){
 			@Override
 			protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
-				return SoftwareCatalogPanel.this.getAllSubClassesFor(base);
+				return CatalogPanel.this.getAllSubClassesFor(base);
 			}
 
 			@Override
 			Comparator<ResourceNode> getNodeComparator() {
-				return SoftwareCatalogPanel.this.getNodeComparator();
+				return CatalogPanel.this.getNodeComparator();
 			}
 
 			@Override
 			protected void applyActions(final ListItem<ResourceNode> item, final AjaxRequestTarget target) {
 				root.getObject().clear();
 				root.getObject().add(item.getModelObject());
-				RBAjaxTarget.add(SoftwareCatalogPanel.this);
+				RBAjaxTarget.add(CatalogPanel.this);
 			}
 		};
 		add(panel);
 	}
 
-	private void addSpecifyingList(final String id) {
+	private void addSpecifyingList(final String id, final ResourceID type) {
 		ListView<ResourceNode> list = new ListView<ResourceNode>(id, root) {
 			@Override
 			protected void populateItem(final ListItem<ResourceNode> item) {
@@ -158,7 +159,7 @@ public class SoftwareCatalogPanel extends Panel {
 							openDialog(item.getModel());
 						}
 						else if(addToList(item, model)){
-							RBAjaxTarget.add(SoftwareCatalogPanel.this);
+							RBAjaxTarget.add(CatalogPanel.this);
 						}
 					}
 

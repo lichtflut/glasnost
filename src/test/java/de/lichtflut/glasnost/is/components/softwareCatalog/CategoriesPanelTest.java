@@ -28,13 +28,13 @@ import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
  * <p>
- * Testclass for {@link SoftwareCategoriesPanel}.
+ * Testclass for {@link CategoriesPanel}.
  * </p>
  * Created: Jan 31, 2013
  *
  * @author Ravi Knox
  */
-public class SoftwareCategoriesPanelTest extends GlasnostWebTest{
+public class CategoriesPanelTest extends GlasnostWebTest{
 
 	private static final String resourcePrefix = "http://lichtflut.de/common#";
 
@@ -50,15 +50,15 @@ public class SoftwareCategoriesPanelTest extends GlasnostWebTest{
 	// ------------------------------------------------------
 
 	/**
-	 * Test method for {@link de.lichtflut.glasnost.is.components.softwareCatalog.SoftwareCategoriesPanel#SoftwareItemsCategoriesPanel(java.lang.String)}.
+	 * Test method for {@link de.lichtflut.glasnost.is.components.softwareCatalog.CategoriesPanel#SoftwareItemsCategoriesPanel(java.lang.String)}.
 	 */
 	@Test
 	public void testSoftwareItemsCategoriesPanel() {
-		SoftwareCategoriesPanel panel = new SoftwareCategoriesPanel("panel");
+		CategoriesPanel panel = new CategoriesPanel("panel", GIS.SOFTWARE_ITEM);
 
 		tester.startComponentInPage(panel);
 
-		assertRenderedPanel(SoftwareCategoriesPanel.class, "panel");
+		assertRenderedPanel(CategoriesPanel.class, "panel");
 
 		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
 		tester.assertListView("panel:categoriesList", Collections.EMPTY_LIST);
@@ -68,11 +68,11 @@ public class SoftwareCategoriesPanelTest extends GlasnostWebTest{
 	public void testGetAllCategories(){
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 
-		SoftwareCategoriesPanel panel = new SoftwareCategoriesPanel("panel");
+		CategoriesPanel panel = new CategoriesPanel("panel", GIS.SOFTWARE_ITEM);
 
 		tester.startComponentInPage(panel);
 
-		assertRenderedPanel(SoftwareCategoriesPanel.class, "panel");
+		assertRenderedPanel(CategoriesPanel.class, "panel");
 
 		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
 		tester.assertListView("panel:categoriesList", new ArrayList<SNClass>(superCategories));

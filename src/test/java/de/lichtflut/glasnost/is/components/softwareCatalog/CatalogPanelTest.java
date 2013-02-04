@@ -26,13 +26,13 @@ import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
  * <p>
- * Testclass for {@link SoftwareCatalogPanel}.
+ * Testclass for {@link CatalogPanel}.
  * </p>
  * Created: Jan 28, 2013
  *
  * @author Ravi Knox
  */
-public class SoftwareCatalogPanelTest extends GlasnostWebTest {
+public class CatalogPanelTest extends GlasnostWebTest {
 
 	private static final String resourcePrefix = "http://lichtflut.de/common#";
 
@@ -50,17 +50,17 @@ public class SoftwareCatalogPanelTest extends GlasnostWebTest {
 	// ------------------------------------------------------
 
 	/**
-	 * Test method for {@link de.lichtflut.glasnost.is.components.softwareCatalog.SoftwareCatalogPanel#SoftwareCatalogPanel(java.lang.String)}.
+	 * Test method for {@link de.lichtflut.glasnost.is.components.softwareCatalog.CatalogPanel#SoftwareCatalogPanel(java.lang.String)}.
 	 */
 	@Test
 	public void testSoftwareCatalogPanel() {
-		SoftwareCatalogPanel panel = new SoftwareCatalogPanel("panel");
+		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
 
 		tester.startComponentInPage(panel);
 
-		assertRenderedPanel(SoftwareCatalogPanel.class, "panel");
+		assertRenderedPanel(CatalogPanel.class, "panel");
 
-		tester.assertComponent("panel:categories", SoftwareCategoriesPanel.class);
+		tester.assertComponent("panel:categories", CategoriesPanel.class);
 		tester.assertInvisible("panel:specifyingList");
 	}
 
@@ -69,11 +69,11 @@ public class SoftwareCatalogPanelTest extends GlasnostWebTest {
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 		when(typeManager.getSubClasses(superCategories.iterator().next())).thenReturn(lvlOneCategories);
 
-		SoftwareCatalogPanel panel = new SoftwareCatalogPanel("panel");
+		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
 
 		tester.startComponentInPage(panel);
 
-		assertRenderedPanel(SoftwareCatalogPanel.class, "panel");
+		assertRenderedPanel(CatalogPanel.class, "panel");
 
 		tester.executeAjaxEvent("panel:categories:categoriesList:0:link", "onclick");
 

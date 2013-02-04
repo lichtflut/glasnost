@@ -3,7 +3,8 @@
  */
 package de.lichtflut.glasnost.is.pages;
 
-import de.lichtflut.glasnost.is.components.softwareCatalog.SoftwareCatalogPanel;
+import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogPanel;
 import de.lichtflut.rb.application.base.RBBasePage;
 
 /**
@@ -20,7 +21,7 @@ public class SoftwareCatalog extends RBBasePage {
 	 * Constructor
 	 */
 	public SoftwareCatalog() {
-		add(new SoftwareCatalogPanel("catalog"));
+		add(new CatalogPanel("catalog",GIS.SOFTWARE_ITEM));
 	}
 
 
