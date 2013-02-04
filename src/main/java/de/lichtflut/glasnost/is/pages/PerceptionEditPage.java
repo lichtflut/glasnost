@@ -90,6 +90,11 @@ public class PerceptionEditPage extends RBBasePage {
 					setResponsePage(PerceptionDisplayPage.class, parameters);
 				}
 			}
+
+			@Override
+			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+				setResponsePage(WelcomePage.class);
+			}
 		};
 	}
 
