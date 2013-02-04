@@ -18,6 +18,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
@@ -26,9 +27,13 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.core.common.SchemaIdentifyingType;
+import de.lichtflut.rb.core.services.SchemaManager;
+import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -45,6 +50,12 @@ public class SoftwareCatalogPanel extends Panel {
 
 	@SpringBean
 	private TypeManager typeManager;
+
+	@SpringBean
+	private SemanticNetworkService networkService;
+
+	@SpringBean
+	private SchemaManager schemaManager;
 
 	private final IModel<List<ResourceNode>> root = new ListModel<ResourceNode>(new LinkedList<ResourceNode>());
 
@@ -125,7 +136,6 @@ public class SoftwareCatalogPanel extends Panel {
 		ListView<ResourceNode> list = new ListView<ResourceNode>(id, root) {
 			@Override
 			protected void populateItem(final ListItem<ResourceNode> item) {
-				// TODO onClick-title remove all below
 				item.add(new GlasnostTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
 				item.add(createSubListForType("subList", item.getModel()));
 			}
@@ -143,9 +153,22 @@ public class SoftwareCatalogPanel extends Panel {
 				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
+						// nomore subclasses, try to find a schema
+						if(typeManager.getSubClasses(item.getModelObject()).isEmpty()){
+							openDialog(item.getModel());
+						}
 						if(addToList(item, model)){
 							RBAjaxTarget.add(SoftwareCatalogPanel.this);
 						}
+					}
+
+					private void openDialog(final IModel<ResourceNode> model) {
+						ResourceNode node = networkService.find(model.getObject().getQualifiedName());
+						SNClass identifyingType = SchemaIdentifyingType.of(node);
+						DialogHoster dialogHoster = findParent(DialogHoster.class);
+						dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)){
+
+						});
 					}
 				};
 				link.add(new Label("subLabel", new ResourceLabelModel(item.getModel())));
