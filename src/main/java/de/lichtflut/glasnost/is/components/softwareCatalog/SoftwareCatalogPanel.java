@@ -157,7 +157,7 @@ public class SoftwareCatalogPanel extends Panel {
 						if(typeManager.getSubClasses(item.getModelObject()).isEmpty()){
 							openDialog(item.getModel());
 						}
-						if(addToList(item, model)){
+						else if(addToList(item, model)){
 							RBAjaxTarget.add(SoftwareCatalogPanel.this);
 						}
 					}
@@ -165,10 +165,8 @@ public class SoftwareCatalogPanel extends Panel {
 					private void openDialog(final IModel<ResourceNode> model) {
 						ResourceNode node = networkService.find(model.getObject().getQualifiedName());
 						SNClass identifyingType = SchemaIdentifyingType.of(node);
-						DialogHoster dialogHoster = findParent(DialogHoster.class);
-						dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)){
-
-						});
+						final DialogHoster dialogHoster = findParent(DialogHoster.class);
+						dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)));
 					}
 				};
 				link.add(new Label("subLabel", new ResourceLabelModel(item.getModel())));
