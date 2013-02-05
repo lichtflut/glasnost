@@ -9,9 +9,11 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 
+import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
+import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
@@ -45,6 +47,13 @@ public class CreateEntityDialog extends AbstractRBDialog {
 				super.onSave(model);
 				closeDialog();
 			}
+
+			@Override
+			protected void onCancel() {
+				RBWebSession.get().getHistory().clear(new JumpTarget(SoftwareCatalogPage.class));
+				closeDialog();
+			}
+
 		});
 		String simpleName = type.getObject().getQualifiedName().getSimpleName();
 		setTitle(new StringResourceModel("header.create-entity", Model.of(simpleName)));

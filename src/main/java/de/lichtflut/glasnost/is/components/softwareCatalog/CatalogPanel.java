@@ -3,6 +3,7 @@
  */
 package de.lichtflut.glasnost.is.components.softwareCatalog;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -15,10 +16,10 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -29,11 +30,7 @@ import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
-import org.odlabs.wiquery.core.options.AbstractOption;
-import org.odlabs.wiquery.core.options.ArrayItemOptions;
-import org.odlabs.wiquery.core.options.IListItemOption;
-import org.odlabs.wiquery.core.options.IModelOption;
-import org.odlabs.wiquery.ui.autocomplete.AutocompleteSource;
+import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.common.SchemaIdentifyingType;
@@ -43,7 +40,6 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
-import de.lichtflut.rb.webck.components.fields.DataPickerField;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -55,7 +51,6 @@ import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
  * 
  * @author Ravi Knox
  */
-// TODO remove style tag from html, create table dynamically
 public class CatalogPanel extends Panel {
 
 	@SpringBean
@@ -88,50 +83,6 @@ public class CatalogPanel extends Panel {
 	}
 
 	// ------------------------------------------------------
-
-	private void addSearchbox(final String string, final ResourceID type) {
-		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
-		Form<?> form = new Form<Void>("form");
-		final Model<ResourceID> model = new Model<ResourceID>();
-		form.add(getPicker(type, model));
-		form.add(new AjaxButton("create") {
-			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-				openDialog(model);
-			}
-		});
-		add(form);
-	}
-
-	private Component getPicker(final ResourceID type, final Model<ResourceID> model) {
-		final ArrayItemOptions<IListItemOption> subClasses = new ArrayItemOptions<IListItemOption>();
-
-		find(type, subClasses);
-
-
-		DataPickerField<ResourceID> field = new DataPickerField<ResourceID>("searchbox", model){
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setSource(new AutocompleteSource(subClasses));
-			}
-		};
-		field.setType(ResourceID.class);
-		return field;
-		//		return new ClassPickerField("searchbox", model, Model.of(type));
-	}
-
-	private void find(final ResourceID resourceID, final List<IListItemOption> subClasses) {
-		if(resourceID != null){
-			for (SNClass snClass : typeManager.getSubClasses(resourceID)) {
-				subClasses.add(new Bla(snClass));
-				//				find(snClass, subClasses);
-			}
-		}
-	}
 
 	/**
 	 * @param base Base class
@@ -225,6 +176,56 @@ public class CatalogPanel extends Panel {
 		return subList;
 	}
 
+	private void addSearchbox(final String string, final ResourceID type) {
+		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
+
+		Form<?> form = new Form<Void>("form");
+		final Model<ResourceID> model = new Model<ResourceID>();
+		form.add(getPicker(type, model));
+		form.add(new AjaxButton("create") {
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+				if(null != model.getObject()) {
+					openDialog(model);
+				}
+			}
+		});
+
+		add(form);
+	}
+
+	private Component getPicker(final ResourceID type, final Model<ResourceID> model) {
+		List<ResourceID> list = new ArrayList<ResourceID>();
+		find(type, list);
+
+		IChoiceRenderer<ResourceID> renderer = new IChoiceRenderer<ResourceID>(){
+			@Override
+			public Object getDisplayValue(final ResourceID object) {
+				return new ResourceLabelModel(object).getObject();
+			}
+
+			@Override
+			public String getIdValue(final ResourceID object, final int index) {
+				return String.valueOf(index);
+			}
+		};
+		AutocompleteComponent<ResourceID> picker = new AutocompleteComponent<ResourceID>("searchbox", model, new ListModel<ResourceID>(list), renderer) {
+			@Override
+			public ResourceID getValueOnSearchFail(final String input) {
+				return null;
+			}
+		};
+
+		return picker;
+	}
+
+	private void find(final ResourceID resourceID, final List<ResourceID> list) {
+		for (SNClass snClass : typeManager.getSubClasses(resourceID)) {
+			list.add(snClass);
+			find(snClass, list);
+		}
+	}
+
 	private void openDialog(final IModel<ResourceID> model) {
 		ResourceNode node = networkService.find(model.getObject().getQualifiedName());
 		SNClass identifyingType = SchemaIdentifyingType.of(node);
@@ -245,39 +246,4 @@ public class CatalogPanel extends Panel {
 		return success;
 	}
 
-	// ------------------------------------------------------
-
-	class Bla extends AbstractOption<ResourceID>{
-
-		public Bla(final IModel<ResourceID> value) {
-			super(value);
-			// TODO Auto-generated constructor stub
-		}
-
-		public Bla(final ResourceID value) {
-			super(value);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public ResourceID getValue() {
-			return super.getValue();
-		}
-
-		@Override
-		public String toString()
-		{
-			return new ResourceLabelModel(getModel()).getObject();
-		}
-
-		@Override
-		public IModelOption<ResourceID> wrapOnAssignment(final Component component) {
-			if (getModel() instanceof IComponentAssignedModel< ? >) {
-				return new Bla(
-						((IComponentAssignedModel<ResourceID>) getModel()).wrapOnAssignment(component));
-			}
-			return this;
-		}
-
-	}
 }

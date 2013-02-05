@@ -19,11 +19,11 @@ import org.arastreju.sge.model.nodes.SNValue;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.arastreju.sge.naming.QualifiedName;
 import org.junit.Test;
+import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
-import de.lichtflut.rb.webck.components.fields.ClassPickerField;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -64,7 +64,7 @@ public class CatalogPanelTest extends GlasnostWebTest {
 		assertRenderedPanel(CatalogPanel.class, "panel");
 
 		tester.assertComponent("panel:categories", CategoriesPanel.class);
-		tester.assertComponent("panel:form:searchbox", ClassPickerField.class);
+		tester.assertComponent("panel:form:searchbox", AutocompleteComponent.class);
 		tester.assertComponent("panel:form:create", AjaxButton.class);
 		tester.assertInvisible("panel:specifyingList");
 	}
