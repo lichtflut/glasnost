@@ -50,7 +50,7 @@ public class CategoriesPanel extends Panel {
 	 * @param id Componet id
 	 * @param superclass The superclass for this List
 	 */
-	public CategoriesPanel(final String id, final ResourceID superclass) {
+	public CategoriesPanel(final String id, final IModel<ResourceID> superclass) {
 		super(id);
 
 		addCategoriesTitle("categoriesTitle", new ResourceModel("title.category"));
@@ -60,15 +60,15 @@ public class CategoriesPanel extends Panel {
 	// ------------------------------------------------------
 
 	/**
-	 * @param base Base class
+	 * @param superclass Base class
 	 * @return a IModel containing all subclasses for a given type
 	 */
-	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final IModel<ResourceID> superclass) {
 		return new LoadableDetachableModel<List<ResourceNode>>() {
 			@Override
 			protected List<ResourceNode> load() {
 				List<ResourceNode> list = new LinkedList<ResourceNode>();
-				Set<SNClass> categories = typeManager.getSubClasses(base);
+				Set<SNClass> categories = typeManager.getSubClasses(superclass.getObject());
 				for (SemanticNode temp : categories) {
 					list.add(SNClass.from(temp));
 				}
@@ -94,7 +94,7 @@ public class CategoriesPanel extends Panel {
 		add(new GlasnostTitle(id, resourceModel));
 	}
 
-	private void createCategoriesList(final String id, final ResourceID superclass) {
+	private void createCategoriesList(final String id, final IModel<ResourceID> superclass) {
 		ListView<ResourceNode> list = new ListView<ResourceNode>(id, getAllSubClassesFor(superclass)) {
 			@Override
 			protected void populateItem(final ListItem<ResourceNode> item) {

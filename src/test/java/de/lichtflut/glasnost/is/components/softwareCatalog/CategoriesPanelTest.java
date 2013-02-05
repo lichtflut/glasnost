@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.wicket.markup.html.link.AbstractLink;
+import org.apache.wicket.model.Model;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ElementaryDataType;
@@ -54,7 +55,7 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 	 */
 	@Test
 	public void testSoftwareItemsCategoriesPanel() {
-		CategoriesPanel panel = new CategoriesPanel("panel", GIS.SOFTWARE_ITEM);
+		CategoriesPanel panel = new CategoriesPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 
@@ -68,7 +69,7 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 	public void testGetAllCategories(){
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 
-		CategoriesPanel panel = new CategoriesPanel("panel", GIS.SOFTWARE_ITEM);
+		CategoriesPanel panel = new CategoriesPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 

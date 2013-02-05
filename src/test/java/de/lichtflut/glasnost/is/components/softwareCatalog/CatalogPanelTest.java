@@ -11,6 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.model.Model;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ElementaryDataType;
@@ -57,7 +58,7 @@ public class CatalogPanelTest extends GlasnostWebTest {
 	@Test
 	public void testSoftwareCatalogPanel() {
 		simulatePathbuilder();
-		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
+		CatalogPanel panel = new CatalogPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 
@@ -75,7 +76,7 @@ public class CatalogPanelTest extends GlasnostWebTest {
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 		when(typeManager.getSubClasses(superCategories.iterator().next())).thenReturn(lvlOneCategories);
 
-		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
+		CatalogPanel panel = new CatalogPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 

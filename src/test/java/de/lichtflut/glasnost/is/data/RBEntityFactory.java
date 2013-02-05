@@ -28,10 +28,10 @@ public class RBEntityFactory {
 	 */
 	public static RBEntity createPersonEntity(){
 		RBEntity entity = new RBEntityImpl(new SNResource(), ResourceSchemaFactory.buildPersonSchema());
-		entity.getField(RBConstants.HAS_FIRST_NAME).setValue(0, "Hans");
-		entity.getField(RBConstants.HAS_LAST_NAME).setValue(0, "Müller");
-		entity.getField(RBConstants.HAS_DATE_OF_BIRTH).setValue(0, new Date());
-		entity.getField(RBConstants.HAS_EMAIL).setValue(0, "hmüller@google.de");
+		entity.getField(RB.HAS_FIRST_NAME).setValue(0, "Hans");
+		entity.getField(RB.HAS_LAST_NAME).setValue(0, "Müller");
+		entity.getField(RB.HAS_DATE_OF_BIRTH).setValue(0, new Date());
+		entity.getField(RB.HAS_EMAIL).setValue(0, "hmüller@google.de");
 		return entity;
 	}
 

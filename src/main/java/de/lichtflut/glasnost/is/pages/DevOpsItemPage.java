@@ -2,14 +2,19 @@ package de.lichtflut.glasnost.is.pages;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.nodes.ResourceNode;
+import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
+import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
+import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
@@ -26,6 +31,11 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
  */
 public class DevOpsItemPage extends EntityDetailPage {
 
+	@SpringBean
+	private TypeManager typeManager;
+
+	// ---------------- Constructor -------------------------
+
 	public DevOpsItemPage(final PageParameters params) {
 		super(params);
 	}
@@ -35,6 +45,11 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 	// ----------------------------------------------------
 
+	@Override
+	protected Component createNotePadPanel(final String id, final IModel<ResourceID> model) {
+		SNClass typeOfResource = typeManager.getTypeOfResource(model.getObject());
+		return new CatalogProposalPanel(id, new Model<ResourceID>(typeOfResource));
+	}
 	@Override
 	protected Component createBrowser(final String componentID) {
 		return new ResourceBrowsingPanel(componentID) {

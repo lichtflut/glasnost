@@ -72,7 +72,7 @@ public class CatalogPanel extends Panel {
 	 * @param id Component id
 	 * @param type Superclass of all catalog items
 	 */
-	public CatalogPanel(final String id, final ResourceID type) {
+	public CatalogPanel(final String id, final IModel<ResourceID> type) {
 		super(id);
 
 		addCategoriesPanel("categories",type);
@@ -88,12 +88,12 @@ public class CatalogPanel extends Panel {
 	 * @param base Base class
 	 * @return a IModel containing all subclasses for a given type
 	 */
-	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final IModel<ResourceID> base) {
 		return new LoadableDetachableModel<List<ResourceNode>>() {
 			@Override
 			protected List<ResourceNode> load() {
 				List<ResourceNode> list = new LinkedList<ResourceNode>();
-				Set<SNClass> categories = typeManager.getSubClasses(base);
+				Set<SNClass> categories = typeManager.getSubClasses(base.getObject());
 				for (SemanticNode temp : categories) {
 					list.add(SNClass.from(temp));
 				}
@@ -117,10 +117,10 @@ public class CatalogPanel extends Panel {
 
 	// ------------------------------------------------------
 
-	private void addCategoriesPanel(final String id, final ResourceID type) {
+	private void addCategoriesPanel(final String id, final IModel<ResourceID> type) {
 		Component panel = new CategoriesPanel(id, type){
 			@Override
-			protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+			protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final IModel<ResourceID> base) {
 				return CatalogPanel.this.getAllSubClassesFor(base);
 			}
 
@@ -139,10 +139,10 @@ public class CatalogPanel extends Panel {
 		add(panel);
 	}
 
-	private void addSpecifyingList(final String id, final ResourceID type) {
-		ListView<ResourceNode> list = new ListView<ResourceNode>(id, root) {
+	private void addSpecifyingList(final String id, final IModel<ResourceID> type) {
+		ListView<ResourceID> list = new ListView<ResourceID>(id, root) {
 			@Override
-			protected void populateItem(final ListItem<ResourceNode> item) {
+			protected void populateItem(final ListItem<ResourceID> item) {
 				item.add(new GlasnostTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
 				item.add(createSubListForType("subList", item.getModel()));
 			}
@@ -151,9 +151,9 @@ public class CatalogPanel extends Panel {
 		add(list);
 	}
 
-	private Component createSubListForType(final String id, final IModel<ResourceNode> model) {
+	private Component createSubListForType(final String id, final IModel<ResourceID> model) {
 		// get all nodes of type model and list 'em up
-		IModel<? extends List<ResourceNode>> subClasses = getAllSubClassesFor(model.getObject());
+		IModel<? extends List<ResourceNode>> subClasses = getAllSubClassesFor(model);
 		ListView<ResourceNode> subList = new ListView<ResourceNode>(id,subClasses) {
 			@Override
 			protected void populateItem(final ListItem<ResourceNode> item) {
@@ -176,7 +176,7 @@ public class CatalogPanel extends Panel {
 		return subList;
 	}
 
-	private void addSearchbox(final String string, final ResourceID type) {
+	private void addSearchbox(final String string, final IModel<ResourceID> type) {
 		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
 
 		Form<?> form = new Form<Void>("form");
@@ -194,10 +194,7 @@ public class CatalogPanel extends Panel {
 		add(form);
 	}
 
-	private Component getPicker(final ResourceID type, final Model<ResourceID> model) {
-		List<ResourceID> list = new ArrayList<ResourceID>();
-		findSubclassesFor(type, list);
-
+	private Component getPicker(final IModel<ResourceID> type, final Model<ResourceID> model) {
 		IChoiceRenderer<ResourceID> renderer = new IChoiceRenderer<ResourceID>(){
 			@Override
 			public Object getDisplayValue(final ResourceID object) {
@@ -209,7 +206,7 @@ public class CatalogPanel extends Panel {
 				return String.valueOf(index);
 			}
 		};
-		AutocompleteComponent<ResourceID> picker = new AutocompleteComponent<ResourceID>("searchbox", model, new ListModel<ResourceID>(list), renderer) {
+		AutocompleteComponent<ResourceID> picker = new AutocompleteComponent<ResourceID>("searchbox", model, findSubclassesFor(type), renderer) {
 			@Override
 			public ResourceID getValueOnSearchFail(final String input) {
 				return null;
@@ -219,11 +216,23 @@ public class CatalogPanel extends Panel {
 		return picker;
 	}
 
-	private void findSubclassesFor(final ResourceID resourceID, final List<ResourceID> list) {
-		for (SNClass snClass : typeManager.getSubClasses(resourceID)) {
-			list.add(snClass);
-			findSubclassesFor(snClass, list);
-		}
+	private IModel<List<ResourceID>> findSubclassesFor(final IModel<ResourceID> type) {
+		return new LoadableDetachableModel<List<ResourceID>>() {
+
+			@Override
+			protected List<ResourceID> load() {
+				List<ResourceID> list = new ArrayList<ResourceID>();
+				findSubclasses(type.getObject(), list);
+				return list;
+			}
+
+			private void findSubclasses(final ResourceID type, final List<ResourceID> list){
+				for (SNClass snClass : typeManager.getSubClasses(type)) {
+					list.add(snClass);
+					findSubclasses(snClass, list);
+				}
+			}
+		};
 	}
 
 	private void openDialog(final IModel<ResourceID> model) {
@@ -233,9 +242,9 @@ public class CatalogPanel extends Panel {
 		dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)));
 	}
 
-	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceNode> superClass) {
+	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceID> model) {
 		boolean success = false;
-		int index = root.getObject().indexOf(superClass.getObject());
+		int index = root.getObject().indexOf(model.getObject());
 		while(root.getObject().size() > index+1){
 			root.getObject().remove(index+1);
 		}
