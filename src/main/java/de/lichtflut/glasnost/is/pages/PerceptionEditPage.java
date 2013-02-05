@@ -28,7 +28,7 @@ import de.lichtflut.rb.webck.common.DisplayMode;
  * This page allows you to create or edit {@link Perception}s.
  * </p>
  * Created: Jan 18, 2013
- *
+ * 
  * @author Ravi Knox
  */
 public class PerceptionEditPage extends RBBasePage {
@@ -41,13 +41,14 @@ public class PerceptionEditPage extends RBBasePage {
 	// ------------------------------------------------------
 
 	/**
-	 * Constructor.
-	 * PageParameters might contain
-	 * <ul><li>
-	 * {@link DisplayMode}
-	 * </li><li>
-	 * {@link CommonParams#PARAM_RESOURCE_ID}
-	 * </li><ul>
+	 * Constructor. PageParameters might contain
+	 * <ul>
+	 * <li>
+	 * {@link DisplayMode}</li>
+	 * <li>
+	 * {@link CommonParams#PARAM_RESOURCE_ID}</li>
+	 * <ul>
+	 * 
 	 * @param parameters PageParamter
 	 */
 	public PerceptionEditPage(final PageParameters parameters) {
@@ -58,11 +59,11 @@ public class PerceptionEditPage extends RBBasePage {
 		initPage(model);
 	}
 
-
 	// ------------------------------------------------------
 
 	/**
 	 * Initialize and add page components.
+	 * 
 	 * @param model Model containing the perception
 	 */
 	private void initPage(final IModel<Perception> model) {
@@ -78,12 +79,16 @@ public class PerceptionEditPage extends RBBasePage {
 	 * @return
 	 */
 	private Component createPerceptionEditor(final String id, final IModel<Perception> model) {
-		return new PerceptionEditPanel(id, model){
+		return new PerceptionEditPanel(id, model) {
 			@Override
 			protected void onUpdate(final AjaxRequestTarget target, final Form<?> form) {
-				PageParameters parameters = new PageParameters();
-				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getQualifiedName());
-				setResponsePage(PerceptionDisplayPage.class, parameters);
+				if (null == model.getObject().getID()) {
+					setResponsePage(WelcomePage.class);
+				} else {
+					PageParameters parameters = new PageParameters();
+					parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getQualifiedName());
+					setResponsePage(PerceptionDisplayPage.class, parameters);
+				}
 			}
 
 			@Override
@@ -93,11 +98,12 @@ public class PerceptionEditPage extends RBBasePage {
 		};
 	}
 
-	private IModel<Perception> getPerceptionFromParam(final PageParameters parameters, final IModel<DisplayMode> displayMode) {
+	private IModel<Perception> getPerceptionFromParam(final PageParameters parameters,
+			final IModel<DisplayMode> displayMode) {
 		IModel<Perception> model;
-		if(areEqual(this.displayMode, DisplayMode.CREATE).isFulfilled()){
+		if (areEqual(this.displayMode, DisplayMode.CREATE).isFulfilled()) {
 			model = new Model<Perception>(new Perception());
-		}else{
+		} else {
 			StringValue id = parameters.get(CommonParams.PARAM_RESOURCE_ID);
 			ResourceNode node = networkService.find(new QualifiedName(id.toString()));
 			model = new Model<Perception>(new Perception(node));

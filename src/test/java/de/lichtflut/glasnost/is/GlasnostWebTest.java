@@ -1,22 +1,12 @@
 package de.lichtflut.glasnost.is;
 
-import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
-import de.lichtflut.rb.core.security.AuthModule;
-import de.lichtflut.rb.core.security.AuthenticationService;
-import de.lichtflut.rb.core.security.DomainManager;
-import de.lichtflut.rb.core.security.RBDomain;
-import de.lichtflut.rb.core.services.DomainOrganizer;
-import de.lichtflut.rb.core.services.EntityManager;
-import de.lichtflut.rb.core.services.FileService;
-import de.lichtflut.rb.core.services.SchemaManager;
-import de.lichtflut.rb.core.services.SecurityService;
-import de.lichtflut.rb.core.services.SemanticNetworkService;
-import de.lichtflut.rb.core.services.ServiceContext;
-import de.lichtflut.rb.core.services.TypeManager;
-import de.lichtflut.rb.core.services.ViewSpecificationService;
-import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
-import de.lichtflut.rb.webck.common.RBWebSession;
-import de.lichtflut.rb.webck.config.QueryServicePathBuilder;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.Locale;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
@@ -34,12 +24,23 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Locale;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.rb.core.security.AuthModule;
+import de.lichtflut.rb.core.security.AuthenticationService;
+import de.lichtflut.rb.core.security.DomainManager;
+import de.lichtflut.rb.core.security.RBDomain;
+import de.lichtflut.rb.core.services.DomainOrganizer;
+import de.lichtflut.rb.core.services.EntityManager;
+import de.lichtflut.rb.core.services.FileService;
+import de.lichtflut.rb.core.services.SchemaManager;
+import de.lichtflut.rb.core.services.SecurityService;
+import de.lichtflut.rb.core.services.SemanticNetworkService;
+import de.lichtflut.rb.core.services.ServiceContext;
+import de.lichtflut.rb.core.services.TypeManager;
+import de.lichtflut.rb.core.services.ViewSpecificationService;
+import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
+import de.lichtflut.rb.webck.common.RBWebSession;
+import de.lichtflut.rb.webck.config.QueryServicePathBuilder;
 
 /*
  * Copyright 2012 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
@@ -185,8 +186,16 @@ public abstract class GlasnostWebTest {
 		RBDomain domain = createTestDomain();
 		when(authModule.getDomainManager()).thenReturn(domainManager);
 		when(serviceContext.getDomain()).thenReturn(domain.getQualifiedName().toURI());
-		when(pathBuilder.queryEntities(anyString(), anyString())).thenReturn("some entities");
+		simulatePathbuilder();
 		when(domainManager.findDomain(anyString())).thenReturn(domain);
+	}
+
+	protected void simulatePathbuilder() {
+		when(pathBuilder.queryEntities(anyString(), anyString())).thenReturn("some entities");
+		when(pathBuilder.queryClasses(anyString(), anyString())).thenReturn("some entities");
+		when(pathBuilder.queryProperties(anyString(), anyString())).thenReturn("some entities");
+		when(pathBuilder.queryResources(anyString(), anyString())).thenReturn("some entities");
+		when(pathBuilder.queryUsers(anyString())).thenReturn("some entities");
 	}
 
 	/**

@@ -3,11 +3,17 @@
  */
 package de.lichtflut.glasnost.is;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.Page;
+
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
+import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
 import de.lichtflut.rb.application.RBApplication;
 import de.lichtflut.rb.application.admin.AdminBasePage;
@@ -25,10 +31,6 @@ import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.application.styles.Style;
 import de.lichtflut.rb.core.viewspec.MenuItem;
 import de.lichtflut.rb.webck.components.navigation.NavigationNode;
-import org.apache.wicket.Page;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>
@@ -53,12 +55,12 @@ public class GlasnostWebApplication extends RBApplication {
 		return LoginPage.class;
 	}
 
-    @Override
-    public Class<? extends Page> getEntityDetailPage() {
-        return DevOpsItemPage.class;
-    }
+	@Override
+	public Class<? extends Page> getEntityDetailPage() {
+		return DevOpsItemPage.class;
+	}
 
-    @Override
+	@Override
 	public Layout getLayout() {
 		return new GlasnostLayout();
 	}
@@ -85,7 +87,7 @@ public class GlasnostWebApplication extends RBApplication {
 		mountPage("profile", getUserProfilePage());
 		mountPage("perspective", getPerspectivePage());
 		mountPage("entity", EntityDetailPage.class);
-        mountPage("item", DevOpsItemPage.class);
+		mountPage("item", DevOpsItemPage.class);
 		mountPage("browse", getBrowseAndSearchPage());
 		mountPage("treeview", HierarchyInfoVisPage.class);
 		mountPage("periphery", PeripheryViewPage.class);
@@ -101,17 +103,18 @@ public class GlasnostWebApplication extends RBApplication {
 		mountPage("login", LoginPage.class);
 		mountPage("logout", LogoutPage.class);
 
-        // Glasnost specific
-        mountPage("devops", DevOpsPage.class);
+		// Glasnost specific
+		mountPage("devops", DevOpsPage.class);
 
 	}
 
-    @Override
-    public List<NavigationNode> getFirstLevelNavigation(List<MenuItem> menuItems) {
-        final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
-        nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
-        nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
-        nodes.addAll(super.getFirstLevelNavigation(menuItems));
-        return nodes;
-    }
+	@Override
+	public List<NavigationNode> getFirstLevelNavigation(final List<MenuItem> menuItems) {
+		final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
+		nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
+		nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
+		nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
+		nodes.addAll(super.getFirstLevelNavigation(menuItems));
+		return nodes;
+	}
 }
