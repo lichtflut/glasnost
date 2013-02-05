@@ -18,6 +18,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -28,6 +29,11 @@ import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
+import org.odlabs.wiquery.core.options.AbstractOption;
+import org.odlabs.wiquery.core.options.ArrayItemOptions;
+import org.odlabs.wiquery.core.options.IListItemOption;
+import org.odlabs.wiquery.core.options.IModelOption;
+import org.odlabs.wiquery.ui.autocomplete.AutocompleteSource;
 
 import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.common.SchemaIdentifyingType;
@@ -37,7 +43,7 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
-import de.lichtflut.rb.webck.components.fields.ClassPickerField;
+import de.lichtflut.rb.webck.components.fields.DataPickerField;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -87,7 +93,7 @@ public class CatalogPanel extends Panel {
 		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
 		Form<?> form = new Form<Void>("form");
 		final Model<ResourceID> model = new Model<ResourceID>();
-		form.add(new ClassPickerField("searchbox", model, Model.of(type)));
+		form.add(getPicker(type, model));
 		form.add(new AjaxButton("create") {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
@@ -95,6 +101,36 @@ public class CatalogPanel extends Panel {
 			}
 		});
 		add(form);
+	}
+
+	private Component getPicker(final ResourceID type, final Model<ResourceID> model) {
+		final ArrayItemOptions<IListItemOption> subClasses = new ArrayItemOptions<IListItemOption>();
+
+		find(type, subClasses);
+
+
+		DataPickerField<ResourceID> field = new DataPickerField<ResourceID>("searchbox", model){
+			/**
+			 * {@inheritDoc}
+			 */
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setSource(new AutocompleteSource(subClasses));
+			}
+		};
+		field.setType(ResourceID.class);
+		return field;
+		//		return new ClassPickerField("searchbox", model, Model.of(type));
+	}
+
+	private void find(final ResourceID resourceID, final List<IListItemOption> subClasses) {
+		if(resourceID != null){
+			for (SNClass snClass : typeManager.getSubClasses(resourceID)) {
+				subClasses.add(new Bla(snClass));
+				//				find(snClass, subClasses);
+			}
+		}
 	}
 
 	/**
@@ -209,4 +245,39 @@ public class CatalogPanel extends Panel {
 		return success;
 	}
 
+	// ------------------------------------------------------
+
+	class Bla extends AbstractOption<ResourceID>{
+
+		public Bla(final IModel<ResourceID> value) {
+			super(value);
+			// TODO Auto-generated constructor stub
+		}
+
+		public Bla(final ResourceID value) {
+			super(value);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public ResourceID getValue() {
+			return super.getValue();
+		}
+
+		@Override
+		public String toString()
+		{
+			return new ResourceLabelModel(getModel()).getObject();
+		}
+
+		@Override
+		public IModelOption<ResourceID> wrapOnAssignment(final Component component) {
+			if (getModel() instanceof IComponentAssignedModel< ? >) {
+				return new Bla(
+						((IComponentAssignedModel<ResourceID>) getModel()).wrapOnAssignment(component));
+			}
+			return this;
+		}
+
+	}
 }
