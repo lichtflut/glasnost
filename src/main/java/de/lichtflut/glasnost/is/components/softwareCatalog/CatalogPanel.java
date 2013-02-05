@@ -196,7 +196,7 @@ public class CatalogPanel extends Panel {
 
 	private Component getPicker(final ResourceID type, final Model<ResourceID> model) {
 		List<ResourceID> list = new ArrayList<ResourceID>();
-		find(type, list);
+		findSubclassesFor(type, list);
 
 		IChoiceRenderer<ResourceID> renderer = new IChoiceRenderer<ResourceID>(){
 			@Override
@@ -219,10 +219,10 @@ public class CatalogPanel extends Panel {
 		return picker;
 	}
 
-	private void find(final ResourceID resourceID, final List<ResourceID> list) {
+	private void findSubclassesFor(final ResourceID resourceID, final List<ResourceID> list) {
 		for (SNClass snClass : typeManager.getSubClasses(resourceID)) {
 			list.add(snClass);
-			find(snClass, list);
+			findSubclassesFor(snClass, list);
 		}
 	}
 
