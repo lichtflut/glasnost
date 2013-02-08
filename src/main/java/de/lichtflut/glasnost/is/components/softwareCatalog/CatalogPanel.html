@@ -8,10 +8,14 @@
 		
 		<div id="column-center" class="minimal-height">
 			<div wicket:id="specifyingList" class="common-background">
-				<div wicket:id="itemListTitle"></div>
+				<div class="title-container">
+					<span wicket:id="itemListTitle" class="title">Web Server</span>
+					<div class="entity-menu-extended"><a wicket:id="createLink" href="#"><wicket:message key="label.create" /></a></div>
+				</div>
+				<div  wicket:id="info"></div>
 				<div>
 					<span wicket:id="subList" class="floating-table">
-						<a href="#" wicket:id="subLink"><wicket:container wicket:id="subLabel"></wicket:container></a>
+					<a href="#" wicket:id="subLink"><wicket:container wicket:id="subLabel"></wicket:container></a>
 					</span>
 				</div>
 			</div>

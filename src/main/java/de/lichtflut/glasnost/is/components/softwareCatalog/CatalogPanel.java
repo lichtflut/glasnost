@@ -143,7 +143,15 @@ public class CatalogPanel extends Panel {
 		ListView<ResourceID> list = new ListView<ResourceID>(id, root) {
 			@Override
 			protected void populateItem(final ListItem<ResourceID> item) {
-				item.add(new PanelTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
+				item.add(new Label("itemListTitle", new ResourceLabelModel(item.getModelObject())));
+				item.add(new AjaxLink<Void>("createLink"){
+					@Override
+					public void onClick(final AjaxRequestTarget target) {
+						openDialog(item.getModel());
+					}
+
+				});
+				item.add(new CatalogItemInfoPanel("info", new Model<ResourceNode>(item.getModelObject().asResource())));
 				item.add(createSubListForType("subList", item.getModel()));
 			}
 		};
