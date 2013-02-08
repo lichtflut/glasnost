@@ -9,7 +9,7 @@ import de.lichtflut.glasnost.is.GlasnostWebTest;
 
 /**
  * <p>
- * [TODO Insert description here.]
+ * Testclass for {@link CreatePerceptionsWizzardPanel}.
  * </p>
  * Created: Jan 9, 2013
  *
