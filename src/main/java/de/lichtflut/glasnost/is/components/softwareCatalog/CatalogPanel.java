@@ -32,7 +32,6 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.common.SchemaIdentifyingType;
 import de.lichtflut.rb.core.services.SchemaManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
@@ -40,6 +39,7 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -143,7 +143,7 @@ public class CatalogPanel extends Panel {
 		ListView<ResourceID> list = new ListView<ResourceID>(id, root) {
 			@Override
 			protected void populateItem(final ListItem<ResourceID> item) {
-				item.add(new GlasnostTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
+				item.add(new PanelTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
 				item.add(createSubListForType("subList", item.getModel()));
 			}
 		};
@@ -160,7 +160,7 @@ public class CatalogPanel extends Panel {
 				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-						// nomore subclasses, try to find a schema
+						// no more subclasses, try to find a schema
 						if(typeManager.getSubClasses(item.getModelObject()).isEmpty()){
 							openDialog(new Model<ResourceID>(item.getModelObject()));
 						}
@@ -177,10 +177,11 @@ public class CatalogPanel extends Panel {
 	}
 
 	private void addSearchbox(final String string, final IModel<ResourceID> type) {
-		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
+		add(new PanelTitle("searchbox-title", new ResourceModel("title.searchbox")));
 
 		Form<?> form = new Form<Void>("form");
 		final Model<ResourceID> model = new Model<ResourceID>();
+		// TODO switch to SNClassPicker when inferencing of RDF:Subclass is activated in arastreju
 		form.add(getPicker(type, model));
 		form.add(new AjaxButton("create") {
 			@Override

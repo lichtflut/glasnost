@@ -47,6 +47,7 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 	@Override
 	protected Component createNotePadPanel(final String id, final IModel<ResourceID> model) {
+		// FIXME should appear only with devOps / SoftwareItems
 		SNClass typeOfResource = typeManager.getTypeOfResource(model.getObject());
 		return new CatalogProposalPanel(id, new Model<ResourceID>(typeOfResource));
 	}

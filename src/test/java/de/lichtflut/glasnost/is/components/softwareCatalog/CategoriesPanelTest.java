@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -61,7 +61,7 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 
 		assertRenderedPanel(CategoriesPanel.class, "panel");
 
-		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
+		tester.assertComponent("panel:categoriesTitle", PanelTitle.class);
 		tester.assertListView("panel:categoriesList", Collections.EMPTY_LIST);
 	}
 
@@ -75,7 +75,7 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 
 		assertRenderedPanel(CategoriesPanel.class, "panel");
 
-		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
+		tester.assertComponent("panel:categoriesTitle", PanelTitle.class);
 		tester.assertListView("panel:categoriesList", new ArrayList<SNClass>(superCategories));
 		Iterator<SNClass> iterator = superCategories.iterator();
 		tester.assertComponent("panel:categoriesList:0:link", AbstractLink.class);

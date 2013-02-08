@@ -19,10 +19,10 @@ import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.glasnost.is.data.ResourceSchemaFactory;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 
 /**
  * <p>
@@ -59,7 +59,7 @@ public class CatalogProposalPanelTest extends GlasnostWebTest{
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(CatalogProposalPanel.class, "panel");
-		tester.assertComponent("panel:title", GlasnostTitle.class);
+		tester.assertComponent("panel:title", PanelTitle.class);
 		tester.assertListView("panel:proposals", referencedTypes);
 
 		verify(schemaManager, atLeastOnce()).findSchemaForType(type);

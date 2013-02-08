@@ -24,7 +24,7 @@ import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -85,7 +85,7 @@ public class CatalogPanelTest extends GlasnostWebTest {
 		tester.executeAjaxEvent("panel:categories:categoriesList:0:link", "onclick");
 
 		tester.assertVisible("panel:specifyingList");
-		tester.assertComponent("panel:specifyingList:0:itemListTitle", GlasnostTitle.class);
+		tester.assertComponent("panel:specifyingList:0:itemListTitle", PanelTitle.class);
 		tester.assertVisible("panel:specifyingList:0:subList");
 		tester.assertListView("panel:specifyingList:0:subList", new ArrayList<SNClass>(lvlOneCategories));
 		Iterator<SNClass> iterator = lvlOneCategories.iterator();

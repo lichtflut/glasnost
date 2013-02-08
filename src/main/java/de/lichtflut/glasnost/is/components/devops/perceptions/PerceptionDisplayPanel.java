@@ -15,7 +15,6 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
@@ -24,6 +23,7 @@ import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
 import de.lichtflut.rb.webck.common.DisplayMode;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.entity.VisualizationMode;
 import de.lichtflut.rb.webck.components.fields.FilePreviewLink;
@@ -62,7 +62,7 @@ public class PerceptionDisplayPanel extends TypedPanel<Perception> {
 			throw new IllegalArgumentException("Perception must not be null");
 		}
 
-		add(new GlasnostTitle("title", new StringResourceModel("title", new PropertyModel<String>(model.getObject(), "ID"))));
+		add(new PanelTitle("title", new StringResourceModel("title", new PropertyModel<String>(model.getObject(), "ID"))));
 
 		Form<?> form = new Form<Void>("form");
 

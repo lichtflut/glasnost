@@ -20,10 +20,10 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.core.services.SchemaManager;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -50,7 +50,7 @@ public class CatalogProposalPanel extends Panel {
 	public CatalogProposalPanel(final String id, final IModel<ResourceID> model) {
 		super(id, model);
 
-		add(new GlasnostTitle("title", new ResourceModel("title")));
+		add(new PanelTitle("title", new ResourceModel("title")));
 		addListView("proposals", model);
 	}
 

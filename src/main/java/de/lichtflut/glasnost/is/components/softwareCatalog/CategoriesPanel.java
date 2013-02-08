@@ -25,8 +25,8 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.arastreju.sge.structure.OrderBySerialNumber;
 
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
 import de.lichtflut.rb.core.services.TypeManager;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -91,7 +91,7 @@ public class CategoriesPanel extends Panel {
 	// ------------------------------------------------------
 
 	private void addCategoriesTitle(final String id, final IModel<String> resourceModel) {
-		add(new GlasnostTitle(id, resourceModel));
+		add(new PanelTitle(id, resourceModel));
 	}
 
 	private void createCategoriesList(final String id, final IModel<ResourceID> superclass) {
