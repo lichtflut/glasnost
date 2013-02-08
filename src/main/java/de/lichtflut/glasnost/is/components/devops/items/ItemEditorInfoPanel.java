@@ -2,6 +2,7 @@ package de.lichtflut.glasnost.is.components.devops.items;
 
 import java.util.Set;
 
+import de.lichtflut.rb.core.entity.RBEntity;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -28,21 +29,19 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
  */
 public class ItemEditorInfoPanel extends EntityInfoPanel {
 
-	public ItemEditorInfoPanel(final String id, final IModel<ResourceNode> model) {
-		super(id, model, true);
-
+	public ItemEditorInfoPanel(final String id, final IModel<RBEntity> model) {
+		super(id, model);
 		add(createInheritorInfo("inheritors", model));
-
 	}
 
 	// ----------------------------------------------------
 
-	protected Component createInheritorInfo(final String id, final IModel<ResourceNode> model) {
-		DerivedDetachableModel<String, ResourceNode> labelModel = new DerivedDetachableModel<String, ResourceNode>(model) {
+	protected Component createInheritorInfo(final String id, final IModel<RBEntity> model) {
+		DerivedDetachableModel<String, RBEntity> labelModel = new DerivedDetachableModel<String, RBEntity>(model) {
 			@Override
-			protected String derive(final ResourceNode original) {
+			protected String derive(final RBEntity original) {
 				StringBuilder sb = new StringBuilder();
-				Set<ResourceNode> inheritors = SNOPS.objectsAsResources(original, Aras.INHERITS_FROM);
+				Set<ResourceNode> inheritors = SNOPS.objectsAsResources(original.getNode(), Aras.INHERITS_FROM);
 				boolean first = true;
 				for (ResourceNode inheritor : inheritors) {
 					if (first) {

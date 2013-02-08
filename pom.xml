@@ -237,6 +237,12 @@
                     <artifactId>arastreju-neo4j</artifactId>
                     <scope>test</scope>
                 </dependency>
+                <!-- Include domain model data (RDF+RSF) -->
+                <dependency>
+                    <groupId>de.lichtflut.rh</groupId>
+                    <artifactId>domain-model</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
             </dependencies>
         </profile>
         <profile>

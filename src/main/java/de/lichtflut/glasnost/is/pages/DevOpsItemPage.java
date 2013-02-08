@@ -67,12 +67,7 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 			@Override
 			protected Component createInfoPanel(final String id, final IModel<RBEntity> model) {
-				return new ItemEditorInfoPanel(id, new DerivedDetachableModel<ResourceNode, RBEntity>(model) {
-					@Override
-					protected ResourceNode derive(final RBEntity entity) {
-						return entity.getNode();
-					}
-				});
+				return new ItemEditorInfoPanel(id, model);
 			}
 
 			@Override
