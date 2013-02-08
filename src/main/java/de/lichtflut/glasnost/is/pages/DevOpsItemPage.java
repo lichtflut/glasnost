@@ -6,7 +6,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
-import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
@@ -16,7 +15,6 @@ import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
-import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
  * <p>
