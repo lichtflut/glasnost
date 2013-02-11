@@ -38,7 +38,7 @@ public class CatalogItemInfoPanel extends Panel {
 
 	private void addInfoLabel(final String id, final IModel<ResourceNode> model) {
 		IModel<String> labelModel = getLabelModel(model);
-		add(new Label(id, labelModel));
+		add(new Label(id, labelModel).setEscapeModelStrings(false));
 	}
 
 	private IModel<String> getLabelModel(final IModel<ResourceNode> model) {
@@ -46,7 +46,7 @@ public class CatalogItemInfoPanel extends Panel {
 
 			@Override
 			protected String derive(final ResourceNode original) {
-				SemanticNode node = SNOPS.singleObject(original, RB.HAS_DESCRIPTION);
+				SemanticNode node = SNOPS.fetchObject(original, RB.HAS_DESCRIPTION);
 				String info = CatalogItemInfoPanel.this.getLocalizer().getString("label.no-description",CatalogItemInfoPanel.this);
 				if(null != node && node.isValueNode()){
 					info = node.asValue().getStringValue();

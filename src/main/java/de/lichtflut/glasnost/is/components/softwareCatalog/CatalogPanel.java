@@ -160,7 +160,7 @@ public class CatalogPanel extends Panel {
 	}
 
 	private Component createSubListForType(final String id, final IModel<ResourceID> model) {
-		// get all nodes of type model and list 'em up
+		// get all subclasses type model and list 'em up
 		IModel<? extends List<ResourceNode>> subClasses = getAllSubClassesFor(model);
 		ListView<ResourceNode> subList = new ListView<ResourceNode>(id,subClasses) {
 			@Override
@@ -168,11 +168,7 @@ public class CatalogPanel extends Panel {
 				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-						// no more subclasses, try to find a schema
-						if(typeManager.getSubClasses(item.getModelObject()).isEmpty()){
-							openDialog(new Model<ResourceID>(item.getModelObject()));
-						}
-						else if(addToList(item, model)){
+						if(addToList(item, model)){
 							RBAjaxTarget.add(CatalogPanel.this);
 						}
 					}
@@ -199,7 +195,6 @@ public class CatalogPanel extends Panel {
 				}
 			}
 		});
-
 		add(form);
 	}
 
@@ -221,13 +216,11 @@ public class CatalogPanel extends Panel {
 				return null;
 			}
 		};
-
 		return picker;
 	}
 
 	private IModel<List<ResourceID>> findSubclassesFor(final IModel<ResourceID> type) {
 		return new LoadableDetachableModel<List<ResourceID>>() {
-
 			@Override
 			protected List<ResourceID> load() {
 				List<ResourceID> list = new ArrayList<ResourceID>();
