@@ -1,20 +1,38 @@
 package de.lichtflut.glasnost.is.pages;
 
+import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
+import static de.lichtflut.rb.webck.models.ConditionalModel.or;
+
+import java.util.Set;
+
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.arastreju.sge.SNOPS;
+import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
+import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
 import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
+import de.lichtflut.glasnost.is.dialog.CatalogDialog;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
+import de.lichtflut.rb.core.entity.RBField;
+import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
+import de.lichtflut.rb.webck.components.common.DialogHoster;
+import de.lichtflut.rb.webck.components.notes.NotePadPanel;
+import de.lichtflut.rb.webck.models.ConditionalModel;
 
 /**
  * <p>
@@ -32,6 +50,10 @@ public class DevOpsItemPage extends EntityDetailPage {
 	@SpringBean
 	private TypeManager typeManager;
 
+	@SpringBean
+	private SemanticNetworkService networkService;
+
+
 	// ---------------- Constructor -------------------------
 
 	public DevOpsItemPage(final PageParameters params) {
@@ -39,16 +61,24 @@ public class DevOpsItemPage extends EntityDetailPage {
 	}
 
 	public DevOpsItemPage() {
+		super();
 	}
 
 	// ----------------------------------------------------
 
 	@Override
-	protected Component createNotePadPanel(final String id, final IModel<ResourceID> model) {
-		// FIXME should appear only with devOps / SoftwareItems
+	protected Component createRightSideBar(final String id, final IModel<ResourceID> model) {
+		RepeatingView view = new RepeatingView(id);
+
 		SNClass typeOfResource = typeManager.getTypeOfResource(model.getObject());
-		return new CatalogProposalPanel(id, new Model<ResourceID>(typeOfResource));
+		CatalogProposalPanel proposal = getProposalPanel(id, new Model<ResourceID>(typeOfResource));
+		proposal.add(visibleIf(or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER))));
+
+		view.add(proposal);
+		view.add(new NotePadPanel(view.newChildId(), model));
+		return view;
 	}
+
 	@Override
 	protected Component createBrowser(final String componentID) {
 		return new ResourceBrowsingPanel(componentID) {
@@ -84,4 +114,51 @@ public class DevOpsItemPage extends EntityDetailPage {
 		};
 	}
 
+	// ------------------------------------------------------
+
+	private CatalogProposalPanel getProposalPanel(final String id, final IModel<ResourceID> typeOfResource) {
+		final Component browsingPanel = get(EntityDetailPage.BROWSER_ID);
+		@SuppressWarnings("unchecked")
+		final IModel<RBEntity> entity = (IModel<RBEntity>) browsingPanel.getDefaultModel();
+		return new CatalogProposalPanel(id, entity){
+			@Override
+			protected void applyActions(final AjaxRequestTarget target, final IModel<RBField> field, final IModel<ResourceID> typeConstraint) {
+				DialogHoster hoster = findParent(DialogHoster.class);
+				hoster.openDialog(new CatalogDialog(hoster.getDialogID(), typeConstraint){
+					@Override
+					protected void applyActions(final IModel<RBEntity> model) {
+						field.getObject().addValue(entity.getObject().getID());
+						System.out.println("I JUST c-reated:" + model.getObject());
+
+						RBAjaxTarget.add(browsingPanel);
+					}
+
+				});
+			}
+		};
+	}
+
+	private ConditionalModel<Boolean> isSubclassOf(final IModel<ResourceID> actual, final ResourceID superclass){
+		return new ConditionalModel<Boolean>() {
+
+			@Override
+			public boolean isFulfilled() {
+				//checkif a direct assocciation exists
+				ResourceNode node = actual.getObject().asResource();
+				networkService.attach(node);
+				if (SNOPS.objects(node, RDF.TYPE).contains(superclass)) {
+					return true;
+				}
+
+				// check if a subclass relation exists
+				SNClass type = typeManager.getTypeOfResource(actual.getObject());
+				Set<SNClass> superClasses = typeManager.getSuperClasses(type);
+				if (superClasses.contains(superclass)) {
+					return true;
+				}
+
+				return false;
+			}
+		};
+	}
 }

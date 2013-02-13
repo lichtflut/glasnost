@@ -50,6 +50,11 @@ public interface GIS {
 	 */
 	ResourceID SOFTWARE_ITEM = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "SoftwareItem");
 
+	/**
+	 * A configuration item.
+	 */
+	ResourceID CONFIGURATION_ITEM = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "ConfigurationItem");
+
 	// ----------------------------------------------------
 
 	/**

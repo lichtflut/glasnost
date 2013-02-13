@@ -3,8 +3,6 @@
  */
 package de.lichtflut.glasnost.is.components.softwareCatalog;
 
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -20,6 +18,8 @@ import org.junit.Test;
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.data.ResourceSchemaFactory;
+import de.lichtflut.rb.core.entity.RBEntity;
+import de.lichtflut.rb.core.entity.impl.RBEntityImpl;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
@@ -48,21 +48,19 @@ public class CatalogProposalPanelTest extends GlasnostWebTest{
 	 */
 	@Test
 	public void testCatalogProposalPanel() {
-		IModel<ResourceID> model = new Model<ResourceID>(type);
 		ResourceSchema schema = ResourceSchemaFactory.buildDatatCenter();
+		IModel<RBEntity> entity = new Model<RBEntity>(new RBEntityImpl(new SNResource(), schema));
 		List<ResourceID> referencedTypes = getResourceReferencedTypes(schema);
 
 		when(schemaManager.findSchemaForType(type)).thenReturn(schema);
 
-		CatalogProposalPanel panel = new CatalogProposalPanel("panel", model);
+		CatalogProposalPanel panel = new CatalogProposalPanel("panel", entity);
 
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(CatalogProposalPanel.class, "panel");
 		tester.assertComponent("panel:title", PanelTitle.class);
 		tester.assertListView("panel:proposals", referencedTypes);
-
-		verify(schemaManager, atLeastOnce()).findSchemaForType(type);
 
 	}
 

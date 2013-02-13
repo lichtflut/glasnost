@@ -9,11 +9,9 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 
-import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
-import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
@@ -44,14 +42,12 @@ public class CreateEntityDialog extends AbstractRBDialog {
 		add(new ResourceBrowsingPanel("editor"){
 			@Override
 			protected void onSave(final IModel<RBEntity> model) {
-				super.onSave(model);
-				closeDialog();
+				CreateEntityDialog.this.onSave(model);
 			}
 
 			@Override
 			protected void onCancel() {
-				RBWebSession.get().getHistory().clear(new JumpTarget(SoftwareCatalogPage.class));
-				closeDialog();
+				CreateEntityDialog.this.onCancel();
 			}
 
 		});
@@ -61,7 +57,13 @@ public class CreateEntityDialog extends AbstractRBDialog {
 
 	// ------------------------------------------------------
 
+	protected void onCancel() {
+		closeDialog();
+	}
+
+
 	protected void onSave(final IModel<RBEntity> model) {
+		closeDialog();
 	}
 
 	// ------------------------------------------------------
