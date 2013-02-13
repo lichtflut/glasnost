@@ -1,6 +1,8 @@
 package de.lichtflut.glasnost.is.pages;
 
 import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
+import static de.lichtflut.rb.webck.models.ConditionalModel.and;
+import static de.lichtflut.rb.webck.models.ConditionalModel.isNotNull;
 import static de.lichtflut.rb.webck.models.ConditionalModel.or;
 
 import java.util.Set;
@@ -9,7 +11,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.SNOPS;
@@ -22,6 +24,7 @@ import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
 import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
 import de.lichtflut.glasnost.is.dialog.CatalogDialog;
+import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
@@ -29,7 +32,7 @@ import de.lichtflut.rb.core.entity.RBField;
 import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
-import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
@@ -74,11 +77,17 @@ public class DevOpsItemPage extends EntityDetailPage {
 	protected Component createRightSideBar(final String id, final IModel<ResourceID> model) {
 		RepeatingView view = new RepeatingView(id);
 
-		SNClass typeOfResource = typeManager.getTypeOfResource(model.getObject());
-		CatalogProposalPanel proposal = getProposalPanel(id, new Model<ResourceID>(typeOfResource));
-		proposal.add(visibleIf(or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER))));
+		LoadableDetachableModel<ResourceID> type = new LoadableDetachableModel<ResourceID>() {
+			@Override
+			protected ResourceID load() {
+				return typeManager.getTypeOfResource(model.getObject());
+			}
+		};
+		CatalogProposalPanel proposal = getProposalPanel(view.newChildId(), type);
+		proposal.add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
 
 		view.add(proposal);
+
 		view.add(new NotePadPanel(view.newChildId(), model));
 		return view;
 	}
@@ -137,11 +146,15 @@ public class DevOpsItemPage extends EntityDetailPage {
 				hoster.openDialog(new CatalogDialog(hoster.getDialogID(), typeConstraint){
 					@Override
 					protected void applyActions(final IModel<RBEntity> model) {
-						System.out.println("I JUST c-reated:" + model.getObject());
 						entity.getObject().getField(field.getObject().getPredicate()).addValue(model.getObject().getID());
+
 						entityManager.store(model.getObject());
 						entityManager.store(entity.getObject());
-						RBAjaxTarget.add(browsingPanel);
+
+						PageParameters parameters = new PageParameters();
+						parameters.add(CommonParams.PARAM_RESOURCE_ID, entity.getObject().getID());
+						parameters.add(DisplayMode.PARAMETER, DisplayMode.EDIT);
+						setResponsePage(DevOpsItemPage.class, parameters);
 					}
 
 				});

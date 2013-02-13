@@ -41,10 +41,14 @@ public class CatalogDialog extends AbstractRBDialog {
 
 			@Override
 			protected void onCancel() {
+				CatalogDialog.this.closeDialog();
 				RBWebSession.get().getHistory().clear(getJumpTarget());
 			}
 		});
 		setTitle(new StringResourceModel("dialog.title", new Model<String>(), new ResourceLabelModel(superclass)));
+		setModal(true);
+		setWidth(850);
+		setHeight(600);
 	}
 
 	// ------------------------------------------------------

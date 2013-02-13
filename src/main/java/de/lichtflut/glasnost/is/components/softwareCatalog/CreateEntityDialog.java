@@ -58,12 +58,10 @@ public class CreateEntityDialog extends AbstractRBDialog {
 	// ------------------------------------------------------
 
 	protected void onCancel() {
-		closeDialog();
 	}
 
 
 	protected void onSave(final IModel<RBEntity> model) {
-		closeDialog();
 	}
 
 	// ------------------------------------------------------

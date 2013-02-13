@@ -32,16 +32,13 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
-import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.rb.core.common.SchemaIdentifyingType;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.SchemaManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
-import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
-import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.ConditionalModel;
@@ -130,7 +127,6 @@ public class CatalogPanel extends Panel {
 	 * Triggered when user cancels the creation of an entity.
 	 */
 	protected void onCancel() {
-		RBWebSession.get().getHistory().clear(new JumpTarget(SoftwareCatalogPage.class));
 	}
 
 	// ------------------------------------------------------
@@ -262,12 +258,13 @@ public class CatalogPanel extends Panel {
 		dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)){
 			@Override
 			protected void onSave(final IModel<RBEntity> model) {
-				super.onSave(model);
+				closeDialog();
 				CatalogPanel.this.applyActions(model);
 			}
 
 			@Override
 			protected void onCancel() {
+				closeDialog();
 				CatalogPanel.this.onCancel();
 			}
 		});
