@@ -3,6 +3,8 @@
  */
 package de.lichtflut.glasnost.is.components.softwareCatalog;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -49,7 +51,7 @@ public class CreateEntityDialog extends AbstractRBDialog {
 			}
 
 			@Override
-			protected void onCancel() {
+			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
 				RBWebSession.get().getHistory().clear(new JumpTarget(SoftwareCatalogPage.class));
 				closeDialog();
 			}
