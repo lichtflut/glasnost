@@ -26,9 +26,11 @@ import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.entity.RBField;
+import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.notes.NotePadPanel;
@@ -53,6 +55,8 @@ public class DevOpsItemPage extends EntityDetailPage {
 	@SpringBean
 	private SemanticNetworkService networkService;
 
+	@SpringBean
+	private EntityManager entityManager;
 
 	// ---------------- Constructor -------------------------
 
@@ -111,6 +115,12 @@ public class DevOpsItemPage extends EntityDetailPage {
 			@Override
 			protected void onSave(final IModel<RBEntity> model) {
 			}
+
+			@Override
+			protected void onCancel() {
+				RBWebSession.get().getHistory().back();
+				setResponsePage(DevOpsItemPage.class, DevOpsItemPage.this.getPageParameters());
+			}
 		};
 	}
 
@@ -127,9 +137,10 @@ public class DevOpsItemPage extends EntityDetailPage {
 				hoster.openDialog(new CatalogDialog(hoster.getDialogID(), typeConstraint){
 					@Override
 					protected void applyActions(final IModel<RBEntity> model) {
-						field.getObject().addValue(entity.getObject().getID());
 						System.out.println("I JUST c-reated:" + model.getObject());
-
+						entity.getObject().getField(field.getObject().getPredicate()).addValue(model.getObject().getID());
+						entityManager.store(model.getObject());
+						entityManager.store(entity.getObject());
 						RBAjaxTarget.add(browsingPanel);
 					}
 
