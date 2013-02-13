@@ -126,7 +126,7 @@ public class CatalogPanel extends Panel {
 	/**
 	 * Triggered when user cancels the creation of an entity.
 	 */
-	protected void onCancel() {
+	protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
 	}
 
 	// ------------------------------------------------------
@@ -263,9 +263,9 @@ public class CatalogPanel extends Panel {
 			}
 
 			@Override
-			protected void onCancel() {
+			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
 				closeDialog();
-				CatalogPanel.this.onCancel();
+				CatalogPanel.this.onCancel(target, form);
 			}
 		});
 	}

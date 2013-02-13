@@ -3,6 +3,8 @@
  */
 package de.lichtflut.glasnost.is.dialog;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -40,15 +42,13 @@ public class CatalogDialog extends AbstractRBDialog {
 			}
 
 			@Override
-			protected void onCancel() {
-				CatalogDialog.this.closeDialog();
+			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+				closeDialog();
 				RBWebSession.get().getHistory().clear(getJumpTarget());
 			}
 		});
 		setTitle(new StringResourceModel("dialog.title", new Model<String>(), new ResourceLabelModel(superclass)));
-		setModal(true);
-		setWidth(850);
-		setHeight(600);
+		setModal(true).setWidth(850).setHeight(600);
 	}
 
 	// ------------------------------------------------------

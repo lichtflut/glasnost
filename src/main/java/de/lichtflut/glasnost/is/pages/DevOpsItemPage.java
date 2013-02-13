@@ -33,7 +33,6 @@ import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.common.DisplayMode;
-import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.notes.NotePadPanel;
@@ -121,15 +120,6 @@ public class DevOpsItemPage extends EntityDetailPage {
 				return super.createClassifyPanel(id, model);
 			}
 
-			@Override
-			protected void onSave(final IModel<RBEntity> model) {
-			}
-
-			@Override
-			protected void onCancel() {
-				RBWebSession.get().getHistory().back();
-				setResponsePage(DevOpsItemPage.class, DevOpsItemPage.this.getPageParameters());
-			}
 		};
 	}
 
