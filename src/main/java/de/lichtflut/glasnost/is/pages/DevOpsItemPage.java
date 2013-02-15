@@ -1,14 +1,11 @@
 package de.lichtflut.glasnost.is.pages;
 
-import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
-import static de.lichtflut.rb.webck.models.ConditionalModel.and;
-import static de.lichtflut.rb.webck.models.ConditionalModel.isNotNull;
-import static de.lichtflut.rb.webck.models.ConditionalModel.or;
-
 import java.util.Set;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -20,22 +17,22 @@ import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
-import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
 import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
 import de.lichtflut.glasnost.is.dialog.CatalogDialog;
-import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
-import de.lichtflut.rb.core.entity.RBField;
+import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
-import de.lichtflut.rb.webck.common.DisplayMode;
+import de.lichtflut.rb.webck.browsing.EntityAttributeApplyAction;
+import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.notes.NotePadPanel;
+import de.lichtflut.rb.webck.events.ModelChangeEvent;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 
 /**
@@ -83,7 +80,8 @@ public class DevOpsItemPage extends EntityDetailPage {
 			}
 		};
 		CatalogProposalPanel proposal = getProposalPanel(view.newChildId(), type);
-		proposal.add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
+		// TODO set only visibility if Viewstate x or y
+		//		proposal.add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
 
 		view.add(proposal);
 
@@ -119,7 +117,6 @@ public class DevOpsItemPage extends EntityDetailPage {
 			protected Component createClassifyPanel(final String id, final IModel<RBEntity> model) {
 				return super.createClassifyPanel(id, model);
 			}
-
 		};
 	}
 
@@ -127,26 +124,36 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 	private CatalogProposalPanel getProposalPanel(final String id, final IModel<ResourceID> typeOfResource) {
 		final Component browsingPanel = get(EntityDetailPage.BROWSER_ID);
-		@SuppressWarnings("unchecked")
-		final IModel<RBEntity> entity = (IModel<RBEntity>) browsingPanel.getDefaultModel();
-		return new CatalogProposalPanel(id, entity){
+		IModel<ResourceID> type = new LoadableDetachableModel<ResourceID>() {
+
 			@Override
-			protected void applyActions(final AjaxRequestTarget target, final IModel<RBField> field, final IModel<ResourceID> typeConstraint) {
+			protected ResourceID load() {
+				@SuppressWarnings("unchecked")
+				final IModel<RBEntity> entity = (IModel<RBEntity>) browsingPanel.getDefaultModel();
+				if(entity.getObject() != null){
+					return entity.getObject().getType();
+				}
+				return null;
+			}
+		};
+		return new CatalogProposalPanel(id, type){
+			@Override
+			protected void applyActions(final AjaxRequestTarget target, final IModel<PropertyDeclaration> decl, final IModel<ResourceID> typeConstraint) {
 				DialogHoster hoster = findParent(DialogHoster.class);
 				hoster.openDialog(new CatalogDialog(hoster.getDialogID(), typeConstraint){
 					@Override
-					protected void applyActions(final IModel<RBEntity> model) {
-						entity.getObject().getField(field.getObject().getPredicate()).addValue(model.getObject().getID());
-
-						entityManager.store(model.getObject());
-						entityManager.store(entity.getObject());
-
-						PageParameters parameters = new PageParameters();
-						parameters.add(CommonParams.PARAM_RESOURCE_ID, entity.getObject().getID());
-						parameters.add(DisplayMode.PARAMETER, DisplayMode.EDIT);
-						setResponsePage(DevOpsItemPage.class, parameters);
+					protected void applyActions(final IModel<ResourceID> model) {
+						((ResourceBrowsingPanel) browsingPanel).submitForm();
+						EntityAttributeApplyAction action = new EntityAttributeApplyAction((RBEntity) browsingPanel.getDefaultModelObject(), decl.getObject().getPropertyDescriptor());
+						EntityHandle handle = EntityHandle.forType(typeConstraint.getObject());
+						RBWebSession.get().getHistory().createReference(handle, action);
+						Page page = getPage();
+						send(page, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.ENTITY));
+						send(page, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.RELATIONSHIP));
+						de.lichtflut.glasnost.is.events.ModelChangeEvent<ResourceID> mce = new de.lichtflut.glasnost.is.events.ModelChangeEvent<ResourceID>(typeConstraint.getObject(), de.lichtflut.glasnost.is.events.ModelChangeEvent.PROPOSAL_UPDATE);
+						send(getPage(), Broadcast.BREADTH, mce);
+						closeDialog();
 					}
-
 				});
 			}
 		};
@@ -157,6 +164,9 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 			@Override
 			public boolean isFulfilled() {
+				if(null == actual.getObject()){
+					return false;
+				}
 				//checkif a direct assocciation exists
 				ResourceNode node = actual.getObject().asResource();
 				networkService.attach(node);

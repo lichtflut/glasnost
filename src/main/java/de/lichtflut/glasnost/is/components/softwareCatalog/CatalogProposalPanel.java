@@ -9,12 +9,12 @@ import java.util.Set;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -23,13 +23,15 @@ import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.rb.core.entity.RBEntity;
-import de.lichtflut.rb.core.entity.RBField;
+import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.rb.core.schema.model.Datatype;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
+import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.core.services.SchemaManager;
 import de.lichtflut.rb.core.services.TypeManager;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
+import de.lichtflut.rb.webck.models.basic.DerivedModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -48,6 +50,8 @@ public class CatalogProposalPanel extends Panel {
 	@SpringBean
 	private TypeManager typeManager;
 
+	private final IModel<ResourceID> type;
+
 	// ---------------- Constructor -------------------------
 
 	/**
@@ -56,14 +60,27 @@ public class CatalogProposalPanel extends Panel {
 	 * @param id Component id
 	 * @param model {@link IModel} containing the type
 	 */
-	public CatalogProposalPanel(final String id, final IModel<RBEntity> model) {
-		super(id, model);
-
+	public CatalogProposalPanel(final String id, final IModel<ResourceID> model) {
+		super(id);
+		type = model;
 		add(new PanelTitle("title", new ResourceModel("title")));
-		addListView("proposals", model);
+
+		addListView("proposals", getSchemaFor(type));
+
+		setOutputMarkupId(true);
 	}
 
 	// ------------------------------------------------------
+
+	private IModel<ResourceSchema> getSchemaFor(final IModel<ResourceID> model) {
+		// TODO switch to loadableModel
+		return new DerivedModel<ResourceSchema, ResourceID>(model) {
+			@Override
+			protected ResourceSchema derive(final ResourceID original) {
+				return schemaManager.findSchemaForType(model.getObject());
+			}
+		};
+	}
 
 	/**
 	 * @return a List containing all (super)types, that a {@link PropertyDeclaration} can  reference to, in order to get a proposal entry.
@@ -74,45 +91,43 @@ public class CatalogProposalPanel extends Panel {
 		return list;
 	}
 
-	protected void applyActions(final AjaxRequestTarget target, final IModel<RBField> field, final IModel<ResourceID> typeConstraint) {
+	protected void applyActions(final AjaxRequestTarget target, final IModel<PropertyDeclaration> decl, final IModel<ResourceID> typeConstraint) {
 	}
 
 	// ------------------------------------------------------
 
-	private void addListView(final String id, final IModel<RBEntity> model) {
-		ListView<RBField> view = new ListView<RBField>(id, getReferencedTypes(model)) {
-
+	private void addListView(final String id, final IModel<ResourceSchema> model) {
+		ListView<PropertyDeclaration> view = new ListView<PropertyDeclaration>(id, getReferencedTypes(model)) {
 			@Override
-			protected void populateItem(final ListItem<RBField> item) {
+			protected void populateItem(final ListItem<PropertyDeclaration> item) {
 				AjaxLink<Void> link = new AjaxLink<Void>("link") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-						IModel<RBField> field = item.getModel();
-						IModel<ResourceID> typeConstraint = Model.of(field.getObject().getConstraint().getTypeConstraint());
+						IModel<PropertyDeclaration> field = item.getModel();
+						ResourceID constraint = field.getObject().getConstraint().getTypeConstraint();
+						IModel<ResourceID> typeConstraint = Model.of(constraint);
 						CatalogProposalPanel.this.applyActions(target, field, typeConstraint);
 					}
 				};
-				ResourceLabelModel labelModel = new ResourceLabelModel(item.getModel().getObject().getPredicate());
+				ResourceLabelModel labelModel = new ResourceLabelModel(item.getModel().getObject().getPropertyDescriptor());
 				link.add(new Label("linkLabel", new StringResourceModel("link.label", new Model<String>(), labelModel)));
 				item.add(link);
 			}
 
 		};
+
 		add(view);
 	}
 
-	private IModel<List<RBField>> getReferencedTypes(final IModel<RBEntity> model) {
-		return new LoadableDetachableModel<List<RBField>>() {
+	private IModel<List<PropertyDeclaration>> getReferencedTypes(final IModel<ResourceSchema> model) {
+		// TODO switch to loadableModel
+		return new DerivedModel<List<PropertyDeclaration>, ResourceSchema>(model) {
 			@Override
-			protected List<RBField> load() {
-				return getResourceReferencedTypes(model);
-			}
-
-			private List<RBField> getResourceReferencedTypes(final IModel<RBEntity> model) {
-				List<RBField> referencedTypes = new ArrayList<RBField>();
-				for (RBField field : model.getObject().getAllFields()) {
-					if(checkForAcceptedTypeReference(field)){
-						referencedTypes.add(field);
+			protected List<PropertyDeclaration> derive(final ResourceSchema original) {
+				List<PropertyDeclaration> referencedTypes = new ArrayList<PropertyDeclaration>();
+				for (PropertyDeclaration decl: model.getObject().getPropertyDeclarations()) {
+					if(checkForAcceptedTypeReference(decl)){
+						referencedTypes.add(decl);
 					}
 				}
 				return referencedTypes;
@@ -120,14 +135,14 @@ public class CatalogProposalPanel extends Panel {
 		};
 	}
 
-	private boolean checkForAcceptedTypeReference(final RBField field) {
-		if(!Datatype.RESOURCE.name().equals(field.getDataType().name())){
+	private boolean checkForAcceptedTypeReference(final PropertyDeclaration decl) {
+		if(!Datatype.RESOURCE.name().equals(decl.getDatatype().name())){
 			return false;
 		}
-		if(null == field.getConstraint().getTypeConstraint()){
+		if(null == decl.getConstraint().getTypeConstraint()){
 			return false;
 		}
-		ResourceID constraint = field.getConstraint().getTypeConstraint();
+		ResourceID constraint = decl.getConstraint().getTypeConstraint();
 		if(getAcceptableSuperclasses().contains(constraint)){
 			return true;
 		}
@@ -139,4 +154,18 @@ public class CatalogProposalPanel extends Panel {
 		return false;
 	}
 
+	// ------------------------------------------------------
+
+	@Override
+	public void onEvent(final IEvent<?> event) {
+		ModelChangeEvent<Object> mce = ModelChangeEvent.from(event);
+		if(mce.isAbout(ModelChangeEvent.PROPOSAL_UPDATE)){
+			type.setObject((ResourceID)mce.getPayload());
+			event.stop();
+			@SuppressWarnings("unchecked")
+			ListView<PropertyDeclaration> view = (ListView<PropertyDeclaration>)get("proposals");
+			view.removeAll();
+			RBAjaxTarget.add(CatalogProposalPanel.this);
+		}
+	}
 }

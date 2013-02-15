@@ -26,6 +26,7 @@ import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
  * 
  * @author Ravi Knox
  */
+// TODO DELETE CLASS
 public class CreateEntityDialog extends AbstractRBDialog {
 
 	@SpringBean

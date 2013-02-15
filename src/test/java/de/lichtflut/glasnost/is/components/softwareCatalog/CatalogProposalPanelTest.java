@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.nodes.ResourceNode;
@@ -18,8 +17,6 @@ import org.junit.Test;
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.data.ResourceSchemaFactory;
-import de.lichtflut.rb.core.entity.RBEntity;
-import de.lichtflut.rb.core.entity.impl.RBEntityImpl;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
@@ -49,12 +46,11 @@ public class CatalogProposalPanelTest extends GlasnostWebTest{
 	@Test
 	public void testCatalogProposalPanel() {
 		ResourceSchema schema = ResourceSchemaFactory.buildDatatCenter();
-		IModel<RBEntity> entity = new Model<RBEntity>(new RBEntityImpl(new SNResource(), schema));
 		List<ResourceID> referencedTypes = getResourceReferencedTypes(schema);
 
 		when(schemaManager.findSchemaForType(type)).thenReturn(schema);
 
-		CatalogProposalPanel panel = new CatalogProposalPanel("panel", entity);
+		CatalogProposalPanel panel = new CatalogProposalPanel("panel", Model.of(GIS.DATA_CENTER));
 
 		tester.startComponentInPage(panel);
 

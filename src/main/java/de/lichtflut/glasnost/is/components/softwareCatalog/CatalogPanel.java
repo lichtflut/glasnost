@@ -120,13 +120,21 @@ public class CatalogPanel extends Panel {
 	 * Execute further operations on the newly created entity(e.g. manually create references).
 	 */
 	protected void applyActions(final IModel<RBEntity> model) {
-
+		// FIXME propably delete after CreateEntityDialog is gone...
 	}
 
 	/**
 	 * Triggered when user cancels the creation of an entity.
 	 */
 	protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+	}
+
+	/**
+	 * Specify behavior when 'create'-link is clicked.
+	 * @param model IModel containing the selected type
+	 */
+	protected void applyAction(final IModel<ResourceID> model) {
+		openDialog(model);
 	}
 
 	// ------------------------------------------------------
@@ -161,9 +169,9 @@ public class CatalogPanel extends Panel {
 				item.add(new AjaxLink<Void>("createLink"){
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-						openDialog(item.getModel());
+						IModel<ResourceID> model = item.getModel();
+						applyAction(model);
 					}
-
 				});
 				item.add(new CatalogItemInfoPanel("info", new Model<ResourceNode>(item.getModelObject().asResource())));
 				item.add(createSubListForType("subList", item.getModel()));

@@ -12,7 +12,6 @@ import org.arastreju.sge.model.ResourceID;
 
 import de.lichtflut.glasnost.is.GlasnostWebApplication;
 import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogPanel;
-import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
@@ -37,14 +36,14 @@ public class CatalogDialog extends AbstractRBDialog {
 		super(id);
 		add(new CatalogPanel("catalog", superclass){
 			@Override
-			protected void applyActions(final IModel<RBEntity> model) {
-				CatalogDialog.this.applyActions(model);
-			}
-
-			@Override
 			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
 				closeDialog();
 				RBWebSession.get().getHistory().clear(getJumpTarget());
+			}
+
+			@Override
+			protected void applyAction(final IModel<ResourceID> model) {
+				CatalogDialog.this.applyActions(model);
 			}
 		});
 		setTitle(new StringResourceModel("dialog.title", new Model<String>(), new ResourceLabelModel(superclass)));
@@ -53,15 +52,12 @@ public class CatalogDialog extends AbstractRBDialog {
 
 	// ------------------------------------------------------
 
+	protected void applyActions(final IModel<ResourceID> model) {
+
+	}
+
 	protected JumpTarget getJumpTarget() {
 		return new JumpTarget(GlasnostWebApplication.get().getBrowseAndSearchPage());
 	}
-
-	/**
-	 * Execute further operations on the newly created entity(e.g. manually create references).
-	 */
-	protected void applyActions(final IModel<RBEntity> model) {
-	}
-
 
 }
