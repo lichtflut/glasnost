@@ -110,6 +110,13 @@ public class DevOpsItemPage extends EntityDetailPage {
 			protected Component createClassifyPanel(final String id, final IModel<RBEntity> model) {
 				return super.createClassifyPanel(id, model);
 			}
+
+			//TODO set response Page
+			//			@Override
+			//			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+			//				RBWebSession.get().getHistory().back();
+			//				setResponsePage(DevOpsItemPage.class, DevOpsItemPage.this.getPageParameters());
+			//			}
 		};
 	}
 

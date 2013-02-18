@@ -32,14 +32,11 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
-import de.lichtflut.rb.core.common.SchemaIdentifyingType;
-import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.SchemaManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
-import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
@@ -117,13 +114,6 @@ public class CatalogPanel extends Panel {
 	}
 
 	/**
-	 * Execute further operations on the newly created entity(e.g. manually create references).
-	 */
-	protected void applyActions(final IModel<RBEntity> model) {
-		// FIXME propably delete after CreateEntityDialog is gone...
-	}
-
-	/**
 	 * Triggered when user cancels the creation of an entity.
 	 */
 	protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
@@ -134,7 +124,6 @@ public class CatalogPanel extends Panel {
 	 * @param model IModel containing the selected type
 	 */
 	protected void applyAction(final IModel<ResourceID> model) {
-		openDialog(model);
 	}
 
 	// ------------------------------------------------------
@@ -213,7 +202,7 @@ public class CatalogPanel extends Panel {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				if(null != model.getObject()) {
-					openDialog(model);
+					CatalogPanel.this.applyAction(model);
 				}
 			}
 		});
@@ -257,25 +246,6 @@ public class CatalogPanel extends Panel {
 				}
 			}
 		};
-	}
-
-	private void openDialog(final IModel<ResourceID> model) {
-		ResourceNode node = networkService.find(model.getObject().getQualifiedName());
-		SNClass identifyingType = SchemaIdentifyingType.of(node);
-		final DialogHoster dialogHoster = findParent(DialogHoster.class);
-		dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)){
-			@Override
-			protected void onSave(final IModel<RBEntity> model) {
-				closeDialog();
-				CatalogPanel.this.applyActions(model);
-			}
-
-			@Override
-			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
-				closeDialog();
-				CatalogPanel.this.onCancel(target, form);
-			}
-		});
 	}
 
 	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceID> model) {
