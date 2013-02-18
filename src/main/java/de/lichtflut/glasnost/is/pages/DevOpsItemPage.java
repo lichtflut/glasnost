@@ -6,6 +6,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -82,7 +83,6 @@ public class DevOpsItemPage extends EntityDetailPage {
 		CatalogProposalPanel proposal = getProposalPanel(view.newChildId(), type);
 		// TODO set only visibility if Viewstate x or y
 		//		proposal.add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
-
 		view.add(proposal);
 
 		view.add(new NotePadPanel(view.newChildId(), model));
@@ -123,19 +123,19 @@ public class DevOpsItemPage extends EntityDetailPage {
 	// ------------------------------------------------------
 
 	private CatalogProposalPanel getProposalPanel(final String id, final IModel<ResourceID> typeOfResource) {
-		final Component browsingPanel = get(EntityDetailPage.BROWSER_ID);
 		IModel<ResourceID> type = new LoadableDetachableModel<ResourceID>() {
 
 			@Override
 			protected ResourceID load() {
 				@SuppressWarnings("unchecked")
-				final IModel<RBEntity> entity = (IModel<RBEntity>) browsingPanel.getDefaultModel();
+				final IModel<RBEntity> entity = (IModel<RBEntity>) getBrowsingPanel().getDefaultModel();
 				if(entity.getObject() != null){
 					return entity.getObject().getType();
 				}
 				return null;
 			}
 		};
+
 		return new CatalogProposalPanel(id, type){
 			@Override
 			protected void applyActions(final AjaxRequestTarget target, final IModel<PropertyDeclaration> decl, final IModel<ResourceID> typeConstraint) {
@@ -143,20 +143,37 @@ public class DevOpsItemPage extends EntityDetailPage {
 				hoster.openDialog(new CatalogDialog(hoster.getDialogID(), typeConstraint){
 					@Override
 					protected void applyActions(final IModel<ResourceID> model) {
-						((ResourceBrowsingPanel) browsingPanel).submitForm();
-						EntityAttributeApplyAction action = new EntityAttributeApplyAction((RBEntity) browsingPanel.getDefaultModelObject(), decl.getObject().getPropertyDescriptor());
+						setBrowingStep(decl, typeConstraint);
+						sendEvents(typeConstraint);
+						closeDialog();
+					}
+
+					private void setBrowingStep(final IModel<PropertyDeclaration> decl,
+							final IModel<ResourceID> typeConstraint) {
+						EntityAttributeApplyAction action = new EntityAttributeApplyAction((RBEntity) getBrowsingPanel().getDefaultModelObject(), decl.getObject().getPropertyDescriptor());
 						EntityHandle handle = EntityHandle.forType(typeConstraint.getObject());
 						RBWebSession.get().getHistory().createReference(handle, action);
+					}
+
+					private void sendEvents(final IModel<ResourceID> typeConstraint) {
 						Page page = getPage();
 						send(page, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.ENTITY));
 						send(page, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.RELATIONSHIP));
 						de.lichtflut.glasnost.is.events.ModelChangeEvent<ResourceID> mce = new de.lichtflut.glasnost.is.events.ModelChangeEvent<ResourceID>(typeConstraint.getObject(), de.lichtflut.glasnost.is.events.ModelChangeEvent.PROPOSAL_UPDATE);
 						send(getPage(), Broadcast.BREADTH, mce);
-						closeDialog();
 					}
 				});
 			}
+
+			@Override
+			protected Form<?> getExternalForm() {
+				return getBrowsingPanel().getForm();
+			}
 		};
+	}
+
+	private ResourceBrowsingPanel getBrowsingPanel() {
+		return (ResourceBrowsingPanel) get(EntityDetailPage.BROWSER_ID);
 	}
 
 	private ConditionalModel<Boolean> isSubclassOf(final IModel<ResourceID> actual, final ResourceID superclass){

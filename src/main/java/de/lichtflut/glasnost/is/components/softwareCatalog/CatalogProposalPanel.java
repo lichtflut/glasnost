@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -73,7 +74,6 @@ public class CatalogProposalPanel extends Panel {
 	// ------------------------------------------------------
 
 	private IModel<ResourceSchema> getSchemaFor(final IModel<ResourceID> model) {
-		// TODO switch to loadableModel
 		return new DerivedModel<ResourceSchema, ResourceID>(model) {
 			@Override
 			protected ResourceSchema derive(final ResourceID original) {
@@ -100,14 +100,15 @@ public class CatalogProposalPanel extends Panel {
 		ListView<PropertyDeclaration> view = new ListView<PropertyDeclaration>(id, getReferencedTypes(model)) {
 			@Override
 			protected void populateItem(final ListItem<PropertyDeclaration> item) {
-				AjaxLink<Void> link = new AjaxLink<Void>("link") {
+				AjaxSubmitLink link = new AjaxSubmitLink("link", getExternalForm()) {
 					@Override
-					public void onClick(final AjaxRequestTarget target) {
+					protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 						IModel<PropertyDeclaration> field = item.getModel();
 						ResourceID constraint = field.getObject().getConstraint().getTypeConstraint();
 						IModel<ResourceID> typeConstraint = Model.of(constraint);
 						CatalogProposalPanel.this.applyActions(target, field, typeConstraint);
 					}
+
 				};
 				ResourceLabelModel labelModel = new ResourceLabelModel(item.getModel().getObject().getPropertyDescriptor());
 				link.add(new Label("linkLabel", new StringResourceModel("link.label", new Model<String>(), labelModel)));
@@ -119,8 +120,11 @@ public class CatalogProposalPanel extends Panel {
 		add(view);
 	}
 
+	protected Form<?> getExternalForm() {
+		return null;
+	}
+
 	private IModel<List<PropertyDeclaration>> getReferencedTypes(final IModel<ResourceSchema> model) {
-		// TODO switch to loadableModel
 		return new DerivedModel<List<PropertyDeclaration>, ResourceSchema>(model) {
 			@Override
 			protected List<PropertyDeclaration> derive(final ResourceSchema original) {
@@ -161,10 +165,6 @@ public class CatalogProposalPanel extends Panel {
 		ModelChangeEvent<Object> mce = ModelChangeEvent.from(event);
 		if(mce.isAbout(ModelChangeEvent.PROPOSAL_UPDATE)){
 			type.setObject((ResourceID)mce.getPayload());
-			event.stop();
-			@SuppressWarnings("unchecked")
-			ListView<PropertyDeclaration> view = (ListView<PropertyDeclaration>)get("proposals");
-			view.removeAll();
 			RBAjaxTarget.add(CatalogProposalPanel.this);
 		}
 	}
