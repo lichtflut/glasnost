@@ -106,9 +106,11 @@ public class ResourceSchemaFactory {
 
 		PropertyDeclaration hostMachine = new PropertyDeclarationImpl(GISTestConstants.HAS_HOST_MACHINE, Datatype.RESOURCE);
 		hostMachine.setConstraint(ConstraintsFactory.buildTypeConstraint(GISTestConstants.PHYSICAL_MACHINE));
+		schema.addPropertyDeclaration(hostMachine);
 
 		PropertyDeclaration inheritsFrom = new PropertyDeclarationImpl(GIS.DATA_CENTER, Datatype.RESOURCE);
 		inheritsFrom.setConstraint(ConstraintsFactory.buildTypeConstraint(GIS.DATA_CENTER));
+		schema.addPropertyDeclaration(inheritsFrom);
 
 		return schema;
 	}

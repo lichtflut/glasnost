@@ -4,6 +4,9 @@
 package de.lichtflut.glasnost.is.components.softwareCatalog;
 
 import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
+import static de.lichtflut.rb.webck.models.ConditionalModel.and;
+import static de.lichtflut.rb.webck.models.ConditionalModel.isEmpty;
+import static de.lichtflut.rb.webck.models.ConditionalModel.not;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +25,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.arastreju.sge.SNOPS;
-import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.model.ResourceID;
-import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.GIS;
@@ -39,7 +39,6 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.BrowsingContextModel;
-import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.basic.DerivedModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -77,7 +76,7 @@ public class CatalogProposalPanel extends Panel {
 		type = model;
 		add(new PanelTitle("title", new ResourceModel("title")));
 
-		addListView("proposals", getSchemaFor(type));
+		addListView("proposals");
 
 		setOutputMarkupId(true);
 		setVisibility(model);
@@ -88,17 +87,7 @@ public class CatalogProposalPanel extends Panel {
 	// ------------------------------------------------------
 
 	protected void setVisibility(final IModel<ResourceID> model) {
-		add(visibleIf(ConditionalModel.not(BrowsingContextModel.isInViewMode())));
-		//		add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
-	}
-
-	private IModel<ResourceSchema> getSchemaFor(final IModel<ResourceID> model) {
-		return new DerivedModel<ResourceSchema, ResourceID>(model) {
-			@Override
-			protected ResourceSchema derive(final ResourceID original) {
-				return schemaManager.findSchemaForType(model.getObject());
-			}
-		};
+		add(visibleIf(and(not(BrowsingContextModel.isInViewMode()), not(isEmpty(getReferencedTypes())))));
 	}
 
 	/**
@@ -123,8 +112,8 @@ public class CatalogProposalPanel extends Panel {
 
 	// ------------------------------------------------------
 
-	private void addListView(final String id, final IModel<ResourceSchema> model) {
-		ListView<PropertyDeclaration> view = new ListView<PropertyDeclaration>(id, getReferencedTypes(model)) {
+	private void addListView(final String id) {
+		ListView<PropertyDeclaration> view = new ListView<PropertyDeclaration>(id, getReferencedTypes()) {
 			@Override
 			protected void populateItem(final ListItem<PropertyDeclaration> item) {
 				AjaxSubmitLink link = new AjaxSubmitLink("link", getExternalForm()) {
@@ -147,12 +136,12 @@ public class CatalogProposalPanel extends Panel {
 		add(view);
 	}
 
-	private IModel<List<PropertyDeclaration>> getReferencedTypes(final IModel<ResourceSchema> model) {
-		return new DerivedModel<List<PropertyDeclaration>, ResourceSchema>(model) {
+	private IModel<List<PropertyDeclaration>> getReferencedTypes() {
+		return new DerivedModel<List<PropertyDeclaration>, ResourceSchema>(getSchemaFor(type)) {
 			@Override
 			protected List<PropertyDeclaration> derive(final ResourceSchema original) {
 				List<PropertyDeclaration> referencedTypes = new ArrayList<PropertyDeclaration>();
-				for (PropertyDeclaration decl: model.getObject().getPropertyDeclarations()) {
+				for (PropertyDeclaration decl: original.getPropertyDeclarations()) {
 					if(checkForAcceptedTypeReference(decl)){
 						referencedTypes.add(decl);
 					}
@@ -181,29 +170,11 @@ public class CatalogProposalPanel extends Panel {
 		return false;
 	}
 
-	private ConditionalModel<Boolean> isSubclassOf(final IModel<ResourceID> actual, final ResourceID superclass){
-		return new ConditionalModel<Boolean>() {
-
+	private IModel<ResourceSchema> getSchemaFor(final IModel<ResourceID> model) {
+		return new DerivedModel<ResourceSchema, ResourceID>(model) {
 			@Override
-			public boolean isFulfilled() {
-				if(null == actual.getObject()){
-					return false;
-				}
-				//checkif a direct assocciation exists
-				ResourceNode node = actual.getObject().asResource();
-				networkService.attach(node);
-				if (SNOPS.objects(node, RDF.TYPE).contains(superclass)) {
-					return true;
-				}
-
-				// check if a subclass relation exists
-				SNClass type = typeManager.getTypeOfResource(actual.getObject());
-				Set<SNClass> superClasses = typeManager.getSuperClasses(type);
-				if (superClasses.contains(superclass)) {
-					return true;
-				}
-
-				return false;
+			protected ResourceSchema derive(final ResourceID original) {
+				return schemaManager.findSchemaForType(model.getObject());
 			}
 		};
 	}
