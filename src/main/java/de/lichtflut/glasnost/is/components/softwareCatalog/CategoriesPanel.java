@@ -26,7 +26,9 @@ import org.arastreju.sge.model.nodes.views.SNClass;
 import org.arastreju.sge.structure.OrderBySerialNumber;
 
 import de.lichtflut.rb.core.services.TypeManager;
+import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
+import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -55,6 +57,8 @@ public class CategoriesPanel extends Panel {
 
 		addCategoriesTitle("categoriesTitle", new ResourceModel("title.category"));
 		createCategoriesList("categoriesList", superclass);
+
+		addNoSubclassesInfo("noSubclasses", superclass);
 	}
 
 	// ------------------------------------------------------
@@ -113,4 +117,10 @@ public class CategoriesPanel extends Panel {
 		add(list);
 	}
 
+
+	private void addNoSubclassesInfo(final String id, final IModel<ResourceID> superclass) {
+		Label label = new Label(id, new ResourceModel("label.no-listing"));
+		label.add(ConditionalBehavior.visibleIf((ConditionalModel.isEmpty(getAllSubClassesFor(superclass)))));
+		add(label);
+	}
 }

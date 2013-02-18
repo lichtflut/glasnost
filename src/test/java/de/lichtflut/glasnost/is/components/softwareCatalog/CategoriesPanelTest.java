@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.Model;
 import org.arastreju.sge.SNOPS;
@@ -63,6 +64,7 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 
 		tester.assertComponent("panel:categoriesTitle", PanelTitle.class);
 		tester.assertListView("panel:categoriesList", Collections.EMPTY_LIST);
+		tester.assertComponent("panel:noSubclasses", Label.class);
 	}
 
 	@Test
@@ -81,6 +83,8 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 		tester.assertComponent("panel:categoriesList:0:link", AbstractLink.class);
 		tester.assertLabel("panel:categoriesList:0:link:label", new ResourceLabelModel(iterator.next()).getObject());
 		tester.assertLabel("panel:categoriesList:1:link:label", new ResourceLabelModel(iterator.next()).getObject());
+
+		tester.assertInvisible("panel:noSubclasses");
 	}
 
 	// ------------------------------------------------------
