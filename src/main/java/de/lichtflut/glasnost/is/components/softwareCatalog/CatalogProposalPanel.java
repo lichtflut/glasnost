@@ -3,6 +3,8 @@
  */
 package de.lichtflut.glasnost.is.components.softwareCatalog;
 
+import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +22,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.arastreju.sge.SNOPS;
+import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.GIS;
@@ -29,9 +34,12 @@ import de.lichtflut.rb.core.schema.model.Datatype;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.core.services.SchemaManager;
+import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
+import de.lichtflut.rb.webck.models.BrowsingContextModel;
+import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.basic.DerivedModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -51,6 +59,9 @@ public class CatalogProposalPanel extends Panel {
 	@SpringBean
 	private TypeManager typeManager;
 
+	@SpringBean
+	private SemanticNetworkService networkService;
+
 	private final IModel<ResourceID> type;
 
 	// ---------------- Constructor -------------------------
@@ -69,9 +80,17 @@ public class CatalogProposalPanel extends Panel {
 		addListView("proposals", getSchemaFor(type));
 
 		setOutputMarkupId(true);
+		setVisibility(model);
+
 	}
 
+
 	// ------------------------------------------------------
+
+	protected void setVisibility(final IModel<ResourceID> model) {
+		add(visibleIf(ConditionalModel.not(BrowsingContextModel.isInViewMode())));
+		//		add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
+	}
 
 	private IModel<ResourceSchema> getSchemaFor(final IModel<ResourceID> model) {
 		return new DerivedModel<ResourceSchema, ResourceID>(model) {
@@ -162,13 +181,50 @@ public class CatalogProposalPanel extends Panel {
 		return false;
 	}
 
+	private ConditionalModel<Boolean> isSubclassOf(final IModel<ResourceID> actual, final ResourceID superclass){
+		return new ConditionalModel<Boolean>() {
+
+			@Override
+			public boolean isFulfilled() {
+				if(null == actual.getObject()){
+					return false;
+				}
+				//checkif a direct assocciation exists
+				ResourceNode node = actual.getObject().asResource();
+				networkService.attach(node);
+				if (SNOPS.objects(node, RDF.TYPE).contains(superclass)) {
+					return true;
+				}
+
+				// check if a subclass relation exists
+				SNClass type = typeManager.getTypeOfResource(actual.getObject());
+				Set<SNClass> superClasses = typeManager.getSuperClasses(type);
+				if (superClasses.contains(superclass)) {
+					return true;
+				}
+
+				return false;
+			}
+		};
+	}
+
 	// ------------------------------------------------------
 
 	@Override
 	public void onEvent(final IEvent<?> event) {
 		ModelChangeEvent<Object> mce = ModelChangeEvent.from(event);
+		de.lichtflut.rb.webck.events.ModelChangeEvent<Object> mceRB = de.lichtflut.rb.webck.events.ModelChangeEvent.from(event);
+
 		if(mce.isAbout(ModelChangeEvent.PROPOSAL_UPDATE)){
 			type.setObject((ResourceID)mce.getPayload());
+			RBAjaxTarget.add(CatalogProposalPanel.this);
+		}
+		else if(mceRB.isAbout(de.lichtflut.rb.webck.events.ModelChangeEvent.ENTITY)){
+			RBAjaxTarget.add(CatalogProposalPanel.this);
+		}
+		else if(mceRB.isAbout(de.lichtflut.rb.webck.events.ModelChangeEvent.RELATIONSHIP)){
+			ResourceID payload = (ResourceID)mceRB.getPayload();
+			type.setObject(payload);
 			RBAjaxTarget.add(CatalogProposalPanel.this);
 		}
 	}

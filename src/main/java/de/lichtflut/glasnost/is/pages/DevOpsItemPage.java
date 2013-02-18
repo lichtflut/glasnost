@@ -1,7 +1,5 @@
 package de.lichtflut.glasnost.is.pages;
 
-import java.util.Set;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -12,11 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.arastreju.sge.SNOPS;
-import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.model.ResourceID;
-import org.arastreju.sge.model.nodes.ResourceNode;
-import org.arastreju.sge.model.nodes.views.SNClass;
 
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
 import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
@@ -34,7 +28,6 @@ import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.notes.NotePadPanel;
 import de.lichtflut.rb.webck.events.ModelChangeEvent;
-import de.lichtflut.rb.webck.models.ConditionalModel;
 
 /**
  * <p>
@@ -80,11 +73,11 @@ public class DevOpsItemPage extends EntityDetailPage {
 				return typeManager.getTypeOfResource(model.getObject());
 			}
 		};
-		CatalogProposalPanel proposal = getProposalPanel(view.newChildId(), type);
-		// TODO set only visibility if Viewstate x or y
-		//		proposal.add(visibleIf(and(isNotNull(type), or(isSubclassOf(model, GIS.CONFIGURATION_ITEM), isSubclassOf(model, GIS.DATA_CENTER)))));
-		view.add(proposal);
 
+		CatalogProposalPanel proposal = getProposalPanel(view.newChildId(), type);
+		proposal.setOutputMarkupPlaceholderTag(true);
+
+		view.add(proposal);
 		view.add(new NotePadPanel(view.newChildId(), model));
 		return view;
 	}
@@ -174,32 +167,5 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 	private ResourceBrowsingPanel getBrowsingPanel() {
 		return (ResourceBrowsingPanel) get(EntityDetailPage.BROWSER_ID);
-	}
-
-	private ConditionalModel<Boolean> isSubclassOf(final IModel<ResourceID> actual, final ResourceID superclass){
-		return new ConditionalModel<Boolean>() {
-
-			@Override
-			public boolean isFulfilled() {
-				if(null == actual.getObject()){
-					return false;
-				}
-				//checkif a direct assocciation exists
-				ResourceNode node = actual.getObject().asResource();
-				networkService.attach(node);
-				if (SNOPS.objects(node, RDF.TYPE).contains(superclass)) {
-					return true;
-				}
-
-				// check if a subclass relation exists
-				SNClass type = typeManager.getTypeOfResource(actual.getObject());
-				Set<SNClass> superClasses = typeManager.getSuperClasses(type);
-				if (superClasses.contains(superclass)) {
-					return true;
-				}
-
-				return false;
-			}
-		};
 	}
 }
