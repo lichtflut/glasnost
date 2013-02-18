@@ -94,6 +94,14 @@ public class CatalogProposalPanel extends Panel {
 	protected void applyActions(final AjaxRequestTarget target, final IModel<PropertyDeclaration> decl, final IModel<ResourceID> typeConstraint) {
 	}
 
+	/**
+	 * Returns a form, that will be submitted when the user wants to create a catalog item.
+	 * @return a {@link Form}
+	 */
+	protected Form<?> getExternalForm() {
+		return null;
+	}
+
 	// ------------------------------------------------------
 
 	private void addListView(final String id, final IModel<ResourceSchema> model) {
@@ -118,10 +126,6 @@ public class CatalogProposalPanel extends Panel {
 		};
 
 		add(view);
-	}
-
-	protected Form<?> getExternalForm() {
-		return null;
 	}
 
 	private IModel<List<PropertyDeclaration>> getReferencedTypes(final IModel<ResourceSchema> model) {
