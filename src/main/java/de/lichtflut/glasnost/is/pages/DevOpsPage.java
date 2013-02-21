@@ -101,7 +101,7 @@ public class DevOpsPage extends RBBasePage {
 		return new AbstractLoadableDetachableModel<List<Perception>>() {
 			@Override
 			public List<Perception> load() {
-				List<Perception> perceptions = DevOpsPage.this.perceptionDefinitionService.findAllPerceptions();
+				List<Perception> perceptions = perceptionDefinitionService.findAllPerceptions();
 				Collections.sort(perceptions, new OrderBySerialNumber());
 				return perceptions;
 			}

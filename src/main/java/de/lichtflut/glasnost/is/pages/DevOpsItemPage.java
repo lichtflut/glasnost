@@ -4,14 +4,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.arastreju.sge.model.ResourceID;
-import org.arastreju.sge.model.nodes.ResourceNode;
 
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
-import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
  * <p>
