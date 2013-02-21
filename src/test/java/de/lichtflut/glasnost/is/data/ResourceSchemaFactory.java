@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.rb.core.RB;
+import de.lichtflut.rb.core.data.RBTestConstants;
 import de.lichtflut.rb.core.schema.model.Datatype;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
@@ -29,22 +30,22 @@ import de.lichtflut.rb.core.schema.model.impl.ResourceSchemaImpl;
 public class ResourceSchemaFactory {
 
 	public static ResourceSchema buildPersonSchema() {
-		ResourceSchemaImpl schema = new ResourceSchemaImpl(RBConstants.PERSON);
+		ResourceSchemaImpl schema = new ResourceSchemaImpl(RB.PERSON);
 
-		PropertyDeclaration firstname = new PropertyDeclarationImpl(RBConstants.HAS_FIRST_NAME, Datatype.STRING);
-		PropertyDeclaration lastname = new PropertyDeclarationImpl(RBConstants.HAS_LAST_NAME, Datatype.STRING);
-		PropertyDeclaration address = new PropertyDeclarationImpl(RBConstants.HAS_ADDRESS, Datatype.RESOURCE);
-		PropertyDeclaration dateOfBirth = new PropertyDeclarationImpl(RBConstants.HAS_DATE_OF_BIRTH, Datatype.DATE);
-		PropertyDeclaration	email = new PropertyDeclarationImpl(RBConstants.HAS_EMAIL, Datatype.STRING);
-		PropertyDeclaration children = new PropertyDeclarationImpl(RBConstants.HAS_CHILD_NODE, Datatype.RESOURCE);
+		PropertyDeclaration firstname = new PropertyDeclarationImpl(RB.HAS_FIRST_NAME, Datatype.STRING);
+		PropertyDeclaration lastname = new PropertyDeclarationImpl(RB.HAS_LAST_NAME, Datatype.STRING);
+		PropertyDeclaration address = new PropertyDeclarationImpl(RB.HAS_ADDRESS, Datatype.RESOURCE);
+		PropertyDeclaration dateOfBirth = new PropertyDeclarationImpl(RB.HAS_DATE_OF_BIRTH, Datatype.DATE);
+		PropertyDeclaration	email = new PropertyDeclarationImpl(RB.HAS_EMAIL, Datatype.STRING);
+		PropertyDeclaration children = new PropertyDeclarationImpl(RB.HAS_CHILD_NODE, Datatype.RESOURCE);
 
-		schema.addQuickInfo(RBConstants.HAS_FIRST_NAME);
-		schema.addQuickInfo(RBConstants.HAS_LAST_NAME);
-		schema.addQuickInfo(RBConstants.HAS_EMAIL);
+		schema.addQuickInfo(RB.HAS_FIRST_NAME);
+		schema.addQuickInfo(RB.HAS_LAST_NAME);
+		schema.addQuickInfo(RB.HAS_EMAIL);
 
-		address.setConstraint(ConstraintsFactory.buildTypeConstraint(RBConstants.ADDRESS));
+		address.setConstraint(ConstraintsFactory.buildTypeConstraint(RBTestConstants.ADDRESS));
 		email.setConstraint(ConstraintsFactory.buildPublicEmailConstraint());
-		children.setConstraint(ConstraintsFactory.buildTypeConstraint(RBConstants.PERSON));
+		children.setConstraint(ConstraintsFactory.buildTypeConstraint(RB.PERSON));
 
 		firstname.setCardinality(CardinalityBuilder.hasExcactlyOne());
 		lastname.setCardinality(CardinalityBuilder.hasExcactlyOne());
@@ -74,7 +75,7 @@ public class ResourceSchemaFactory {
 
 
 		try {
-			schema.setLabelBuilder(new ExpressionBasedLabelBuilder(RBConstants.PERSON.toURI()));
+			schema.setLabelBuilder(new ExpressionBasedLabelBuilder(RB.PERSON.toURI()));
 		} catch (LabelExpressionParseException e) {
 			e.printStackTrace();
 		}
@@ -89,6 +90,34 @@ public class ResourceSchemaFactory {
 		nameProperty.setFieldLabelDefinition(new FieldLabelDefinitionImpl("Perception type"));
 
 		schema.addPropertyDeclaration(nameProperty);
+		return schema;
+	}
+
+	/**
+	 * @return a schema for a Datacenter
+	 */
+	public static ResourceSchema buildDataCenter() {
+		ResourceSchemaImpl schema = new ResourceSchemaImpl(GIS.DATA_CENTER);
+
+		PropertyDeclaration id = new PropertyDeclarationImpl(RB.HAS_ID, Datatype.STRING);
+		schema.addPropertyDeclaration(id);
+
+		PropertyDeclaration name = new PropertyDeclarationImpl(RB.HAS_NAME, Datatype.STRING);
+		schema.addPropertyDeclaration(name);
+
+		PropertyDeclaration description = new PropertyDeclarationImpl(RB.HAS_DESCRIPTION, Datatype.STRING);
+		schema.addPropertyDeclaration(description);
+
+		PropertyDeclaration hostsMachine = new PropertyDeclarationImpl(GISTestConstants.HOSTS_MACHINE, Datatype.RESOURCE);
+		schema.addPropertyDeclaration(hostsMachine);
+
+		PropertyDeclaration inheritsFrom = new PropertyDeclarationImpl(GISTestConstants.INHERITS_FROM, Datatype.RESOURCE);
+		schema.addPropertyDeclaration(inheritsFrom);
+
+		schema.addQuickInfo(RB.HAS_ID);
+		schema.addQuickInfo(RB.HAS_NAME);
+		schema.addQuickInfo(RB.HAS_DESCRIPTION);
+
 		return schema;
 	}
 }

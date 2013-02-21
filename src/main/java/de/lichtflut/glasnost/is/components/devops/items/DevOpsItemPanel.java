@@ -2,10 +2,10 @@ package de.lichtflut.glasnost.is.components.devops.items;
 
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -18,9 +18,11 @@ import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
+import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
+import de.lichtflut.rb.webck.events.AjaxCancelEventBubbleCallDecorator;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
@@ -48,7 +50,7 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
  */
 public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 
-	IModel<Boolean> expanded;
+	private final IModel<Boolean> expanded;
 
 	// ---------------- Constructor -------------------------
 
@@ -62,8 +64,51 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 		super(id, model);
 		expanded = new Model<Boolean>(false);
 
-		addLabels(model);
-		add(new AjaxFallbackLink<String>("details") {
+		addTitleComponents(model);
+		addDetailsLink("details", model);
+		addListView("subItems", model);
+
+		setOutputMarkupId(true);
+	}
+
+	// ----------------------------------------------------
+
+	private void addTitleComponents(final IModel<PerceptionItem> model) {
+		add(new Label("id", new PropertyModel<String>(model, "ID")));
+		add(new Label("name", new PropertyModel<String>(model, "name")));
+		addMoreLink("more");
+	}
+
+	/**
+	 * Adds an Ajaxlink to fold/unfold further infos
+	 */
+	private void addMoreLink(final String id) {
+		AjaxLink<String> moreLink = new AjaxLink<String>(id){
+			@Override
+			public void onClick(final AjaxRequestTarget target) {
+				if(Boolean.TRUE == expanded.getObject()){
+					expanded.setObject(false);
+					add(CssModifier.setClass("fold"));
+				}else{
+					expanded.setObject(true);
+					add(CssModifier.setClass("unfold"));
+				}
+				RBAjaxTarget.add(DevOpsItemPanel.this);
+			}
+
+			@Override
+			protected IAjaxCallDecorator getAjaxCallDecorator() {
+				return new AjaxCancelEventBubbleCallDecorator();
+			}
+		};
+		add(moreLink);
+	}
+
+	/**
+	 * Redirect to DevopsItemPage
+	 */
+	private void addDetailsLink(final String id, final IModel<PerceptionItem> model) {
+		AjaxFallbackLink<Void> details = new AjaxFallbackLink<Void>(id) {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
@@ -71,34 +116,9 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.VIEW);
 				setResponsePage(DevOpsItemPage.class, parameters);
 			}
-		});
-		addListView("subItems", model);
-
-		// Move to "more... " link
-		add(new AjaxEventBehavior("onclick") {
-			@Override
-			protected void onEvent(final AjaxRequestTarget target) {
-				if(Boolean.TRUE == expanded.getObject()){
-					expanded.setObject(false);
-				}else{
-					expanded.setObject(true);
-				}
-				RBAjaxTarget.add(DevOpsItemPanel.this);
-			}
-
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator() {
-				// TODO Move decorator class, refactor, rename?
-				return new AjaxCancelEventBubbleCallDecorator();
-			}
-		});
-	}
-
-	// ----------------------------------------------------
-
-	private void addLabels(final IModel<PerceptionItem> model) {
-		add(new Label("id", new PropertyModel<String>(model, "ID")));
-		add(new Label("name", new PropertyModel<String>(model, "name")));
+		};
+		details.add(ConditionalBehavior.visibleIf(ConditionalModel.isTrue(expanded)));
+		add(details);
 	}
 
 	private void addListView(final String id, final IModel<PerceptionItem> model) {

@@ -39,17 +39,35 @@ span.floating-table {
 	padding: 5px 0;
 }
 
-.minimal-height{
+.minimal-height {
 	min-height: 1px;
 }
 
 .catalog .data-picker-field {
-    width: 150px;
-    margin-bottom: 10px;
+	width: 150px;
+	margin-bottom: 10px;
 }
 
-.devops-id{
+.devops-id {
 	margin-right: 5px;
+}
+
+.fold {
+	background: url("icon_set_red.png") no-repeat scroll -38px -31px transparent;
+	display: inline-block;
+	height: 18px;
+	overflow: hidden;
+	text-indent: -1000px;
+	width: 18px;
+}
+
+.unfold {
+	background: url("icon_set_red.png") no-repeat scroll -1px -31px	transparent;
+	display: inline-block;
+	height: 18px;
+	overflow: hidden;
+	text-indent: -1000px;
+	width: 18px;
 }
 
 /* LOGOS */
