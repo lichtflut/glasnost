@@ -48,6 +48,7 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		assertRenderedPanel(DevOpsItemPanel.class, "panel");
 		tester.assertLabel("panel:id", new PropertyModel<String>(model, "ID").getObject());
 		tester.assertLabel("panel:name", new PropertyModel<String>(model, "name").getObject());
+		tester.assertInvisible("panel:info");
 		tester.assertComponent("panel:more", AjaxLink.class);
 		tester.assertInvisible("panel:subItems");
 	}
@@ -68,6 +69,7 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:more"), "onclick");
 
 		tester.assertComponent("panel:details", Link.class);
+		tester.assertLabel("panel:info", "[SOME ADDITIONAL INFO]");
 		tester.assertListView("panel:subItems", model.getObject().getSubItems());
 		tester.assertInvisible("panel:subItems:0:item:subItems");
 

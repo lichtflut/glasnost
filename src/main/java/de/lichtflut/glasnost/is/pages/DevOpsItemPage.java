@@ -61,10 +61,6 @@ public class DevOpsItemPage extends EntityDetailPage {
 			protected Component createClassifyPanel(final String id, final IModel<RBEntity> model) {
 				return super.createClassifyPanel(id, model);
 			}
-
-			@Override
-			protected void onSave(final IModel<RBEntity> model) {
-			}
 		};
 	}
 

@@ -1,5 +1,9 @@
 package de.lichtflut.glasnost.is.components.devops.items;
 
+import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
+import static de.lichtflut.rb.webck.models.ConditionalModel.isNotEmpty;
+import static de.lichtflut.rb.webck.models.ConditionalModel.isTrue;
+
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -17,13 +21,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.rb.application.common.CommonParams;
-import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.events.AjaxCancelEventBubbleCallDecorator;
-import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
@@ -65,6 +67,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 		expanded = new Model<Boolean>(false);
 
 		addTitleComponents(model);
+		addInfo("info",model);
 		addDetailsLink("details", model);
 		addListView("subItems", model);
 
@@ -76,13 +79,13 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 	private void addTitleComponents(final IModel<PerceptionItem> model) {
 		add(new Label("id", new PropertyModel<String>(model, "ID")));
 		add(new Label("name", new PropertyModel<String>(model, "name")));
-		addMoreLink("more");
+		addMoreLink("more", model);
 	}
 
 	/**
-	 * Adds an Ajaxlink to fold/unfold further infos
+	 * Adds an Ajaxlink to fold/unfold further info
 	 */
-	private void addMoreLink(final String id) {
+	private void addMoreLink(final String id, final IModel<PerceptionItem> model) {
 		AjaxLink<String> moreLink = new AjaxLink<String>(id){
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
@@ -101,7 +104,14 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 				return new AjaxCancelEventBubbleCallDecorator();
 			}
 		};
+		moreLink.add(visibleIf(isNotEmpty(Model.of(model.getObject().getSubItems()))));
 		add(moreLink);
+	}
+
+	private void addInfo(final String id, final IModel<PerceptionItem> model) {
+		Label label = new Label(id, "[SOME ADDITIONAL INFO]");
+		label.add(visibleIf(isTrue(expanded)));
+		add(label);
 	}
 
 	/**
@@ -117,7 +127,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 				setResponsePage(DevOpsItemPage.class, parameters);
 			}
 		};
-		details.add(ConditionalBehavior.visibleIf(ConditionalModel.isTrue(expanded)));
+		details.add(visibleIf(isTrue(expanded)));
 		add(details);
 	}
 
@@ -128,7 +138,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 				item.add(new DevOpsItemPanel("item", item.getModel()));
 			}
 		};
-		view.add(ConditionalBehavior.visibleIf(ConditionalModel.isTrue(expanded)));
+		view.add(visibleIf(isTrue(expanded)));
 		add(view);
 	}
 
