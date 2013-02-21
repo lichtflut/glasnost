@@ -1,22 +1,26 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
 <wicket:panel>
 
+<div class="devops-container">
+
     <div class="devops-item">
-		
-		<div>
+		<div class="title-container subtitle">
 			<span class="devops-id">[<wicket:container wicket:id="id">[ID]</wicket:container>]</span>
 			<span wicket:id="name">[name]</span>
-			<a wicket:id="more" href="#" class="unfold">[SHOW DETAILS]</a>
+			<a wicket:id="more" href="#" class="unfold float-right">
+				<wicket:container wicket:id="linkLabel"></wicket:container>
+			</a>
 		</div>
 		<div>
-			<div wicket:id="info">[SOME ADDITIONAL INFO]</div>
 			<a wicket:id="details" href="#"><wicket:message key="devops-item.details"></wicket:message></a>
 		</div>
-		<div wicket:id="subItems">
-			<div wicket:id="item">[PERCEPTION ITEM]</div>
-		</div>
+	</div>
+	
+	<div wicket:id="subItems">
+		<div wicket:id="item">[PERCEPTION ITEM]</div>
+	</div>
 
-    </div>
+</div>
 
 </wicket:panel>
 </html>

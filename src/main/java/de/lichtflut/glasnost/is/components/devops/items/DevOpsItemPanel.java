@@ -67,7 +67,6 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 		expanded = new Model<Boolean>(false);
 
 		addTitleComponents(model);
-		addInfo("info",model);
 		addDetailsLink("details", model);
 		addListView("subItems", model);
 
@@ -86,15 +85,18 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 	 * Adds an Ajaxlink to fold/unfold further info
 	 */
 	private void addMoreLink(final String id, final IModel<PerceptionItem> model) {
+		final IModel<String> labelModel = new Model<String>("+");
 		AjaxLink<String> moreLink = new AjaxLink<String>(id){
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				if(Boolean.TRUE == expanded.getObject()){
 					expanded.setObject(false);
-					add(CssModifier.setClass("fold"));
+					add(CssModifier.setClass("fold float-right"));
+					labelModel.setObject("+");
 				}else{
 					expanded.setObject(true);
-					add(CssModifier.setClass("unfold"));
+					add(CssModifier.setClass("unfold float-right"));
+					labelModel.setObject("-");
 				}
 				RBAjaxTarget.add(DevOpsItemPanel.this);
 			}
@@ -104,14 +106,9 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 				return new AjaxCancelEventBubbleCallDecorator();
 			}
 		};
+		moreLink.add(new Label("linkLabel", labelModel));
 		moreLink.add(visibleIf(isNotEmpty(Model.of(model.getObject().getSubItems()))));
 		add(moreLink);
-	}
-
-	private void addInfo(final String id, final IModel<PerceptionItem> model) {
-		Label label = new Label(id, "[SOME ADDITIONAL INFO]");
-		label.add(visibleIf(isTrue(expanded)));
-		add(label);
 	}
 
 	/**

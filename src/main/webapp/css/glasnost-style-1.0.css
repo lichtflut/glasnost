@@ -9,6 +9,10 @@ div.title-container {
 	padding: 2px;
 }
 
+.subtitle {
+	font-size: 10pt;
+}
+
 .float-right {
 	float: right;
 }
@@ -48,26 +52,10 @@ span.floating-table {
 	margin-bottom: 10px;
 }
 
-.devops-id {
-	margin-right: 5px;
-}
-
 .fold {
-	background: url("icon_set_red.png") no-repeat scroll -38px -31px transparent;
-	display: inline-block;
-	height: 18px;
-	overflow: hidden;
-	text-indent: -1000px;
-	width: 18px;
 }
 
 .unfold {
-	background: url("icon_set_red.png") no-repeat scroll -1px -31px	transparent;
-	display: inline-block;
-	height: 18px;
-	overflow: hidden;
-	text-indent: -1000px;
-	width: 18px;
 }
 
 /* LOGOS */
@@ -99,11 +87,18 @@ div#application-logo {
 
 /* DEVOPS ITEMS */
 div.devops-item {
-	margin: 5px 0 2px 20px;
 	border: 1px solid gray;
 	border-radius: 5px;
-	padding: 5px;
-	cursor: pointer;
+    padding: 3px;
+}
+
+.devops-container{
+	margin-bottom: 15px;
+    padding-left: 15px;
+}
+
+.devops-id {
+	margin-right: 5px;
 }
 
 /* TEASERS */
