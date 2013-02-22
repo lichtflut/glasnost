@@ -9,8 +9,6 @@ import java.util.Set;
 
 import org.apache.wicket.event.IEvent;
 
-import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
-
 /**
  * <p>
  *  Event representing a model change.
@@ -28,10 +26,6 @@ public class ModelChangeEvent<T> {
 
 	public static final String PERCEPTION = "perception-event";
 
-	/**
-	 * Tells the {@link CatalogProposalPanel} to update its suggestions.
-	 */
-	public static final String PROPOSAL_UPDATE = "proposal-update";
 	private static final ModelChangeEvent EMPTY = new ModelChangeEvent(new String[0]);
 
 	// ----------------------------------------------------

@@ -1,5 +1,8 @@
 package de.lichtflut.glasnost.is.pages;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -11,9 +14,10 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.nodes.views.SNClass;
 
+import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.ItemEditorInfoPanel;
-import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogProposalPanel;
 import de.lichtflut.glasnost.is.dialog.CatalogDialog;
 import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.core.entity.EntityHandle;
@@ -25,6 +29,7 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.browsing.EntityAttributeApplyAction;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.ResourceBrowsingPanel;
+import de.lichtflut.rb.webck.components.catalog.CatalogProposalPanel;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.notes.NotePadPanel;
 import de.lichtflut.rb.webck.events.ModelChangeEvent;
@@ -159,15 +164,23 @@ public class DevOpsItemPage extends EntityDetailPage {
 						Page page = getPage();
 						send(page, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.ENTITY));
 						send(page, Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.RELATIONSHIP));
-						de.lichtflut.glasnost.is.events.ModelChangeEvent<ResourceID> mce = new de.lichtflut.glasnost.is.events.ModelChangeEvent<ResourceID>(typeConstraint.getObject(), de.lichtflut.glasnost.is.events.ModelChangeEvent.PROPOSAL_UPDATE);
+						ModelChangeEvent<ResourceID> mce = new ModelChangeEvent<ResourceID>(typeConstraint.getObject(), ModelChangeEvent.PROPOSAL_UPDATE);
 						send(getPage(), Broadcast.BREADTH, mce);
 					}
+
 				});
 			}
 
 			@Override
 			protected Form<?> getExternalForm() {
 				return getBrowsingPanel().getForm();
+			}
+
+			@Override
+			protected List<SNClass> getAcceptableSuperclasses() {
+				List<SNClass> list = new ArrayList<SNClass>();
+				list.add(SNClass.from(GIS.SOFTWARE_ITEM));
+				return list;
 			}
 		};
 	}

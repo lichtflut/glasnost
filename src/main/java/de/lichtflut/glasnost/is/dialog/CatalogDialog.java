@@ -11,9 +11,9 @@ import org.apache.wicket.model.StringResourceModel;
 import org.arastreju.sge.model.ResourceID;
 
 import de.lichtflut.glasnost.is.GlasnostWebApplication;
-import de.lichtflut.glasnost.is.components.softwareCatalog.CatalogPanel;
 import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
+import de.lichtflut.rb.webck.components.catalog.CatalogPanel;
 import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
