@@ -155,6 +155,9 @@ public class CatalogProposalPanel extends Panel {
 		if(!Datatype.RESOURCE.name().equals(decl.getDatatype().name())){
 			return false;
 		}
+		if(!decl.hasConstraint()){
+			return false;
+		}
 		if(null == decl.getConstraint().getTypeConstraint()){
 			return false;
 		}

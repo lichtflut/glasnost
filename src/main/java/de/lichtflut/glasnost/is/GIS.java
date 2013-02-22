@@ -33,7 +33,7 @@ public interface GIS {
 	/**
 	 * A category describing a perception.
 	 */
-	ResourceID PERCEPTION_CATEGORY = new SimpleResourceID(DEVOPS_NAMESPACE_URI, "PerceptionCategory");
+	ResourceID PERCEPTION_CATEGORY = new SimpleResourceID(GIS_NAMESPACE_URI, "PerceptionCategory");
 
 	/**
 	 * A item of a perception.
