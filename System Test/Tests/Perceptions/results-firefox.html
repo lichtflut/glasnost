@@ -1,0 +1,466 @@
+<html>
+<head><style type='text/css'>
+body, table {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+    font-style: italic;
+}
+
+.selected {
+    background-color: #ffffcc;
+}
+
+.status_done {
+    background-color: #eeffee;
+}
+
+.status_passed {
+    background-color: #ccffcc;
+}
+
+.status_failed {
+    background-color: #ffcccc;
+}
+
+.breakpoint {
+    background-color: #cccccc;
+    border: 1px solid black;
+}
+</style><title>Test suite results</title></head>
+<body>
+<h1>Test suite results </h1>
+
+<table>
+<tr>
+<td>result:</td>
+<td>failed</td>
+</tr>
+<tr>
+<td>totalTime:</td>
+<td>35</td>
+</tr>
+<tr>
+<td>numTestTotal:</td>
+<td>6</td>
+</tr>
+<tr>
+<td>numTestPasses:</td>
+<td>3</td>
+</tr>
+<tr>
+<td>numTestFailures:</td>
+<td>3</td>
+</tr>
+<tr>
+<td>numCommandPasses:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>numCommandFailures:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>numCommandErrors:</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Selenium Version:</td>
+<td>2.29</td>
+</tr>
+<tr>
+<td>Selenium Revision:</td>
+<td>.0</td>
+</tr>
+<tr>
+<td>
+<table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
+<tr class="title   status_failed"><td><b>Test Suite</b></td></tr>
+<tr class="  status_passed"><td><a href="#testresult0">LoadLogin</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult1">Login</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult2">LoadTestDomain</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult3">assertElements</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult4">RegisterNewPerception</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult5">NewPerceptionIDnull</a></td></tr>
+</tbody></table>
+
+
+</td>
+<td>&nbsp;</td>
+</tr>
+</table><table><tr>
+<td><a name="testresult0">LoadLogin.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">LoadLogIn</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>open</td>
+	<td>http://localhost:8181/glasnost.is</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult1">Login.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">Login</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=loginID</td>
+	<td>roy.f@lichtflut.de</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=password</td>
+	<td>lichtflut</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>name=login</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult2">LoadTestDomain.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">LoadTestDomain</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>click</td>
+	<td>link=Master Domain</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>link=TestDomain</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult3">assertElements.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">assertElements</td></tr>
+</thead><tbody>
+<tr class="  status_failed" style="cursor: pointer;">
+	<td>verifyTextPresent</td>
+	<td> Start New Perception Wizzard</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertTextPresent</td>
+	<td>Register a new perception</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult4">RegisterNewPerception.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">RegisterNewPerception</td></tr>
+</thead><tbody>
+<!--Creating a new Perception-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>link=Register a new perception</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>PerceptionNo1</td>
+	<td>perceptionID</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=id</td>
+	<td>${perceptionID}</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>PerceptionName</td>
+	<td>perceptionName</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=name</td>
+	<td>${perceptionName}</td>
+</tr>
+<!--Select Production from Dropdown Menu-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>click</td>
+	<td>css=a.suggest-link</td>
+	<td></td>
+</tr>
+<tr class="  status_failed" style="cursor: pointer;">
+	<td>click</td>
+	<td>//a[contains(text(),'Production')]</td>
+	<td>Element&nbsp;//a[contains(text(),'Production')]&nbsp;not&nbsp;found</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>link=Production</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>Production</td>
+	<td>perceptionType</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>xpath=/html/body/div/div[2]/div[2]/div/form/div[3]/div[5]/div[2]/div/div/input[2]</td>
+	<td>${perceptionType}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>css=div.colorpicker-trigger</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>//span[9]</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>Roy F</td>
+	<td>perceptionOwner</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=owner:display</td>
+	<td>${perceptionOwner}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>Roy F</td>
+	<td>perceptionResponsiblePerson</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=personResponsible:display</td>
+	<td>${perceptionResponsiblePerson}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>name=save</td>
+	<td></td>
+</tr>
+<!--Testing the Perception-->
+<tr class="" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>link=Welcome</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>verifyTextPresent</td>
+	<td>${perceptionID}</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>verifyTextPresent</td>
+	<td>${perceptionName}</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult5">NewPerceptionIDnull.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">NewPerceptionIDnull</td></tr>
+</thead><tbody>
+<!--new Perception without ID-->
+<tr class="  status_failed" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>link=Register a new perception</td>
+	<td>Element&nbsp;link=Register&nbsp;a&nbsp;new&nbsp;perception&nbsp;not&nbsp;found</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td></td>
+	<td>perceptionIDnull</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=id</td>
+	<td>${perceptionIDnull}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>PerceptionName</td>
+	<td>perceptionName</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=name</td>
+	<td>${perceptionName}</td>
+</tr>
+<!--Select Production from Dropdown Menu-->
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>css=a.suggest-link</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>//a[contains(text(),'Production')]</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>link=Production</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>Production</td>
+	<td>perceptionType</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>xpath=/html/body/div/div[2]/div[2]/div/form/div[3]/div[5]/div[2]/div/div/input[2]</td>
+	<td>${perceptionType}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>css=div.colorpicker-trigger</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>click</td>
+	<td>//span[9]</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>Roy F</td>
+	<td>perceptionOwner</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=owner:display</td>
+	<td>${perceptionOwner}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>store</td>
+	<td>Roy F</td>
+	<td>perceptionResponsiblePerson</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>type</td>
+	<td>name=personResponsible:display</td>
+	<td>${perceptionResponsiblePerson}</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>name=save</td>
+	<td></td>
+</tr>
+<!--Testing the Perception-->
+<tr class="" style="cursor: pointer;">
+	<td>clickAndWait</td>
+	<td>link=Welcome</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>verifyTextPresent</td>
+	<td>${perceptionIDnull}</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>verifyTextPresent</td>
+	<td>${perceptionName}</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr></table><pre>
+info: Starting test /selenium-server/tests/LoadLogin.html
+info: Executing: |open | http://localhost:8181/glasnost.is |  |
+info: Starting test /selenium-server/tests/Login.html
+info: Executing: |type | name=loginID | roy.f@lichtflut.de |
+info: Executing: |type | name=password | lichtflut |
+info: Executing: |clickAndWait | name=login |  |
+info: Starting test /selenium-server/tests/LoadTestDomain.html
+info: Executing: |click | link=Master Domain |  |
+info: Executing: |clickAndWait | link=TestDomain |  |
+info: Starting test /selenium-server/tests/assertElements.html
+info: Executing: |verifyTextPresent | Start New Perception Wizzard |  |
+warn: currentTest.recordFailure: false
+info: Executing: |assertTextPresent | Register a new perception |  |
+info: Starting test /selenium-server/tests/RegisterNewPerception.html
+info: Executing: |clickAndWait | link=Register a new perception |  |
+info: Executing: |store | PerceptionNo1 | perceptionID |
+info: Executing: |type | name=id | ${perceptionID} |
+info: Executing: |store | PerceptionName | perceptionName |
+info: Executing: |type | name=name | ${perceptionName} |
+info: Executing: |click | css=a.suggest-link |  |
+info: Executing: |click | //a[contains(text(),&apos;Production&apos;)] |  |
+error: Element //a[contains(text(),&apos;Production&apos;)] not found
+warn: currentTest.recordFailure: Element //a[contains(text(),&apos;Production&apos;)] not found
+info: Starting test /selenium-server/tests/NewPerceptionIDnull.html
+info: Executing: |clickAndWait | link=Register a new perception |  |
+error: Element link=Register a new perception not found
+warn: currentTest.recordFailure: Element link=Register a new perception not found
+</pre></body></html>
