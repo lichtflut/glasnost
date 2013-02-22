@@ -112,7 +112,9 @@ public class ResourceSchemaFactory {
 		schema.addPropertyDeclaration(hostsMachine);
 
 		PropertyDeclaration inheritsFrom = new PropertyDeclarationImpl(GISTestConstants.INHERITS_FROM, Datatype.RESOURCE);
+		inheritsFrom.setConstraint(ConstraintsFactory.buildTypeConstraint(GIS.SOFTWARE_ITEM));
 		schema.addPropertyDeclaration(inheritsFrom);
+
 
 		schema.addQuickInfo(RB.HAS_ID);
 		schema.addQuickInfo(RB.HAS_NAME);
