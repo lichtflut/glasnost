@@ -32,14 +32,12 @@ import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.model.nodes.views.SNClass;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
-import de.lichtflut.rb.core.common.SchemaIdentifyingType;
 import de.lichtflut.rb.core.services.SchemaManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;
 import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
-import de.lichtflut.rb.webck.components.common.DialogHoster;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
@@ -72,7 +70,7 @@ public class CatalogPanel extends Panel {
 	 * @param id Component id
 	 * @param type Superclass of all catalog items
 	 */
-	public CatalogPanel(final String id, final ResourceID type) {
+	public CatalogPanel(final String id, final IModel<ResourceID> type) {
 		super(id);
 
 		addCategoriesPanel("categories",type);
@@ -88,12 +86,12 @@ public class CatalogPanel extends Panel {
 	 * @param base Base class
 	 * @return a IModel containing all subclasses for a given type
 	 */
-	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+	protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final IModel<ResourceID> base) {
 		return new LoadableDetachableModel<List<ResourceNode>>() {
 			@Override
 			protected List<ResourceNode> load() {
 				List<ResourceNode> list = new LinkedList<ResourceNode>();
-				Set<SNClass> categories = typeManager.getSubClasses(base);
+				Set<SNClass> categories = typeManager.getSubClasses(base.getObject());
 				for (SemanticNode temp : categories) {
 					list.add(SNClass.from(temp));
 				}
@@ -115,12 +113,25 @@ public class CatalogPanel extends Panel {
 		};
 	}
 
+	/**
+	 * Triggered when user cancels the creation of an entity.
+	 */
+	protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
+	}
+
+	/**
+	 * Specify behavior when 'create'-link is clicked.
+	 * @param model IModel containing the selected type
+	 */
+	protected void applyAction(final IModel<ResourceID> model) {
+	}
+
 	// ------------------------------------------------------
 
-	private void addCategoriesPanel(final String id, final ResourceID type) {
+	private void addCategoriesPanel(final String id, final IModel<ResourceID> type) {
 		Component panel = new CategoriesPanel(id, type){
 			@Override
-			protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final ResourceID base) {
+			protected IModel<? extends List<ResourceNode>> getAllSubClassesFor(final IModel<ResourceID> base) {
 				return CatalogPanel.this.getAllSubClassesFor(base);
 			}
 
@@ -139,11 +150,19 @@ public class CatalogPanel extends Panel {
 		add(panel);
 	}
 
-	private void addSpecifyingList(final String id, final ResourceID type) {
-		ListView<ResourceNode> list = new ListView<ResourceNode>(id, root) {
+	private void addSpecifyingList(final String id, final IModel<ResourceID> type) {
+		ListView<ResourceID> list = new ListView<ResourceID>(id, root) {
 			@Override
-			protected void populateItem(final ListItem<ResourceNode> item) {
-				item.add(new GlasnostTitle("itemListTitle", new ResourceLabelModel(item.getModelObject())));
+			protected void populateItem(final ListItem<ResourceID> item) {
+				item.add(new Label("itemListTitle", new ResourceLabelModel(item.getModelObject())));
+				item.add(new AjaxLink<Void>("createLink"){
+					@Override
+					public void onClick(final AjaxRequestTarget target) {
+						IModel<ResourceID> model = item.getModel();
+						applyAction(model);
+					}
+				});
+				item.add(new CatalogItemInfoPanel("info", new Model<ResourceNode>(item.getModelObject().asResource())));
 				item.add(createSubListForType("subList", item.getModel()));
 			}
 		};
@@ -151,20 +170,16 @@ public class CatalogPanel extends Panel {
 		add(list);
 	}
 
-	private Component createSubListForType(final String id, final IModel<ResourceNode> model) {
-		// get all nodes of type model and list 'em up
-		IModel<? extends List<ResourceNode>> subClasses = getAllSubClassesFor(model.getObject());
+	private Component createSubListForType(final String id, final IModel<ResourceID> model) {
+		// get all subclasses type model and list 'em up
+		IModel<? extends List<ResourceNode>> subClasses = getAllSubClassesFor(model);
 		ListView<ResourceNode> subList = new ListView<ResourceNode>(id,subClasses) {
 			@Override
 			protected void populateItem(final ListItem<ResourceNode> item) {
 				AjaxLink<?> link = new AjaxLink<Void>("subLink") {
 					@Override
 					public void onClick(final AjaxRequestTarget target) {
-						// nomore subclasses, try to find a schema
-						if(typeManager.getSubClasses(item.getModelObject()).isEmpty()){
-							openDialog(new Model<ResourceID>(item.getModelObject()));
-						}
-						else if(addToList(item, model)){
+						if(addToList(item, model)){
 							RBAjaxTarget.add(CatalogPanel.this);
 						}
 					}
@@ -176,28 +191,25 @@ public class CatalogPanel extends Panel {
 		return subList;
 	}
 
-	private void addSearchbox(final String string, final ResourceID type) {
-		add(new GlasnostTitle("searchbox-title", new ResourceModel("title.searchbox")));
+	private void addSearchbox(final String string, final IModel<ResourceID> type) {
+		add(new PanelTitle("searchbox-title", new ResourceModel("title.searchbox")));
 
 		Form<?> form = new Form<Void>("form");
 		final Model<ResourceID> model = new Model<ResourceID>();
+		// TODO switch to SNClassPicker when inferencing of RDF:Subclass is activated in arastreju
 		form.add(getPicker(type, model));
 		form.add(new AjaxButton("create") {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				if(null != model.getObject()) {
-					openDialog(model);
+					CatalogPanel.this.applyAction(model);
 				}
 			}
 		});
-
 		add(form);
 	}
 
-	private Component getPicker(final ResourceID type, final Model<ResourceID> model) {
-		List<ResourceID> list = new ArrayList<ResourceID>();
-		findSubclassesFor(type, list);
-
+	private Component getPicker(final IModel<ResourceID> type, final Model<ResourceID> model) {
 		IChoiceRenderer<ResourceID> renderer = new IChoiceRenderer<ResourceID>(){
 			@Override
 			public Object getDisplayValue(final ResourceID object) {
@@ -209,33 +221,36 @@ public class CatalogPanel extends Panel {
 				return String.valueOf(index);
 			}
 		};
-		AutocompleteComponent<ResourceID> picker = new AutocompleteComponent<ResourceID>("searchbox", model, new ListModel<ResourceID>(list), renderer) {
+		AutocompleteComponent<ResourceID> picker = new AutocompleteComponent<ResourceID>("searchbox", model, findSubclassesFor(type), renderer) {
 			@Override
 			public ResourceID getValueOnSearchFail(final String input) {
 				return null;
 			}
 		};
-
 		return picker;
 	}
 
-	private void findSubclassesFor(final ResourceID resourceID, final List<ResourceID> list) {
-		for (SNClass snClass : typeManager.getSubClasses(resourceID)) {
-			list.add(snClass);
-			findSubclassesFor(snClass, list);
-		}
+	private IModel<List<ResourceID>> findSubclassesFor(final IModel<ResourceID> type) {
+		return new LoadableDetachableModel<List<ResourceID>>() {
+			@Override
+			protected List<ResourceID> load() {
+				List<ResourceID> list = new ArrayList<ResourceID>();
+				findSubclasses(type.getObject(), list);
+				return list;
+			}
+
+			private void findSubclasses(final ResourceID type, final List<ResourceID> list){
+				for (SNClass snClass : typeManager.getSubClasses(type)) {
+					list.add(snClass);
+					findSubclasses(snClass, list);
+				}
+			}
+		};
 	}
 
-	private void openDialog(final IModel<ResourceID> model) {
-		ResourceNode node = networkService.find(model.getObject().getQualifiedName());
-		SNClass identifyingType = SchemaIdentifyingType.of(node);
-		final DialogHoster dialogHoster = findParent(DialogHoster.class);
-		dialogHoster.openDialog(new CreateEntityDialog(dialogHoster.getDialogID(), new Model<ResourceID>(identifyingType)));
-	}
-
-	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceNode> superClass) {
+	private boolean addToList(final ListItem<ResourceNode> item, final IModel<ResourceID> model) {
 		boolean success = false;
-		int index = root.getObject().indexOf(superClass.getObject());
+		int index = root.getObject().indexOf(model.getObject());
 		while(root.getObject().size() > index+1){
 			root.getObject().remove(index+1);
 		}

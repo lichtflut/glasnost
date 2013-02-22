@@ -117,7 +117,6 @@ public class ResourceSchemaFactory {
 		schema.addQuickInfo(RB.HAS_ID);
 		schema.addQuickInfo(RB.HAS_NAME);
 		schema.addQuickInfo(RB.HAS_DESCRIPTION);
-
 		return schema;
 	}
 }

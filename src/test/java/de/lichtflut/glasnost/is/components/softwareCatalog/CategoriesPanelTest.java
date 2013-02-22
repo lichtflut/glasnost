@@ -11,7 +11,9 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
+import org.apache.wicket.model.Model;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ElementaryDataType;
@@ -23,7 +25,7 @@ import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -54,32 +56,35 @@ public class CategoriesPanelTest extends GlasnostWebTest{
 	 */
 	@Test
 	public void testSoftwareItemsCategoriesPanel() {
-		CategoriesPanel panel = new CategoriesPanel("panel", GIS.SOFTWARE_ITEM);
+		CategoriesPanel panel = new CategoriesPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(CategoriesPanel.class, "panel");
 
-		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
+		tester.assertComponent("panel:categoriesTitle", PanelTitle.class);
 		tester.assertListView("panel:categoriesList", Collections.EMPTY_LIST);
+		tester.assertComponent("panel:noSubclasses", Label.class);
 	}
 
 	@Test
 	public void testGetAllCategories(){
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 
-		CategoriesPanel panel = new CategoriesPanel("panel", GIS.SOFTWARE_ITEM);
+		CategoriesPanel panel = new CategoriesPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(CategoriesPanel.class, "panel");
 
-		tester.assertComponent("panel:categoriesTitle", GlasnostTitle.class);
+		tester.assertComponent("panel:categoriesTitle", PanelTitle.class);
 		tester.assertListView("panel:categoriesList", new ArrayList<SNClass>(superCategories));
 		Iterator<SNClass> iterator = superCategories.iterator();
 		tester.assertComponent("panel:categoriesList:0:link", AbstractLink.class);
 		tester.assertLabel("panel:categoriesList:0:link:label", new ResourceLabelModel(iterator.next()).getObject());
 		tester.assertLabel("panel:categoriesList:1:link:label", new ResourceLabelModel(iterator.next()).getObject());
+
+		tester.assertInvisible("panel:noSubclasses");
 	}
 
 	// ------------------------------------------------------

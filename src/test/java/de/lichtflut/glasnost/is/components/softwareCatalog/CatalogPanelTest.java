@@ -10,10 +10,15 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.Model;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.ElementaryDataType;
+import org.arastreju.sge.model.ResourceID;
+import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SNResource;
 import org.arastreju.sge.model.nodes.SNValue;
 import org.arastreju.sge.model.nodes.views.SNClass;
@@ -23,7 +28,7 @@ import org.odlabs.wiquery.ui.autocomplete.AutocompleteComponent;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
+import de.lichtflut.rb.core.RBSystem;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -57,7 +62,7 @@ public class CatalogPanelTest extends GlasnostWebTest {
 	@Test
 	public void testSoftwareCatalogPanel() {
 		simulatePathbuilder();
-		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
+		CatalogPanel panel = new CatalogPanel("panel", Model.of(GIS.SOFTWARE_ITEM));
 
 		tester.startComponentInPage(panel);
 
@@ -71,11 +76,15 @@ public class CatalogPanelTest extends GlasnostWebTest {
 
 	@Test
 	public void testShowSubCategoryOnClick(){
+		Model<ResourceID> model = Model.of(GIS.SOFTWARE_ITEM);
+
 		simulatePathbuilder();
 		when(typeManager.getSubClasses(GIS.SOFTWARE_ITEM)).thenReturn(superCategories);
 		when(typeManager.getSubClasses(superCategories.iterator().next())).thenReturn(lvlOneCategories);
-
-		CatalogPanel panel = new CatalogPanel("panel", GIS.SOFTWARE_ITEM);
+		ResourceNode resource = model.getObject().asResource();
+		resource.addAssociation(RBSystem.HAS_SCHEMA_IDENTIFYING_TYPE, GIS.SOFTWARE_ITEM);
+		when(networkService.find(superCategories.iterator().next().getQualifiedName())).thenReturn(resource);
+		CatalogPanel panel = new CatalogPanel("panel", model);
 
 		tester.startComponentInPage(panel);
 
@@ -84,7 +93,9 @@ public class CatalogPanelTest extends GlasnostWebTest {
 		tester.executeAjaxEvent("panel:categories:categoriesList:0:link", "onclick");
 
 		tester.assertVisible("panel:specifyingList");
-		tester.assertComponent("panel:specifyingList:0:itemListTitle", GlasnostTitle.class);
+		tester.assertComponent("panel:specifyingList:0:itemListTitle", Label.class);
+		tester.assertComponent("panel:specifyingList:0:createLink", AjaxLink.class);
+		tester.assertComponent("panel:specifyingList:0:info", CatalogItemInfoPanel.class);
 		tester.assertVisible("panel:specifyingList:0:subList");
 		tester.assertListView("panel:specifyingList:0:subList", new ArrayList<SNClass>(lvlOneCategories));
 		Iterator<SNClass> iterator = lvlOneCategories.iterator();

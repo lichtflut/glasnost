@@ -19,7 +19,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 /**
  * <p>
- * [TODO Insert description here.]
+ * This Panel Provides a JQuery Colorpicker.
  * </p>
  * Created: Jan 18, 2013
  *
