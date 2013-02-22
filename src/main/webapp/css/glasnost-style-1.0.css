@@ -101,6 +101,10 @@ div.devops-item {
 	margin-right: 5px;
 }
 
+.devops-container div.devops-container {
+    margin-bottom: 0;
+}
+
 /* TEASERS */
 div.teaser-logo {
 	background-image: url("glasnost_images/glasnost_logo_ext.png");
