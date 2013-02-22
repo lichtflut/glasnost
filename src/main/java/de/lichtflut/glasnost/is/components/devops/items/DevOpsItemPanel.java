@@ -117,7 +117,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				PageParameters parameters = new PageParameters();
-				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getPerception().getQualifiedName());
+				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getQualifiedName());
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.VIEW);
 				setResponsePage(DevOpsItemPage.class, parameters);
 			}
