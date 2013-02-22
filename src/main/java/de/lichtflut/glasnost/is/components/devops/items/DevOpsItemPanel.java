@@ -1,7 +1,6 @@
 package de.lichtflut.glasnost.is.components.devops.items;
 
 import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
-import static de.lichtflut.rb.webck.models.ConditionalModel.isNotEmpty;
 import static de.lichtflut.rb.webck.models.ConditionalModel.isTrue;
 
 import java.util.List;
@@ -107,7 +106,6 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			}
 		};
 		moreLink.add(new Label("linkLabel", labelModel));
-		moreLink.add(visibleIf(isNotEmpty(Model.of(model.getObject().getSubItems()))));
 		add(moreLink);
 	}
 
