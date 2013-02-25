@@ -22,11 +22,11 @@ import org.arastreju.sge.context.Context;
 import org.arastreju.sge.model.ResourceID;
 
 import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;

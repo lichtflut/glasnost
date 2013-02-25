@@ -23,12 +23,12 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.nodes.ResourceNode;
 
-import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.events.ModelChangeEvent;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.model.ui.PerceptionWizzardListModel;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.rb.webck.components.form.RBCancelButton;
 import de.lichtflut.rb.webck.components.form.RBStandardButton;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;

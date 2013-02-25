@@ -11,9 +11,9 @@ import org.junit.Test;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.rb.core.RB;
+import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
 import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 
