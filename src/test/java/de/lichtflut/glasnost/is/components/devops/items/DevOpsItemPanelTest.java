@@ -27,7 +27,7 @@ import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.core.schema.model.impl.PropertyDeclarationImpl;
 import de.lichtflut.rb.core.schema.model.impl.ResourceSchemaImpl;
-import de.lichtflut.rb.webck.components.entity.QuickInfoPanel;
+import de.lichtflut.rb.webck.components.entity.quickinfo.InfoPanel;
 
 /**
  * <p>
@@ -75,7 +75,7 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 	 * Test method for {@link de.lichtflut.glasnost.is.components.devops.items.DevOpsItemPanel#DevOpsItemPanel(java.lang.String, org.apache.wicket.model.IModel)}.
 	 */
 	@Test
-	public void testDevOpsItemPanelOnClickEventNoQuickInfo() {
+	public void testDevOpsItemPanelOnClickEvent() {
 		datacenter = createDataCenter(false);
 		prepareEntityManager();
 
@@ -89,38 +89,7 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		// unfold subItems of root perception
 		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:more"), "onclick");
 
-
-		tester.assertLabel("panel:container:noInfo", localizer.getString("label.no-info", tester.getComponentFromLastRenderedPage("panel:container:noInfo")));
-		tester.assertComponent("panel:container:details", Link.class);
-		tester.assertListView("panel:subItems", model.getObject().getSubItems());
-		tester.assertInvisible("panel:subItems:0:item:subItems");
-
-		// unfold subItems of 1st lvl perception
-		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:subItems:0:item:more"), "onClick");
-
-		tester.assertListView("panel:subItems:0:item:subItems", model.getObject().getSubItems().get(0).getSubItems());
-		tester.assertVisible("panel:subItems:0:item:subItems");
-	}
-
-	/**
-	 * Test method for {@link de.lichtflut.glasnost.is.components.devops.items.DevOpsItemPanel#DevOpsItemPanel(java.lang.String, org.apache.wicket.model.IModel)}.
-	 */
-	@Test
-	public void testDevOpsItemPanelOnClickEventWithQuickInfo() {
-		datacenter = createDataCenter(true);
-		prepareEntityManager();
-
-		DevOpsItemPanel panel = new DevOpsItemPanel("panel", model);
-
-		tester.startComponentInPage(panel);
-
-		assertRenderedPanel(DevOpsItemPanel.class, "panel");
-		tester.assertInvisible("panel:subItems");
-
-		// unfold subItems of root perception
-		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:more"), "onclick");
-
-		tester.assertComponent("panel:container:quickInfo", QuickInfoPanel.class);
+		tester.assertComponent("panel:container:infoPanel",InfoPanel.class);
 		tester.assertComponent("panel:container:details", Link.class);
 		tester.assertListView("panel:subItems", model.getObject().getSubItems());
 		tester.assertInvisible("panel:subItems:0:item:subItems");
@@ -198,5 +167,4 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		}
 		return schema;
 	}
-
 }

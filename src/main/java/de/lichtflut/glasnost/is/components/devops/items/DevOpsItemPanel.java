@@ -1,9 +1,7 @@
 package de.lichtflut.glasnost.is.components.devops.items;
 
 import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
-import static de.lichtflut.rb.webck.models.ConditionalModel.and;
 import static de.lichtflut.rb.webck.models.ConditionalModel.isTrue;
-import static de.lichtflut.rb.webck.models.ConditionalModel.not;
 
 import java.util.List;
 
@@ -15,11 +13,11 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -32,9 +30,8 @@ import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
-import de.lichtflut.rb.webck.components.entity.QuickInfoPanel;
+import de.lichtflut.rb.webck.components.entity.quickinfo.InfoPanel;
 import de.lichtflut.rb.webck.events.AjaxCancelEventBubbleCallDecorator;
-import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
@@ -147,12 +144,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			}
 		};
 
-		Label label = new Label("noInfo", new ResourceModel("label.no-info"));
-		label.add(visibleIf(and(isTrue(expanded), not(hasQuickInfo(rbEntity)))));
-		container.add(label);
-
-		QuickInfoPanel infoPanel = new QuickInfoPanel("quickInfo", rbEntity);
-		infoPanel.add(visibleIf(and(isTrue(expanded), hasQuickInfo(rbEntity))));
+		Panel infoPanel = new InfoPanel("infoPanel", rbEntity);
 		container.add(infoPanel);
 	}
 
@@ -174,18 +166,6 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			@Override
 			protected List<PerceptionItem> derive(final PerceptionItem parent) {
 				return parent.getSubItems();
-			}
-		};
-	}
-
-	private ConditionalModel<Boolean> hasQuickInfo(final IModel<RBEntity> model){
-		return new ConditionalModel<Boolean>(model) {
-			@Override
-			public boolean isFulfilled() {
-				if (model.getObject() == null || model.getObject().getQuickInfo().isEmpty()) {
-					return false;
-				}
-				return true;
 			}
 		};
 	}
