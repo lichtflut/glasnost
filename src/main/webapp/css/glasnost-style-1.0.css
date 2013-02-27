@@ -100,12 +100,12 @@ div.devops-item div.title-container{
 	margin: 10px 5px 15px 15px;
 }
 
-.devops-id {
-	margin-right: 5px;
+.devops-container div.devops-container {
+    margin-left: 0;
 }
 
-.devops-container div.devops-container {
-    margin-bottom: 0;
+.devops-id {
+	margin-right: 5px;
 }
 
 .centered{

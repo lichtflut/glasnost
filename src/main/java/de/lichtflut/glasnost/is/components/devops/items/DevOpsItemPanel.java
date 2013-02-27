@@ -69,7 +69,6 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 
 		addTitleComponents(model);
 		addInfo("container", model);
-		addListView("subItems", model);
 
 		setOutputMarkupId(true);
 	}
@@ -117,6 +116,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 		addQuickInfo("quickInfo", model, container);
 		container.add(visibleIf(isTrue(expanded)));
 
+		addListView("subItems", model, container);
 		add(container);
 	}
 
@@ -148,7 +148,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 		container.add(infoPanel);
 	}
 
-	private void addListView(final String id, final IModel<PerceptionItem> model) {
+	private void addListView(final String id, final IModel<PerceptionItem> model, final WebMarkupContainer container) {
 		ListView<PerceptionItem> view = new ListView<PerceptionItem>(id, getSubItems(model)) {
 			@Override
 			protected void populateItem(final ListItem<PerceptionItem> item) {
@@ -156,7 +156,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			}
 		};
 		view.add(visibleIf(isTrue(expanded)));
-		add(view);
+		container.add(view);
 	}
 
 	// ------------------------------------------------------
