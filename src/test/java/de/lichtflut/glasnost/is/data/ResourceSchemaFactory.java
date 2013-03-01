@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.rb.core.RB;
-import de.lichtflut.rb.core.data.RBTestConstants;
 import de.lichtflut.rb.core.schema.model.Datatype;
 import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
@@ -43,7 +42,7 @@ public class ResourceSchemaFactory {
 		schema.addQuickInfo(RB.HAS_LAST_NAME);
 		schema.addQuickInfo(RB.HAS_EMAIL);
 
-		address.setConstraint(ConstraintsFactory.buildTypeConstraint(RBTestConstants.ADDRESS));
+		address.setConstraint(ConstraintsFactory.buildTypeConstraint(GISTestConstants.ADDRESS));
 		email.setConstraint(ConstraintsFactory.buildPublicEmailConstraint());
 		children.setConstraint(ConstraintsFactory.buildTypeConstraint(RB.PERSON));
 
