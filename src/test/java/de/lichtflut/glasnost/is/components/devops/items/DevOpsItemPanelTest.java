@@ -68,7 +68,6 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		tester.assertLabel("panel:name", new PropertyModel<String>(model, "name").getObject());
 		tester.assertComponent("panel:more", AjaxLink.class);
 		tester.assertInvisible("panel:container");
-		tester.assertInvisible("panel:subItems");
 	}
 
 	/**
@@ -84,21 +83,21 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		tester.startComponentInPage(panel);
 
 		assertRenderedPanel(DevOpsItemPanel.class, "panel");
-		tester.assertInvisible("panel:subItems");
+		tester.assertInvisible("panel:container");
 
 		// unfold subItems of root perception
 		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:more"), "onclick");
 
 		tester.assertComponent("panel:container:infoPanel",InfoPanel.class);
 		tester.assertComponent("panel:container:details", Link.class);
-		tester.assertListView("panel:subItems", model.getObject().getSubItems());
-		tester.assertInvisible("panel:subItems:0:item:subItems");
+		tester.assertListView("panel:container:subItems", model.getObject().getSubItems());
+		tester.assertInvisible("panel:container:subItems:0:item:container:subItems");
 
 		// unfold subItems of 1st lvl perception
-		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:subItems:0:item:more"), "onClick");
+		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:container:subItems:0:item:more"), "onClick");
 
-		tester.assertListView("panel:subItems:0:item:subItems", model.getObject().getSubItems().get(0).getSubItems());
-		tester.assertVisible("panel:subItems:0:item:subItems");
+		tester.assertListView("panel:container:subItems:0:item:container:subItems", model.getObject().getSubItems().get(0).getSubItems());
+		tester.assertVisible("panel:container:subItems:0:item:container:subItems");
 	}
 
 	// ------------------------------------------------------
