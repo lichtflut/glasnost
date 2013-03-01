@@ -116,12 +116,6 @@ public class DevOpsItemPage extends EntityDetailPage {
 				return super.createClassifyPanel(id, model);
 			}
 
-			//TODO set response Page
-			//			@Override
-			//			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
-			//				RBWebSession.get().getHistory().back();
-			//				setResponsePage(DevOpsItemPage.class, DevOpsItemPage.this.getPageParameters());
-			//			}
 		};
 	}
 

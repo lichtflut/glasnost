@@ -10,7 +10,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.arastreju.sge.model.ResourceID;
 
-import de.lichtflut.glasnost.is.GlasnostWebApplication;
+import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.catalog.CatalogPanel;
@@ -57,7 +57,7 @@ public class CatalogDialog extends AbstractRBDialog {
 	}
 
 	protected JumpTarget getJumpTarget() {
-		return new JumpTarget(GlasnostWebApplication.get().getBrowseAndSearchPage());
+		return new JumpTarget(DevOpsPage.class);
 	}
 
 }
