@@ -22,12 +22,12 @@ import org.arastreju.sge.context.Context;
 import org.arastreju.sge.model.ResourceID;
 
 import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.components.GlasnostTitle;
-import de.lichtflut.glasnost.is.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
 import de.lichtflut.rb.webck.components.fields.EntityPickerField;
@@ -69,7 +69,7 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		form.setMultiPart(true);
 
 		form.add(new FeedbackPanel("feedback"));
-		form.add(new GlasnostTitle("title", new ResourceModel("title")));
+		form.add(new PanelTitle("title", new ResourceModel("title")));
 
 		createFields(model, form);
 

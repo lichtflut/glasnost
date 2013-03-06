@@ -4,9 +4,13 @@
 
 div.title-container {
 	background-color: #E6E8E3;
-	border-radius: 3px 3px 3px 3px;
 	margin-bottom: 3px;
 	padding: 2px;
+	border-radius: 5px 5px 0px 0px
+}
+
+.subtitle {
+	font-size: 10pt;
 }
 
 .float-right {
@@ -28,24 +32,31 @@ div.title-container {
 	background: none repeat scroll 0 0 #F6F8F3;
 	border: 1px solid #D3DCC7;
 	border-radius: 5px 5px 5px 5px;
-	margin-bottom: 10px;
-	padding: 10px;
-	margin: 5px 5px 10px;
 }
 
+.common-placement{
+	padding: 1px 3px 1px 15px;
+}
+	
 span.floating-table {
 	width: 33%;
 	display: inline-block;
 	padding: 5px 0;
 }
 
-.minimal-height{
+.minimal-height {
 	min-height: 1px;
 }
 
 .catalog .data-picker-field {
-    width: 150px;
-    margin-bottom: 10px;
+	width: 150px;
+	margin-bottom: 10px;
+}
+
+.fold {
+}
+
+.unfold {
 }
 
 /* LOGOS */
@@ -77,11 +88,32 @@ div#application-logo {
 
 /* DEVOPS ITEMS */
 div.devops-item {
-	margin: 5px 0 2px 20px;
 	border: 1px solid gray;
 	border-radius: 5px;
-	padding: 5px;
-	cursor: pointer;
+}
+
+div.devops-item div.title-container{
+	margin-bottom: 0px;
+}
+
+.devops-container{
+	margin: 10px 5px 15px 15px;
+}
+
+.devops-container div.devops-container {
+    margin-left: 0;
+}
+
+.devops-id {
+	margin-right: 5px;
+}
+
+.centered{
+	text-align:centered;
+}
+
+.common-margin{
+	margin: 5px 5px 10px;
 }
 
 /* TEASERS */

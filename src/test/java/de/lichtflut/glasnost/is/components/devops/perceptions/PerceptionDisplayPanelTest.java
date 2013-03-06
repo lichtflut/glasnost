@@ -85,15 +85,7 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	 * Test method for {@link de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionDisplayPanel#PerceptionsDisplayPanel(java.lang.String, org.apache.wicket.model.IModel)}.
 	 * Scenario: Display panel with a model containing a <code>null</code> perception
 	 */
-	@Test(expected=IllegalArgumentException.class)
-	public void testPerceptionsDisplayPanelWithNullData() {
-		new PerceptionDisplayPanel("panel", new Model<Perception>(null));
-	}
-
-	/**
-	 * Test method for {@link de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionDisplayPanel#PerceptionsDisplayPanel(java.lang.String, org.apache.wicket.model.IModel)}.
-	 * Scenario: Display panel with a model containing a <code>null</code> perception
-	 */
+	@SuppressWarnings("unused")
 	@Test(expected=IllegalArgumentException.class)
 	public void testPerceptionsDisplayPanelWithNullModel() {
 		new PerceptionDisplayPanel("panel", null);

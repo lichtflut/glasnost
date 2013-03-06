@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
  */
-package de.lichtflut.glasnost.is.components.devops.perceptions;
+package de.lichtflut.glasnost.is.model.ui;
 
 import java.util.ArrayList;
 import java.util.List;

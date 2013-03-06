@@ -1,3 +1,6 @@
+/*
+ * Copyright 2012 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
+ */
 package de.lichtflut.glasnost.is;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -42,12 +45,7 @@ import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.config.QueryServicePathBuilder;
 
-/*
- * Copyright 2012 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
- */
-
 /**
- * *
  * <p>
  * Base class for all wicket-tests. This class does:
  * <ul>
@@ -166,7 +164,6 @@ public abstract class GlasnostWebTest {
 	// ------------------------------------------------------
 
 	protected void earlyInitialize() {
-
 	}
 
 	/**

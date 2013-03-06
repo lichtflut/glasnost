@@ -246,6 +246,22 @@
             </dependencies>
         </profile>
         <profile>
+            <id>jelastic</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arastreju</groupId>
+                    <artifactId>arastreju-neo4j</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+                <!-- Include domain model data (RDF+RSF) -->
+                <dependency>
+                    <groupId>de.lichtflut.rh</groupId>
+                    <artifactId>domain-model</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
             <id>standalone</id>
             <activation>
                 <activeByDefault>true</activeByDefault>

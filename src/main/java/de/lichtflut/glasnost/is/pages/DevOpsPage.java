@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -23,6 +22,7 @@ import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.glasnost.is.services.PerceptionService;
 import de.lichtflut.rb.application.base.RBBasePage;
+import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.basic.AbstractLoadableDetachableModel;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
@@ -65,7 +65,7 @@ public class DevOpsPage extends RBBasePage {
 
 	private Component createStage(final IModel<Perception> model) {
 		WebMarkupContainer container = new WebMarkupContainer("stage");
-		container.add(new Label("name", new PropertyModel<IModel<Perception>>(model, "name")));
+		container.add(new PanelTitle("name", new PropertyModel<String>(model, "name")));
 		ListView<PerceptionItem> listView = new ListView<PerceptionItem>("items", rootItemsModel(model)) {
 			@Override
 			protected void populateItem(final ListItem<PerceptionItem> item) {
@@ -101,7 +101,7 @@ public class DevOpsPage extends RBBasePage {
 		return new AbstractLoadableDetachableModel<List<Perception>>() {
 			@Override
 			public List<Perception> load() {
-				List<Perception> perceptions = DevOpsPage.this.perceptionDefinitionService.findAllPerceptions();
+				List<Perception> perceptions = perceptionDefinitionService.findAllPerceptions();
 				Collections.sort(perceptions, new OrderBySerialNumber());
 				return perceptions;
 			}
