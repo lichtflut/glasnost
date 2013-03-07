@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Java\jre7\bin\java.exe" -jar "D:\Eigene Dokumente\LichtFlut\Selenium\selenium-server-standalone-2.29.0.jar" -htmlSuite "*firefox" "http://127.0.0.1" "D:\Eigene Dokumente\LichtFlut\Projekte\glasnost\System Test\Tests\Perceptions\PerceptionsTestSuite.html" "results-firefox.html" -port 5555 &auto=true
