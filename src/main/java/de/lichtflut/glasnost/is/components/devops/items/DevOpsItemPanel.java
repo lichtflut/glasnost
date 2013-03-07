@@ -37,9 +37,9 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 /**
  * <p>
  * Panel displaying a PerceptionItem with it's quick-info, if available.
+ * </p>
  * <p>
  * Additionally it's possible to expand this item and show a list of all sub items.
- * </p>
  * </p>
  * 
  * <p>

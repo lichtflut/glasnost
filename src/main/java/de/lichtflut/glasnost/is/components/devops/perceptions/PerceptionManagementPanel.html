@@ -1,49 +1,50 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
 <wicket:panel>
 
-    <div class="input-panel">
+    <div class="common-background">
 
         <div class="title-container">
         	<span class="title"><wicket:message  key="header">[header]</wicket:message></span>
-			<a class="float-right" wicket:id="openWizzardLink"><wicket:message key="link.open-wizzard">[START WIZZARD]</wicket:message></a>
+			<a class="float-right common-margin" wicket:id="openWizzardLink"><wicket:message key="link.open-wizzard">[START WIZZARD]</wicket:message></a>
         </div>
-
-        <table class="entity-list">
-            <tr>
-                <th class="entity-list-header">
-                    <wicket:message key="table.header.id">[id]</wicket:message>
-                </th>
-                <th class="entity-list-header">
-                    <wicket:message key="table.header.name">[name]</wicket:message>
-                </th>
-                <th class="entity-list-header">
-                	<wicket:message key="table.header.owner">[owner]</wicket:message>
-                </th>
-                <th class="entity-list-header">
-                	<wicket:message key="table.header.color">[color]</wicket:message>
-                </th>
-                <th class="entity-list-header"></th>
-                <th class="entity-list-header"></th>
-                <th class="entity-list-header"></th>
-                <th class="entity-list-header"></th>
-            </tr>
-
-            <wicket:container wicket:id="perceptionView">
-                <tr>
-                    <td class="entity-list-cell" wicket:id="id"></td>
-                    <td class="entity-list-cell" wicket:id="name"></td>
-                    <td class="entity-list-cell" wicket:id="owner"></td>
-                    <td class="entity-list-cell"><span class="color-code" wicket:id="color"></span></td>
-                    <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
-                    <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
-                    <td class="entity-list-action"><a wicket:id="view" class="action-view">[edit]</a></td>
-                    <td class="entity-list-action"><a wicket:id="delete" class="action-delete">[delete]</a></td>
-                </tr>
-            </wicket:container>
-        </table>
-
-        <div>
-            <a wicket:id="createPerceptionLink"><wicket:message key="link.create-perception">[create]</wicket:message></a>
+		<div class="common-margin section">
+	        <table class="entity-list">
+	            <tr>
+	                <th class="entity-list-header">
+	                    <wicket:message key="table.header.id">[id]</wicket:message>
+	                </th>
+	                <th class="entity-list-header">
+	                    <wicket:message key="table.header.name">[name]</wicket:message>
+	                </th>
+	                <th class="entity-list-header">
+	                	<wicket:message key="table.header.owner">[owner]</wicket:message>
+	                </th>
+	                <th class="entity-list-header">
+	                	<wicket:message key="table.header.color">[color]</wicket:message>
+	                </th>
+	                <th class="entity-list-header"></th>
+	                <th class="entity-list-header"></th>
+	                <th class="entity-list-header"></th>
+	                <th class="entity-list-header"></th>
+	            </tr>
+	
+	            <wicket:container wicket:id="perceptionView">
+	                <tr>
+	                    <td class="entity-list-cell" wicket:id="id"></td>
+	                    <td class="entity-list-cell" wicket:id="name"></td>
+	                    <td class="entity-list-cell" wicket:id="owner"></td>
+	                    <td class="entity-list-cell"><span class="color-code" wicket:id="color"></span></td>
+	                    <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
+	                    <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
+	                    <td class="entity-list-action"><a wicket:id="view" class="action-view">[edit]</a></td>
+	                    <td class="entity-list-action"><a wicket:id="delete" class="action-delete">[delete]</a></td>
+	                </tr>
+	            </wicket:container>
+	        </table>
+	
+	        <div>
+	            <a wicket:id="createPerceptionLink"><wicket:message key="link.create-perception">[create]</wicket:message></a>
+	        </div>
         </div>
 
     </div>
