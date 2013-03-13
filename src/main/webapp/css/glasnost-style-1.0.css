@@ -115,6 +115,9 @@ div.devops-item div.title-container{
 .common-margin{
 	margin: 5px 5px 10px;
 }
+div.devops-item div.quick-info{
+	display: inline-block;	
+}
 
 /* TEASERS */
 div.teaser-logo {
