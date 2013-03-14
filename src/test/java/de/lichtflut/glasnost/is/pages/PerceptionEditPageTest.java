@@ -29,7 +29,7 @@ import de.lichtflut.rb.webck.common.DisplayMode;
  *
  * @author Ravi Knox
  */
-public class PerceptionEditPageTest extends GlasnostWebTest{
+public class PerceptionEditPageTest extends GlasnostWebTest {
 
 	private RBEntity owner, personResponsible, perceptionCategory;
 	private Perception perception;
