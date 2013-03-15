@@ -34,10 +34,10 @@ div.title-container {
 	border-radius: 5px 5px 5px 5px;
 }
 
-.common-placement{
+.common-placement {
 	padding: 1px 3px 1px 15px;
 }
-	
+
 span.floating-table {
 	width: 33%;
 	display: inline-block;
@@ -53,10 +53,27 @@ span.floating-table {
 	margin-bottom: 10px;
 }
 
+.devops-fold-action{
+	background: url("glasnost_images/icon_set_red.png") no-repeat scroll 0 -1px / 85px auto transparent;
+    display: inline-block;
+    height: 18px;
+    overflow: hidden;
+    text-indent: -1000px;
+    width: 18px;
+}
 .fold {
+	transform: rotate(90deg);
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-moz-transform: rotate(90deg); /* Firefox */
+	-webkit-transform: rotate(90deg); /* Safari and Chrome */
+	-o-transform: rotate(90deg); /* Opera */
 }
 
 .unfold {
+}
+
+.valign-top {
+	vertical-align: top;
 }
 
 /* LOGOS */
@@ -88,35 +105,36 @@ div#application-logo {
 
 /* DEVOPS ITEMS */
 div.devops-item {
-	border: 1px solid gray;
+	border: 1px solid #D3DCC7;
 	border-radius: 5px;
 }
 
-div.devops-item div.title-container{
+div.devops-item div.title-container {
 	margin-bottom: 0px;
 }
 
-.devops-container{
+.devops-container {
 	margin: 10px 5px 15px 15px;
 }
 
 .devops-container div.devops-container {
-    margin-left: 0;
+	margin-left: 0;
 }
 
 .devops-id {
 	margin-right: 5px;
 }
 
-.centered{
-	text-align:centered;
+.centered {
+	text-align: centered;
 }
 
-.common-margin{
+.common-margin {
 	margin: 5px 5px 10px;
 }
-div.devops-item div.quick-info{
-	display: inline-block;	
+
+div.devops-item div.quick-info {
+	display: inline-block;
 }
 
 /* TEASERS */

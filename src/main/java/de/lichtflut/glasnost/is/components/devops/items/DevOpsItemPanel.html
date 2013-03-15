@@ -5,18 +5,16 @@
 
     <div class="devops-item">
 		<div class="title-container subtitle">
-			<span class="devops-id">[<wicket:container wicket:id="id">[ID]</wicket:container>]</span>
-			<span wicket:id="name">[name]</span>
-			<a wicket:id="more" href="#" class="unfold float-right">
+			<a wicket:id="more" href="#" class="unfold">
+				<wicket:container wicket:id="linkLabel"></wicket:container>
+			</a>
+			<a wicket:id="detailsLink" href="#" class="valign-top">
 				<wicket:container wicket:id="linkLabel"></wicket:container>
 			</a>
 		</div>
 		<div>
 			<div wicket:id="container" class="common-placement">
 				<div wicket:id="infoPanel"></div>
-				<div>
-				<a wicket:id="details" href="#"><wicket:message key="link.details"></wicket:message></a>
-				</div>
 				<div wicket:id="subItems">
 					<div wicket:id="item">[PERCEPTION ITEM]</div>
 				</div>

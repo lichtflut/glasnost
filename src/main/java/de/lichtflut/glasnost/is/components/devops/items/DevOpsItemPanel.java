@@ -7,10 +7,11 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -26,7 +27,6 @@ import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
-import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
@@ -76,8 +76,17 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 	// ------------------------------------------------------
 
 	private void addTitleComponents(final IModel<PerceptionItem> model) {
-		add(new Label("id", new PropertyModel<String>(model, "ID")));
-		add(new Label("name", new PropertyModel<String>(model, "name")));
+		Link<?> detailsLink = new Link<Void>("detailsLink") {
+			@Override
+			public void onClick() {
+				PageParameters parameters = new PageParameters();
+				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getQualifiedName());
+				parameters.add(DisplayMode.PARAMETER, DisplayMode.VIEW);
+				setResponsePage(DevOpsItemPage.class, parameters);
+			}
+		};
+		detailsLink.add(new Label("linkLabel", new PropertyModel<String>(model, "name")));
+		add(detailsLink);
 		addMoreLink("more", model);
 	}
 
@@ -85,18 +94,16 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 	 * Adds an Ajaxlink to fold/unfold further info
 	 */
 	private void addMoreLink(final String id, final IModel<PerceptionItem> model) {
-		final IModel<String> labelModel = new Model<String>("+");
+		final IModel<String> labelModel = new Model<String>(" ");
 		AjaxLink<String> moreLink = new AjaxLink<String>(id){
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				if(Boolean.TRUE == expanded.getObject()){
 					expanded.setObject(false);
-					add(CssModifier.setClass("fold float-right"));
-					labelModel.setObject("+");
+					//					labelModel.setObject("+");
 				}else{
 					expanded.setObject(true);
-					add(CssModifier.setClass("unfold float-right"));
-					labelModel.setObject("-");
+					//					labelModel.setObject("-");
 				}
 				RBAjaxTarget.add(DevOpsItemPanel.this);
 			}
@@ -105,6 +112,16 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			protected IAjaxCallDecorator getAjaxCallDecorator() {
 				return new AjaxCancelEventBubbleCallDecorator();
 			}
+
+			@Override
+			protected void onComponentTag(final ComponentTag tag) {
+				super.onComponentTag(tag);
+				if(Boolean.TRUE == expanded.getObject()){
+					tag.put("class", "devops-fold-action fold");
+				}else{
+					tag.put("class", "devops-fold-action unfold");
+				}
+			}
 		};
 		moreLink.add(new Label("linkLabel", labelModel));
 		add(moreLink);
@@ -112,28 +129,11 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 
 	private void addInfo(final String id, final IModel<PerceptionItem> model) {
 		WebMarkupContainer container = new WebMarkupContainer("container");
-		addDetailsLink("details", model, container);
 		addQuickInfo("quickInfo", model, container);
 		container.add(visibleIf(isTrue(expanded)));
 
 		addListView("subItems", model, container);
 		add(container);
-	}
-
-	/**
-	 * Redirect to DevopsItemPage
-	 */
-	private void addDetailsLink(final String id, final IModel<PerceptionItem> model, final WebMarkupContainer container) {
-		AjaxFallbackLink<Void> details = new AjaxFallbackLink<Void>(id) {
-			@Override
-			public void onClick(final AjaxRequestTarget target) {
-				PageParameters parameters = new PageParameters();
-				parameters.add(CommonParams.PARAM_RESOURCE_ID, model.getObject().getQualifiedName());
-				parameters.add(DisplayMode.PARAMETER, DisplayMode.VIEW);
-				setResponsePage(DevOpsItemPage.class, parameters);
-			}
-		};
-		container.add(details);
 	}
 
 	private void addQuickInfo(final String string, final IModel<PerceptionItem> model, final WebMarkupContainer container) {
