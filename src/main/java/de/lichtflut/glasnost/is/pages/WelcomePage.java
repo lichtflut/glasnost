@@ -27,7 +27,7 @@ public class WelcomePage extends RBBasePage {
 	public WelcomePage(final PageParameters parameters) {
 		super(parameters);
 
-		add(new PerceptionManagementPanel("perceptionManagement"));
+		add(new PerceptionManagementPanel("perceptionManagement").setOutputMarkupId(true));
 	}
 
 }

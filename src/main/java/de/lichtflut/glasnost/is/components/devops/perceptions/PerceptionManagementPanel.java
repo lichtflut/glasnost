@@ -59,13 +59,13 @@ public class PerceptionManagementPanel extends Panel {
 	public PerceptionManagementPanel(final String id, final IModel<List<Perception>> model) {
 		super(id, model);
 
-		setOutputMarkupId(true);
-
 		final ListView<Perception> perceptionView = createListView(model);
 		add(perceptionView);
 
 		add(createNewLink());
 		add(createPerceptionWizzardLink("openWizzardLink"));
+
+		setOutputMarkupId(true);
 	}
 
 	// ----------------------------------------------------
@@ -138,14 +138,11 @@ public class PerceptionManagementPanel extends Panel {
 						+ "'";
 				final DialogHoster hoster = findParent(DialogHoster.class);
 				hoster.openDialog(new ConfirmationDialog(hoster.getDialogID(), Model.of(confirmation)) {
-
 					@Override
 					public void onConfirm() {
 						removePerception(model);
 						send(getPage(), Broadcast.BREADTH, new ModelChangeEvent<Void>(ModelChangeEvent.PERCEPTION));
 					}
-
-
 					@Override
 					public void onCancel() {
 						hoster.closeDialog(this);
@@ -233,7 +230,7 @@ public class PerceptionManagementPanel extends Panel {
 	public void onEvent(final IEvent<?> event) {
 		ModelChangeEvent<?> mce = ModelChangeEvent.from(event);
 		if (mce.isAbout(ModelChangeEvent.PERCEPTION)) {
-			RBAjaxTarget.add(PerceptionManagementPanel.this);
+			update();
 		}
 	}
 
