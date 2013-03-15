@@ -3,10 +3,12 @@ package de.lichtflut.glasnost.is.components.devops.perceptions;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -15,6 +17,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -27,11 +30,13 @@ import de.lichtflut.glasnost.is.pages.PerceptionDisplayPage;
 import de.lichtflut.glasnost.is.pages.PerceptionEditPage;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.application.common.CommonParams;
+import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
 import de.lichtflut.rb.webck.behaviors.CssModifier;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.DialogHoster;
 import de.lichtflut.rb.webck.components.dialogs.ConfirmationDialog;
+import de.lichtflut.rb.webck.models.ConditionalModel;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -59,8 +64,11 @@ public class PerceptionManagementPanel extends Panel {
 	public PerceptionManagementPanel(final String id, final IModel<List<Perception>> model) {
 		super(id, model);
 
+		add(createTabelHeader("tableHeader", model));
 		final ListView<Perception> perceptionView = createListView(model);
 		add(perceptionView);
+
+		add(createNoPerceptionsInfo("noPerceptions", model));
 
 		add(createNewLink());
 		add(createPerceptionWizzardLink("openWizzardLink"));
@@ -70,8 +78,21 @@ public class PerceptionManagementPanel extends Panel {
 
 	// ----------------------------------------------------
 
+	private Component createTabelHeader(final String id, final IModel<List<Perception>> model) {
+		// Contains static HTML. We determin its visibility only.
+		Component container = new WebMarkupContainer(id);
+		container.add(ConditionalBehavior.visibleIf(ConditionalModel.isNotEmpty(model)));
+		return container;
+	}
+
+	private Component createNoPerceptionsInfo(final String id, final IModel<List<Perception>> model) {
+		Label label = new Label(id, new ResourceModel("label.no-perceptions"));
+		label.add(ConditionalBehavior.visibleIf(ConditionalModel.isEmpty(model)));
+		return label;
+	}
+
 	private ListView<Perception> createListView(final IModel<List<Perception>> model) {
-		return new ListView<Perception>("perceptionView", model) {
+		ListView<Perception> view = new ListView<Perception>("perceptionView", model) {
 			@Override
 			protected void populateItem(final ListItem<Perception> item) {
 				Perception perception = item.getModelObject();
@@ -96,6 +117,8 @@ public class PerceptionManagementPanel extends Panel {
 				item.add(createDownLink(item.getModel(), model));
 			}
 		};
+		view.add(ConditionalBehavior.visibleIf(ConditionalModel.isNotEmpty(model)));
+		return view;
 	}
 
 	// ----------------------------------------------------

@@ -9,6 +9,7 @@
         </div>
 		<div class="common-margin section">
 	        <table class="entity-list">
+				<wicket:container wicket:id="tableHeader">
 	            <tr>
 	                <th class="entity-list-header">
 	                    <wicket:message key="table.header.id">[id]</wicket:message>
@@ -27,19 +28,22 @@
 	                <th class="entity-list-header"></th>
 	                <th class="entity-list-header"></th>
 	            </tr>
-	
-	                <tr wicket:id="perceptionView">
-	                    <td class="entity-list-cell" wicket:id="id"></td>
-	                    <td class="entity-list-cell" wicket:id="name"></td>
-	                    <td class="entity-list-cell" wicket:id="owner"></td>
-	                    <td class="entity-list-cell"><span class="color-code" wicket:id="color"></span></td>
-	                    <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
-	                    <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
-	                    <td class="entity-list-action"><a wicket:id="view" class="action-view">[edit]</a></td>
-	                    <td class="entity-list-action"><a wicket:id="delete" class="action-delete">[delete]</a></td>
-	                </tr>
+				</wicket:container>
+	            <tr wicket:id="perceptionView">
+	                <td class="entity-list-cell" wicket:id="id"></td>
+	                <td class="entity-list-cell" wicket:id="name"></td>
+	                <td class="entity-list-cell" wicket:id="owner"></td>
+	                <td class="entity-list-cell"><span class="color-code" wicket:id="color"></span></td>
+	                <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
+	                <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
+	                <td class="entity-list-action"><a wicket:id="view" class="action-view">[edit]</a></td>
+	                <td class="entity-list-action"><a wicket:id="delete" class="action-delete">[delete]</a></td>
+	            </tr>
 	        </table>
-	
+			
+			<div class="common-margin">
+				<span wicket:id="noPerceptions"></span>
+			</div>
 	        <div>
 	            <a wicket:id="createPerceptionLink"><wicket:message key="link.create-perception">[create]</wicket:message></a>
 	        </div>
