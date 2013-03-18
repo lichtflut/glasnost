@@ -27,7 +27,7 @@ import de.lichtflut.rb.core.schema.model.PropertyDeclaration;
 import de.lichtflut.rb.core.schema.model.ResourceSchema;
 import de.lichtflut.rb.core.schema.model.impl.PropertyDeclarationImpl;
 import de.lichtflut.rb.core.schema.model.impl.ResourceSchemaImpl;
-import de.lichtflut.rb.webck.components.entity.quickinfo.InfoPanel;
+import de.lichtflut.rb.webck.components.entity.quickinfo.QuickInfoPanel;
 
 /**
  * <p>
@@ -88,7 +88,7 @@ public class DevOpsItemPanelTest extends GlasnostWebTest {
 		// unfold subItems of root perception
 		tester.executeAjaxEvent(tester.getComponentFromLastRenderedPage("panel:more"), "onclick");
 
-		tester.assertComponent("panel:container:infoPanel",InfoPanel.class);
+		tester.assertComponent("panel:container:infoPanel",QuickInfoPanel.class);
 		tester.assertListView("panel:container:subItems", model.getObject().getSubItems());
 		tester.assertInvisible("panel:container:subItems:0:item:container:subItems");
 

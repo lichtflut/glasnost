@@ -11,7 +11,7 @@
 	        <table class="entity-list">
 				<wicket:container wicket:id="tableHeader">
 	            <tr>
-	                <th class="entity-list-header">
+	                <th class="entity-list-header rounded-top-left">
 	                    <wicket:message key="table.header.id">[id]</wicket:message>
 	                </th>
 	                <th class="entity-list-header">
@@ -26,18 +26,18 @@
 	                <th class="entity-list-header"></th>
 	                <th class="entity-list-header"></th>
 	                <th class="entity-list-header"></th>
-	                <th class="entity-list-header"></th>
+	                <th class="entity-list-header rounded-top-right"></th>
 	            </tr>
 				</wicket:container>
 	            <tr wicket:id="perceptionView">
-	                <td class="entity-list-cell" wicket:id="id"></td>
+	                <td class="entity-list-cell rounded-bottom-left" wicket:id="id"></td>
 	                <td class="entity-list-cell" wicket:id="name"></td>
 	                <td class="entity-list-cell" wicket:id="owner"></td>
 	                <td class="entity-list-cell"><span class="color-code" wicket:id="color"></span></td>
 	                <td class="entity-list-action"><a wicket:id="up" class="action-move-up">[up]</a></td>
 	                <td class="entity-list-action"><a wicket:id="down" class="action-move-down">[down]</a></td>
 	                <td class="entity-list-action"><a wicket:id="view" class="action-view">[edit]</a></td>
-	                <td class="entity-list-action"><a wicket:id="delete" class="action-delete">[delete]</a></td>
+	                <td class="entity-list-action rounded-bottom-right"><a wicket:id="delete" class="action-delete">[delete]</a></td>
 	            </tr>
 	        </table>
 			

@@ -19,6 +19,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -26,11 +27,12 @@ import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.entity.RBEntity;
+import de.lichtflut.rb.core.entity.RBField;
 import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
-import de.lichtflut.rb.webck.components.entity.quickinfo.InfoPanel;
+import de.lichtflut.rb.webck.components.entity.quickinfo.QuickInfoPanel;
 import de.lichtflut.rb.webck.events.AjaxCancelEventBubbleCallDecorator;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
@@ -144,7 +146,7 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			}
 		};
 
-		Panel infoPanel = new InfoPanel("infoPanel", rbEntity);
+		Panel infoPanel = new QuickInfoPanel("infoPanel", new ListModel<RBField>(rbEntity.getObject().getQuickInfo()));
 		container.add(infoPanel);
 	}
 
