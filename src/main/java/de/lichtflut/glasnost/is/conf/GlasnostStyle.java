@@ -1,7 +1,9 @@
 package de.lichtflut.glasnost.is.conf;
 
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+
 import de.lichtflut.rb.application.styles.frugal.FrugalStyle;
-import org.apache.wicket.markup.html.IHeaderResponse;
 
 /**
  * <p>
@@ -16,9 +18,9 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  */
 public class GlasnostStyle extends FrugalStyle {
 
-    @Override
-    public void addStyle(IHeaderResponse response) {
-        super.addStyle(response);
-        response.renderCSSReference("css/glasnost-style-1.0.css");
-    }
+	@Override
+	public void addStyle(final IHeaderResponse response) {
+		super.addStyle(response);
+		response.render(CssHeaderItem.forUrl("css/glasnost-style-1.0.css"));
+	}
 }

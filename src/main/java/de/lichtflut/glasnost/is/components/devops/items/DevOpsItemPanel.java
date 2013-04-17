@@ -6,7 +6,6 @@ import static de.lichtflut.rb.webck.models.ConditionalModel.isTrue;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -33,7 +32,6 @@ import de.lichtflut.rb.webck.common.DisplayMode;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.common.TypedPanel;
 import de.lichtflut.rb.webck.components.entity.quickinfo.QuickInfoPanel;
-import de.lichtflut.rb.webck.events.AjaxCancelEventBubbleCallDecorator;
 import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
@@ -102,17 +100,10 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 			public void onClick(final AjaxRequestTarget target) {
 				if(Boolean.TRUE == expanded.getObject()){
 					expanded.setObject(false);
-					//					labelModel.setObject("+");
 				}else{
 					expanded.setObject(true);
-					//					labelModel.setObject("-");
 				}
 				RBAjaxTarget.add(DevOpsItemPanel.this);
-			}
-
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator() {
-				return new AjaxCancelEventBubbleCallDecorator();
 			}
 
 			@Override

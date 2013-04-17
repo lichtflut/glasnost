@@ -3,18 +3,19 @@
  */
 package de.lichtflut.glasnost.is;
 
-import de.lichtflut.rb.application.base.errorpages.DefaultErrorPage;
-import de.lichtflut.rb.application.base.errorpages.InternalErrorPage;
-import de.lichtflut.rb.webck.common.RBWebSession;
 import org.apache.wicket.Page;
+import org.apache.wicket.core.request.handler.IPageProvider;
+import org.apache.wicket.core.request.handler.PageProvider;
+import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
 import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.handler.IPageProvider;
-import org.apache.wicket.request.handler.PageProvider;
-import org.apache.wicket.request.handler.RenderPageRequestHandler;
+
+import de.lichtflut.rb.application.base.errorpages.DefaultErrorPage;
+import de.lichtflut.rb.application.base.errorpages.InternalErrorPage;
+import de.lichtflut.rb.webck.common.RBWebSession;
 
 /**
  * <p>
@@ -29,10 +30,11 @@ import org.apache.wicket.request.handler.RenderPageRequestHandler;
  */
 public class GlasnostRequestCycleListener extends AbstractRequestCycleListener {
 
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
-	public IRequestHandler onException(final RequestCycle cycle, Exception ex) {
+	@Override
+	public IRequestHandler onException(final RequestCycle cycle, final Exception ex) {
 		if (ex instanceof PageExpiredException) {
 			return getTargetTo(new InternalErrorPage(ex));
 		}
@@ -43,11 +45,11 @@ public class GlasnostRequestCycleListener extends AbstractRequestCycleListener {
 		}
 	}
 
-    // ----------------------------------------------------
+	// ----------------------------------------------------
 
-    protected IRequestHandler getTargetTo(Page page) {
-        final IPageProvider pageProvider = new PageProvider(page);
-        return new RenderPageRequestHandler(pageProvider);
-    }
-	
+	protected IRequestHandler getTargetTo(final Page page) {
+		final IPageProvider pageProvider = new PageProvider(page);
+		return new RenderPageRequestHandler(pageProvider);
+	}
+
 }
