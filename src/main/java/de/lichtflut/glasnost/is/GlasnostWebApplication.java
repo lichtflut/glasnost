@@ -12,6 +12,7 @@ import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.glasnost.is.pages.DevOpsPage;
+import de.lichtflut.glasnost.is.pages.FindClassInEntityPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
 import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
@@ -105,7 +106,6 @@ public class GlasnostWebApplication extends RBApplication {
 
 		// Glasnost specific
 		mountPage("devops", DevOpsPage.class);
-
 	}
 
 	@Override
@@ -114,6 +114,7 @@ public class GlasnostWebApplication extends RBApplication {
 		nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
 		nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
 		nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
+		nodes.add(createPageNode(FindClassInEntityPage.class, "navigation.find-class-in-entity"));
 		nodes.addAll(super.getFirstLevelNavigation(menuItems));
 		return nodes;
 	}

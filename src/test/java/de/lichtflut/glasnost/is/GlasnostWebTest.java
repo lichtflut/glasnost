@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Locale;
 
-import de.lichtflut.rb.webck.config.QueryPath;
 import org.apache.wicket.Component;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
@@ -26,7 +25,6 @@ import org.arastreju.sge.model.SimpleResourceID;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
@@ -45,6 +43,7 @@ import de.lichtflut.rb.core.services.TypeManager;
 import de.lichtflut.rb.core.services.ViewSpecificationService;
 import de.lichtflut.rb.webck.browsing.ResourceLinkProvider;
 import de.lichtflut.rb.webck.common.RBWebSession;
+import de.lichtflut.rb.webck.config.QueryPath;
 import de.lichtflut.rb.webck.config.QueryServicePathBuilder;
 
 /**
@@ -116,7 +115,7 @@ public abstract class GlasnostWebTest {
 	@Mock
 	protected QueryServicePathBuilder pathBuilder;
 
-    @Mock
+	@Mock
 	protected ResourceLinkProvider resourceLinkProvider;
 
 	@Mock
@@ -190,8 +189,8 @@ public abstract class GlasnostWebTest {
 	}
 
 	protected void simulatePathbuilder() {
-        QueryPath path = new QueryPath("http://example.org/");
-        when(pathBuilder.create(anyString())).thenReturn(path);
+		QueryPath path = new QueryPath("http://example.org/");
+		when(pathBuilder.create(anyString())).thenReturn(path);
 
 		when(pathBuilder.queryEntities(anyString(), anyString())).thenReturn("some entities");
 		when(pathBuilder.queryClasses(anyString(), anyString())).thenReturn("some entities");
