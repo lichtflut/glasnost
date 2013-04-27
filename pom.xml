@@ -11,7 +11,7 @@
     
 	<properties>
 		<rb.version>0.5.1-SNAPSHOT</rb.version>
-        <arastreju.version>0.8.1</arastreju.version>
+        <arastreju.version>0.9.0-SNAPSHOT</arastreju.version>
 		<jetty.version>6.1.25</jetty.version>
         <jackson.version>1.9.10</jackson.version>
 		<maven.build.timestamp.format>yyyy-MM-dd-HH:mm:ss</maven.build.timestamp.format>
