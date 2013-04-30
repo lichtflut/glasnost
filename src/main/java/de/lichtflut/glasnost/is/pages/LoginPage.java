@@ -1,36 +1,31 @@
 /*
- * Copyright 2011 by lichtflut Forschungs- und Entwicklungsgesellschaft mbH
+ * Copyright (C) 2013 lichtflut Forschungs- und Entwicklungsgesellschaft mbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package de.lichtflut.glasnost.is.pages;
 
-import de.lichtflut.glasnost.is.components.AboutTeaserPanel;
-import de.lichtflut.rb.application.base.AbstractLoginPage;
-import de.lichtflut.rb.application.common.RBPermission;
-import de.lichtflut.rb.application.custom.RequestAccountPage;
-import de.lichtflut.rb.application.custom.ResetPasswordPage;
-import de.lichtflut.rb.application.extensions.ServiceContextInitializer;
-import de.lichtflut.rb.application.pages.AbstractBasePage;
-import de.lichtflut.rb.core.security.AuthModule;
-import de.lichtflut.rb.core.security.AuthenticationService;
-import de.lichtflut.rb.core.security.LoginData;
-import de.lichtflut.rb.core.security.RBUser;
-import de.lichtflut.rb.webck.common.CookieAccess;
-import de.lichtflut.rb.webck.common.RBWebSession;
-import de.lichtflut.rb.webck.components.login.LoginPanel;
-import de.lichtflut.rb.webck.models.infra.VersionInfoModel;
-import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.http.WebRequest;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.arastreju.sge.security.LoginException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
+import de.lichtflut.glasnost.is.components.AboutTeaserPanel;
+import de.lichtflut.rb.application.base.AbstractLoginPage;
+import de.lichtflut.rb.application.custom.RequestAccountPage;
+import de.lichtflut.rb.application.custom.ResetPasswordPage;
+import de.lichtflut.rb.core.security.LoginData;
+import de.lichtflut.rb.webck.components.login.LoginPanel;
+import de.lichtflut.rb.webck.models.infra.VersionInfoModel;
 
 /**
  * <p>
@@ -51,11 +46,11 @@ public class LoginPage extends AbstractLoginPage {
 	public LoginPage() {
 
 		add(new LoginPanel("loginPanel") {
-            @Override
-            public void onLogin(LoginData loginData) {
-                tryLogin(loginData);
-            }
-        });
+			@Override
+			public void onLogin(final LoginData loginData) {
+				tryLogin(loginData);
+			}
+		});
 
 		add(new Link<String>("resetEmail") {
 			@Override

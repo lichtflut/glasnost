@@ -7,8 +7,11 @@ target
 *.ipr
 *.iws
 *.tmprojtest
+*~
 .DS_Store
 pom-conf.tmproj
 core/bin
 webapp/bin
 webck/bin
+META-INF
+

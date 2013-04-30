@@ -4,13 +4,23 @@
 	
     <groupId>de.lichtflut.glasnost</groupId>
 	<artifactId>glasnost.is</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>war</packaging>
 	<name>Glasnost Information Server</name>
 	<description>lichtflut Glasnost Information Server</description>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
     
 	<properties>
-		<rb.version>0.5.0-SNAPSHOT</rb.version>
+		<rb.version>0.5.3</rb.version>
+        <arastreju.version>0.9.0</arastreju.version>
 		<jetty.version>6.1.25</jetty.version>
         <jackson.version>1.9.10</jackson.version>
 		<maven.build.timestamp.format>yyyy-MM-dd-HH:mm:ss</maven.build.timestamp.format>
@@ -20,6 +30,14 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Arastreju-Neo4j Binding -->
+
+            <dependency>
+                <groupId>org.arastreju</groupId>
+                <artifactId>arastreju-neo4j</artifactId>
+                <version>${arastreju.version}</version>
+            </dependency>
 
             <!-- Jackson JSON -->
 
@@ -88,6 +106,22 @@
 			<version>1.6.1</version>
 		</dependency>
 
+        <!-- TEST -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- JETTY -->
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
@@ -117,7 +151,6 @@
 	</dependencies>
     
 	<build>
-		<finalName>glasnost</finalName>
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -201,8 +234,108 @@
 					<downloadSources>true</downloadSources>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>com.google.code.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <header>license.txt</header>
+                    <headerDefinitions>
+                        <headerDefinition>header.xml</headerDefinition>
+                    </headerDefinitions>
+                    <includes>
+                        <include>src/**/*.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                        <exclude>.git/**</exclude>
+                        <exclude>.idea/**</exclude>
+                        <exclude>.settings/**</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.html</exclude>
+                        <exclude>**/*.rdf</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
+
+    <profiles>
+        <profile>
+            <id>distribution</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arastreju</groupId>
+                    <artifactId>arastreju-neo4j</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <!-- Include domain model data (RDF+RSF) -->
+                <dependency>
+                    <groupId>de.lichtflut.rh</groupId>
+                    <artifactId>domain-model</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>jelastic</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arastreju</groupId>
+                    <artifactId>arastreju-neo4j</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+                <!-- Include domain model data (RDF+RSF) -->
+                <dependency>
+                    <groupId>de.lichtflut.rh</groupId>
+                    <artifactId>domain-model</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>standalone</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <finalName>glasnost</finalName>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arastreju</groupId>
+                    <artifactId>arastreju-neo4j</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <id>lf-releases</id>
+            <name>lichtflut nexus repository</name>
+            <url>http://nexus.lichtflut.de/nexus/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>lf-snapshots</id>
+            <name>lichtflut snapshot repository</name>
+            <url>http://nexus.lichtflut.de/nexus/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
 	<distributionManagement>
 		<repository>
 			<id>lf-releases</id>
@@ -215,8 +348,10 @@
 			<url>http://nexus.lichtflut.de/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 	<scm>
 		<developerConnection>scm:git:git@github.com:lichtflut/glasnost.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+
 </project>

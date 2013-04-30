@@ -1,83 +1,192 @@
-/* LOGOS */
+.title {
+	font-size: 12pt;
+}
 
+div.title-container {
+	background-color: #E6E8E3;
+	margin-bottom: 3px;
+	padding: 2px;
+	border-radius: 5px 5px 0px 0px
+}
+
+.subtitle {
+	font-size: 10pt;
+}
+
+.float-right {
+	float: right;
+}
+
+.color-code {
+	border: 1px solid #E6E8E3;
+	display: inline-block;
+	min-height: 12px;
+	min-width: 12px;
+}
+
+.inline-block {
+	display: inline-block
+}
+
+.common-background {
+	background: none repeat scroll 0 0 #F6F8F3;
+	border: 1px solid #D3DCC7;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.common-placement {
+	padding: 1px 3px 1px 15px;
+}
+
+span.floating-table {
+	width: 33%;
+	display: inline-block;
+	padding: 5px 0;
+}
+
+.minimal-height {
+	min-height: 1px;
+}
+
+.catalog .data-picker-field {
+	width: 150px;
+	margin-bottom: 10px;
+}
+
+.devops-fold-action{
+	background: url("glasnost_images/icon_set_red.png") no-repeat scroll 0 -1px / 85px auto transparent;
+    display: inline-block;
+    height: 18px;
+    overflow: hidden;
+    text-indent: -1000px;
+    width: 18px;
+}
+.fold {
+	transform: rotate(90deg);
+	-ms-transform: rotate(90deg); /* IE 9 */
+	-moz-transform: rotate(90deg); /* Firefox */
+	-webkit-transform: rotate(90deg); /* Safari and Chrome */
+	-o-transform: rotate(90deg); /* Opera */
+}
+
+.unfold {
+}
+
+.valign-top {
+	vertical-align: top;
+}
+
+/* LOGOS */
 div#site-header {
-    margin-left:27px;
+	margin-left: 27px;
 }
 
 div#first-level-nav {
-    margin-left:75px;
+	margin-left: 75px;
 }
 
 div#langage-select {
-    padding-left: 90px;
+	padding-left: 90px;
 }
 
-div#langage-select.login{
-    padding-left: 15px;
+div#langage-select.login {
+	padding-left: 15px;
 }
 
 div#application-logo {
-    background: url("glasnost_images/glasnost_logo.png") no-repeat 0 0;
-    z-index: 1;
-    width: 100px;
-    height: 100px;
-    position:absolute;
-    margin-top: -16px;
-    margin-left: -35px;
+	background: url("glasnost_images/glasnost_logo.png") no-repeat 0 0;
+	z-index: 1;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	margin-top: -16px;
+	margin-left: -35px;
+}
+
+/* DEVOPS ITEMS */
+div.devops-item {
+	border: 1px solid #D3DCC7;
+	border-radius: 5px;
+}
+
+div.devops-item div.title-container {
+	margin-bottom: 0px;
+}
+
+.devops-container {
+	margin: 10px 5px 15px 15px;
+}
+
+.devops-container div.devops-container {
+	margin-left: 0;
+}
+
+.devops-id {
+	margin-right: 5px;
+}
+
+.centered {
+	text-align: centered;
+}
+
+.common-margin {
+	margin: 5px 5px 10px;
+}
+
+div.devops-item div.quick-info {
+	display: inline-block;
 }
 
 /* TEASERS */
-
 div.teaser-logo {
-    background-image: url("glasnost_images/glasnost_logo_ext.png");
-    width: 400px;
-    height: 190px;
-    background-position: 0 15px;
-    background-repeat: no-repeat;
+	background-image: url("glasnost_images/glasnost_logo_ext.png");
+	width: 400px;
+	height: 190px;
+	background-position: 0 15px;
+	background-repeat: no-repeat;
 }
 
 div.teaser-table {
-    background-image: url("glasnost_images/teaser_table.png");
-    background-position: -45px -60px;
-    background-repeat: no-repeat;
-    width: 200px;
-    height: 150px;
+	background-image: url("glasnost_images/teaser_table.png");
+	background-position: -45px -60px;
+	background-repeat: no-repeat;
+	width: 200px;
+	height: 150px;
 }
 
 div.teaser-graph {
-    background-image: url("glasnost_images/teaser_graph.png");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    width: 200px;
-    height: 200px;
+	background-image: url("glasnost_images/teaser_graph.png");
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	width: 200px;
+	height: 200px;
 }
 
 div.teaser {
-    font-size: 9pt;
-    padding: 0 5px;
-    max-width:550px;
+	font-size: 9pt;
+	padding: 0 5px;
+	max-width: 550px;
 }
 
 div.teaser.small {
-    font-size: 8pt;
-    padding: 0 5px;
-    max-width:180px;
+	font-size: 8pt;
+	padding: 0 5px;
+	max-width: 180px;
 }
 
 ul.teaser {
-    margin-top:20px;
+	margin-top: 20px;
 }
 
 ul.teaser li {
-    font-size: 8pt;
+	font-size: 8pt;
 }
 
-
 div.text-info {
-    font-size: 10pt;
-    padding: 18px 2px 0;
-    text-align: justify;
-    max-width:550px;
-    margin-left: auto;
-    margin-right: auto;
+	font-size: 10pt;
+	padding: 18px 2px 0;
+	text-align: justify;
+	max-width: 550px;
+	margin-left: auto;
+	margin-right: auto;
 }
