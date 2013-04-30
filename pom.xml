@@ -8,10 +8,19 @@
     <packaging>war</packaging>
 	<name>Glasnost Information Server</name>
 	<description>lichtflut Glasnost Information Server</description>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
     
 	<properties>
-		<rb.version>0.5.1-SNAPSHOT</rb.version>
-        <arastreju.version>0.9.0-SNAPSHOT</arastreju.version>
+		<rb.version>0.5.3</rb.version>
+        <arastreju.version>0.9.0</arastreju.version>
 		<jetty.version>6.1.25</jetty.version>
         <jackson.version>1.9.10</jackson.version>
 		<maven.build.timestamp.format>yyyy-MM-dd-HH:mm:ss</maven.build.timestamp.format>
@@ -225,6 +234,29 @@
 					<downloadSources>true</downloadSources>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>com.google.code.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <header>license.txt</header>
+                    <headerDefinitions>
+                        <headerDefinition>header.xml</headerDefinition>
+                    </headerDefinitions>
+                    <includes>
+                        <include>src/**/*.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                        <exclude>.git/**</exclude>
+                        <exclude>.idea/**</exclude>
+                        <exclude>.settings/**</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.html</exclude>
+                        <exclude>**/*.rdf</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
