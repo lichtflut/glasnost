@@ -126,7 +126,7 @@ public class GlasnostWebApplication extends RBApplication {
 		nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
 		nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
 		nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
-		nodes.add(createPageNode(FindClassInEntityPage.class, "navigation.find-class-in-entity"));
+		//nodes.add(createPageNode(FindClassInEntityPage.class, "navigation.find-class-in-entity"));
 		nodes.addAll(super.getFirstLevelNavigation(menuItems));
 		return nodes;
 	}
