@@ -109,7 +109,7 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	private Perception createPerception() {
 		Perception perception = new Perception();
 		perception.setBasePerception(new Perception());
-		QualifiedName contextQN = new QualifiedName(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI);
+		QualifiedName contextQN = QualifiedName.fromURI(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI);
 		perception.setContext(new SimpleContextID(contextQN));
 		perception.setImagePath("/home/glasnost/testpath");
 		perception.setName("Glasnost test Perception");

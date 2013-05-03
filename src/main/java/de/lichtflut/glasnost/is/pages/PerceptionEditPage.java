@@ -117,7 +117,7 @@ public class PerceptionEditPage extends RBBasePage {
 			model = new Model<Perception>(new Perception());
 		} else {
 			StringValue id = parameters.get(CommonParams.PARAM_RESOURCE_ID);
-			ResourceNode node = networkService.find(new QualifiedName(id.toString()));
+			ResourceNode node = networkService.find(QualifiedName.fromURI(id.toString()));
 			model = new Model<Perception>(new Perception(node));
 		}
 
