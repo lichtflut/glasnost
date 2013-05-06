@@ -101,9 +101,9 @@ public class PerceptionServiceImpl implements PerceptionService {
 	@Override
 	public void addBaseItemToPerception(final PerceptionItem item, final QualifiedName qn) {
 		Perception attachedPerception = Perception.from(conversation().findResource(qn));
-        PerceptionItem attachedItem = PerceptionItem.from(conversation().resolve(item));
+        conversation().attach(item);
 		if (attachedPerception != null) {
-            attachedItem.setPerception(attachedPerception);
+            item.setPerception(attachedPerception);
 			attachedPerception.addTreeRootItem(item);
 		} else {
 			throw new IllegalArgumentException("Requested perception does not exist: " + qn);

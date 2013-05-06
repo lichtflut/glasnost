@@ -18,6 +18,7 @@ package de.lichtflut.glasnost.is.pages;
 import java.util.Collections;
 import java.util.List;
 
+import de.lichtflut.rb.core.RBSystem;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
@@ -28,6 +29,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.apriori.RDF;
+import org.arastreju.sge.apriori.RDFS;
+import org.arastreju.sge.model.nodes.views.SNText;
 import org.arastreju.sge.structure.OrderBySerialNumber;
 
 import de.lichtflut.glasnost.is.GIS;
@@ -93,8 +96,10 @@ public class DevOpsPage extends RBBasePage {
 			public void onClick() {
 				PerceptionItem item = new PerceptionItem();
 				item.addAssociation(RDF.TYPE, GIS.DATA_CENTER);
+                item.addAssociation(RBSystem.HAS_SCHEMA_IDENTIFYING_TYPE, GIS.DATA_CENTER);
+                item.addAssociation(RDFS.LABEL, new SNText("-- data center unnamed --"));
 				item.setID("DCX");
-				item.setName("DataCenter X");
+				item.setName("-- data center unnamed --");
 				perceptionService.addBaseItemToPerception(item, model.getObject().getQualifiedName());
 			}
 		});

@@ -53,10 +53,9 @@ import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 
 /**
  * <p>
- * Panel displaying a PerceptionItem with it's quick-info, if available.
+ *  Panel displaying a PerceptionItem with it's quick-info, if available.
  * <p>
- * Additionally it's possible to expand this item and show a list of all sub items.
- * </p>
+ *  Additionally it's possible to expand this item and show a list of all sub items.
  * </p>
  * 
  * <p>
@@ -102,7 +101,8 @@ public class DevOpsItemPanel extends TypedPanel<PerceptionItem> {
 				setResponsePage(DevOpsItemPage.class, parameters);
 			}
 		};
-		detailsLink.add(new Label("linkLabel", new PropertyModel<String>(model, "name")));
+        PerceptionItem item = model.getObject();
+        detailsLink.add(new Label("linkLabel", new PropertyModel<String>(model, "name")));
 		add(detailsLink);
 		addMoreLink("more", model);
 	}
