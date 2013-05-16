@@ -22,7 +22,7 @@ import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.Aras;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
-import org.arastreju.sge.context.SimpleContextID;
+import org.arastreju.sge.context.ContextID;
 import org.arastreju.sge.model.ElementaryDataType;
 import org.arastreju.sge.model.ResourceID;
 import org.arastreju.sge.model.Statement;
@@ -91,7 +91,7 @@ public class Perception extends ResourceView {
 	public Context getContext() {
 		ResourceID rid = resourceValue(GIS.REPRESENTS_CONTEXT);
 		if (rid != null) {
-			return new SimpleContextID(rid.getQualifiedName());
+			return ContextID.forContext(rid.getQualifiedName());
 		} else {
 			return null;
 		}

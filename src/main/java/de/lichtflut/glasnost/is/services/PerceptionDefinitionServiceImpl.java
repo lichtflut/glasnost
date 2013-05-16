@@ -23,7 +23,7 @@ import org.arastreju.sge.Conversation;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
-import org.arastreju.sge.context.SimpleContextID;
+import org.arastreju.sge.context.ContextID;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.naming.QualifiedName;
@@ -53,15 +53,11 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PerceptionDefinitionServiceImpl.class);
 
-	@SuppressWarnings("unused")
-	private final ServiceContext context;
-
 	private final ArastrejuResourceFactory arasFactory;
 
 	// ----------------------------------------------------
 
 	public PerceptionDefinitionServiceImpl(final ServiceContext context, final ArastrejuResourceFactory arasFactory) {
-		this.context = context;
 		this.arasFactory = arasFactory;
 	}
 
@@ -71,7 +67,7 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 	public void store(final Perception perception) {
 		if (perception.getContext() == null) {
 			LOGGER.info("Creating new context for perception {}.", perception.getID());
-			Context ctx = new SimpleContextID(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI, perception.getID());
+			Context ctx = ContextID.forContext(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI, perception.getID());
 			arasFactory.getOrganizer().registerContext(ctx.getQualifiedName());
 			perception.setContext(ctx);
 			LOGGER.info("Registered new perception context {}.", ctx.getQualifiedName());

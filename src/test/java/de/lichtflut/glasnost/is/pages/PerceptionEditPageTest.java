@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.arastreju.sge.context.SimpleContextID;
+import org.arastreju.sge.context.ContextID;
 import org.arastreju.sge.naming.QualifiedName;
 import org.junit.Test;
 
@@ -122,7 +122,7 @@ public class PerceptionEditPageTest extends GlasnostWebTest {
 		Perception perception = new Perception();
 		perception.setBasePerception(new Perception());
 		QualifiedName contextQN = QualifiedName.fromURI(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI);
-		perception.setContext(new SimpleContextID(contextQN));
+		perception.setContext(ContextID.forContext(contextQN));
 		perception.setImagePath("/home/glasnost/testpath");
 		perception.setName("Glasnost test Perception");
 		perception.setType(perceptionCategory.getNode());
