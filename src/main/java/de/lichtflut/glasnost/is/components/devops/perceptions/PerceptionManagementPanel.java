@@ -15,9 +15,23 @@
  */
 package de.lichtflut.glasnost.is.components.devops.perceptions;
 
-import java.util.List;
-
-import org.apache.wicket.AttributeModifier;
+import de.lichtflut.glasnost.is.dialog.CreatePerceptionsWizzardDialog;
+import de.lichtflut.glasnost.is.events.ModelChangeEvent;
+import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.model.logic.PerceptionOrder;
+import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
+import de.lichtflut.glasnost.is.pages.PerceptionDisplayPage;
+import de.lichtflut.glasnost.is.pages.PerceptionEditPage;
+import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.rb.application.common.CommonParams;
+import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
+import de.lichtflut.rb.webck.behaviors.CssModifier;
+import de.lichtflut.rb.webck.common.DisplayMode;
+import de.lichtflut.rb.webck.common.RBAjaxTarget;
+import de.lichtflut.rb.webck.components.common.DialogHoster;
+import de.lichtflut.rb.webck.components.dialogs.ConfirmationDialog;
+import de.lichtflut.rb.webck.models.ConditionalModel;
+import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -36,23 +50,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import de.lichtflut.glasnost.is.dialog.CreatePerceptionsWizzardDialog;
-import de.lichtflut.glasnost.is.events.ModelChangeEvent;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.model.logic.PerceptionOrder;
-import de.lichtflut.glasnost.is.model.ui.PerceptionModel;
-import de.lichtflut.glasnost.is.pages.PerceptionDisplayPage;
-import de.lichtflut.glasnost.is.pages.PerceptionEditPage;
-import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
-import de.lichtflut.rb.application.common.CommonParams;
-import de.lichtflut.rb.webck.behaviors.ConditionalBehavior;
-import de.lichtflut.rb.webck.behaviors.CssModifier;
-import de.lichtflut.rb.webck.common.DisplayMode;
-import de.lichtflut.rb.webck.common.RBAjaxTarget;
-import de.lichtflut.rb.webck.components.common.DialogHoster;
-import de.lichtflut.rb.webck.components.dialogs.ConfirmationDialog;
-import de.lichtflut.rb.webck.models.ConditionalModel;
-import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
+import java.util.List;
 
 /**
  * <p>
@@ -113,7 +111,6 @@ public class PerceptionManagementPanel extends Panel {
 				Perception perception = item.getModelObject();
 
 				Label id = new Label("id", perception.getID());
-				id.add(new AttributeModifier("title", perception.getContext()));
 				item.add(id);
 
 				Label name = new Label("name", perception.getName());

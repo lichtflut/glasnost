@@ -88,21 +88,6 @@ public class Perception extends ResourceView {
 
 	// ----------------------------------------------------
 
-	public Context getContext() {
-		ResourceID rid = resourceValue(GIS.REPRESENTS_CONTEXT);
-		if (rid != null) {
-			return ContextID.forContext(rid.getQualifiedName());
-		} else {
-			return null;
-		}
-	}
-
-	public void setContext(final Context context) {
-		setValue(GIS.REPRESENTS_CONTEXT, context);
-	}
-
-	// ----------------------------------------------------
-
 	public List<PerceptionItem> getItems() {
 		final List<PerceptionItem> result = new ArrayList<PerceptionItem>();
 		for (Statement assoc : getAssociations()) {

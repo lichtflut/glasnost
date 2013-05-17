@@ -15,15 +15,15 @@
  */
 package de.lichtflut.glasnost.is.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import de.lichtflut.glasnost.is.GIS;
+import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.glasnost.is.model.logic.PerceptionCloner;
+import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
+import de.lichtflut.rb.core.services.ServiceContext;
 import org.arastreju.sge.Conversation;
 import org.arastreju.sge.SNOPS;
 import org.arastreju.sge.apriori.RDF;
 import org.arastreju.sge.context.Context;
-import org.arastreju.sge.context.ContextID;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 import org.arastreju.sge.naming.QualifiedName;
@@ -32,11 +32,9 @@ import org.arastreju.sge.query.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.model.logic.PerceptionCloner;
-import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
-import de.lichtflut.rb.core.services.ServiceContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -65,17 +63,6 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 
 	@Override
 	public void store(final Perception perception) {
-		if (perception.getContext() == null) {
-			LOGGER.info("Creating new context for perception {}.", perception.getID());
-			Context ctx = ContextID.forContext(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI, perception.getID());
-			arasFactory.getOrganizer().registerContext(ctx.getQualifiedName());
-			perception.setContext(ctx);
-			LOGGER.info("Registered new perception context {}.", ctx.getQualifiedName());
-		} else {
-			LOGGER.info("Updating existing perception {}.", perception);
-
-		}
-
 		conversation().attach(perception);
 	}
 
@@ -99,15 +86,6 @@ public class PerceptionDefinitionServiceImpl implements PerceptionDefinitionServ
 	@Override
 	public Perception findByQualifiedName(final QualifiedName qn) {
 		return Perception.from(conversation().findResource(qn));
-	}
-
-	@Override
-	public Perception findByContext(final Context context) {
-		QueryResult result = conversation().createQuery().addField(GIS.REPRESENTS_CONTEXT, context).getResult();
-		if (result.size() > 1) {
-			LOGGER.error("More than one perception registered for context {}.", context);
-		}
-		return Perception.from(result.getSingleNode());
 	}
 
 	@Override

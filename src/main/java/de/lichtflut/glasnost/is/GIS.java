@@ -35,8 +35,6 @@ public interface GIS {
 
 	String DEVOPS_NAMESPACE_URI = "http://rb.lichtflut.de/devops#";
 
-	String PERCEPTION_CONTEXT_NAMESPACE_URI = "http://glasnost.lichtflut.de/definitions/perception-contexts/";
-
 
 	// -- TYPES -------------------------------------------
 

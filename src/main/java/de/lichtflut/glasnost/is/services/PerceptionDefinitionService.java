@@ -15,13 +15,11 @@
  */
 package de.lichtflut.glasnost.is.services;
 
-import java.util.List;
-
-import org.arastreju.sge.context.Context;
+import de.lichtflut.glasnost.is.model.logic.Perception;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.naming.QualifiedName;
 
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import java.util.List;
 
 /**
  * <p>
@@ -55,8 +53,6 @@ public interface PerceptionDefinitionService {
 	void delete(Perception perception);
 
 	Perception findByQualifiedName(QualifiedName qn);
-
-	Perception findByContext(Context context);
 
 	List<Perception> findAllPerceptions();
 

@@ -94,7 +94,6 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	}
 
 	/**
-	 * Test method for {@link de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionDisplayPanel#PerceptionsDisplayPanel(java.lang.String, org.apache.wicket.model.IModel)}.
 	 * Scenario: Display panel with a model containing a <code>null</code> perception
 	 */
 	@SuppressWarnings("unused")
@@ -109,8 +108,6 @@ public class PerceptionDisplayPanelTest extends GlasnostWebTest{
 	private Perception createPerception() {
 		Perception perception = new Perception();
 		perception.setBasePerception(new Perception());
-		QualifiedName contextQN = QualifiedName.fromURI(GIS.PERCEPTION_CONTEXT_NAMESPACE_URI);
-		perception.setContext(ContextID.forContext(contextQN));
 		perception.setImagePath("/home/glasnost/testpath");
 		perception.setName("Glasnost test Perception");
 		perception.setType(perceptionCategory.getNode());

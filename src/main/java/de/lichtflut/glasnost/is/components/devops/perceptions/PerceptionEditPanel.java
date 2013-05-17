@@ -15,27 +15,6 @@
  */
 package de.lichtflut.glasnost.is.components.devops.perceptions;
 
-import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.enableIf;
-import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
-import static de.lichtflut.rb.webck.models.ConditionalModel.isNotNull;
-import static de.lichtflut.rb.webck.models.ConditionalModel.isNull;
-
-import java.util.UUID;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.arastreju.sge.context.Context;
-import org.arastreju.sge.model.ResourceID;
-
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.model.logic.Perception;
 import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
@@ -48,8 +27,24 @@ import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
 import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 import de.lichtflut.rb.webck.components.form.RBCancelButton;
 import de.lichtflut.rb.webck.components.form.RBDefaultButton;
-import de.lichtflut.rb.webck.models.basic.DerivedDetachableModel;
 import de.lichtflut.rb.webck.models.fields.FileUploadModel;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.arastreju.sge.model.ResourceID;
+
+import java.util.UUID;
+
+import static de.lichtflut.rb.webck.behaviors.ConditionalBehavior.visibleIf;
+import static de.lichtflut.rb.webck.models.ConditionalModel.isNotNull;
 
 /**
  * <p>
@@ -124,7 +119,6 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 	 */
 	protected void createFields(final IModel<Perception> model, final Form<?> form) {
 		TextField<String> idField = new TextField<String>("id", new PropertyModel<String>(model, "ID"));
-		idField.add(enableIf(isNull(new ContextModel(model))));
 		form.add(idField);
 
 		TextField<String> nameField = new TextField<String>("name", new PropertyModel<String>(model, "name"));
@@ -186,17 +180,4 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		service.store(perception);
 	}
 
-	// ----------------------------------------------------
-
-	private class ContextModel extends DerivedDetachableModel<Context, Perception> {
-
-		public ContextModel(final IModel<Perception> original) {
-			super(original);
-		}
-
-		@Override
-		protected Context derive(final Perception perception) {
-			return perception.getContext();
-		}
-	}
 }
