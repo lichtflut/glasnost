@@ -15,19 +15,18 @@
  */
 package de.lichtflut.glasnost.is.components.devops.perceptions;
 
-import static org.mockito.Mockito.when;
-
+import de.lichtflut.glasnost.is.GlasnostWebTest;
+import de.lichtflut.rb.core.RB;
+import de.lichtflut.rb.core.RBSystem;
+import de.lichtflut.rb.core.perceptions.Perception;
+import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
+import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
+import de.lichtflut.rb.webck.components.fields.EntityPickerField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.junit.Test;
 
-import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.GlasnostWebTest;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.rb.core.RB;
-import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
-import de.lichtflut.rb.webck.components.fields.AjaxEditableUploadField;
-import de.lichtflut.rb.webck.components.fields.EntityPickerField;
+import static org.mockito.Mockito.when;
 
 /**
  * <p>
@@ -49,7 +48,7 @@ public class PerceptionEditPanelTest extends GlasnostWebTest{
 		PerceptionEditPanel panel = new PerceptionEditPanel("panel", new Model<Perception>(perception));
 
 		initNeccessaryPageData();
-		when(pathBuilder.queryEntities(DOMAIN_ID.toURI(), GIS.PERCEPTION_CATEGORY.toURI())).thenReturn("some perception types");
+		when(pathBuilder.queryEntities(DOMAIN_ID.toURI(), RBSystem.PERCEPTION_CATEGORY.toURI())).thenReturn("some perception types");
 		when(pathBuilder.queryEntities(DOMAIN_ID.toURI(), RB.PERSON.toURI())).thenReturn("some persons");
 
 		tester.startComponentInPage(panel);

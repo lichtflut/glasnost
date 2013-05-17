@@ -35,10 +35,10 @@ import org.arastreju.sge.structure.OrderBySerialNumber;
 
 import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.components.devops.items.DevOpsItemPanel;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
-import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
-import de.lichtflut.glasnost.is.services.PerceptionService;
+import de.lichtflut.rb.core.perceptions.Perception;
+import de.lichtflut.rb.core.perceptions.PerceptionItem;
+import de.lichtflut.rb.core.services.PerceptionDefinitionService;
+import de.lichtflut.rb.core.services.PerceptionService;
 import de.lichtflut.rb.application.base.RBBasePage;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
 import de.lichtflut.rb.webck.models.basic.AbstractLoadableDetachableModel;

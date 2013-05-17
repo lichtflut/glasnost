@@ -25,7 +25,7 @@ import org.arastreju.sge.apriori.RDFS;
 import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.model.nodes.SemanticNode;
 
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.core.perceptions.Perception;
 
 /**
  * <p>

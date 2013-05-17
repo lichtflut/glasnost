@@ -38,7 +38,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
+import de.lichtflut.rb.core.perceptions.PerceptionItem;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.entity.RBEntity;

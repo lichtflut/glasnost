@@ -27,7 +27,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.arastreju.sge.model.ResourceID;
 
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.core.perceptions.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.core.services.EntityManager;
 import de.lichtflut.rb.core.services.SemanticNetworkService;

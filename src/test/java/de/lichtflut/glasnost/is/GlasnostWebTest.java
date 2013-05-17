@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
+import de.lichtflut.rb.core.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.security.AuthModule;
 import de.lichtflut.rb.core.security.AuthenticationService;
 import de.lichtflut.rb.core.security.DomainManager;

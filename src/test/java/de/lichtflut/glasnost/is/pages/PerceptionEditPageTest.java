@@ -18,7 +18,7 @@ package de.lichtflut.glasnost.is.pages;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionEditPanel;
 import de.lichtflut.glasnost.is.data.RBEntityFactory;
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.core.perceptions.Perception;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.webck.common.DisplayMode;

@@ -15,10 +15,10 @@
  */
 package de.lichtflut.glasnost.is.components.devops.perceptions;
 
-import de.lichtflut.glasnost.is.GIS;
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.RB;
+import de.lichtflut.rb.core.RBSystem;
+import de.lichtflut.rb.core.perceptions.Perception;
+import de.lichtflut.rb.core.services.PerceptionDefinitionService;
 import de.lichtflut.rb.webck.common.RBAjaxTarget;
 import de.lichtflut.rb.webck.components.colorpicker.ColorPickerPanel;
 import de.lichtflut.rb.webck.components.common.PanelTitle;
@@ -124,7 +124,8 @@ public class PerceptionEditPanel extends TypedPanel<Perception> {
 		TextField<String> nameField = new TextField<String>("name", new PropertyModel<String>(model, "name"));
 		form.add(nameField);
 
-		EntityPickerField entityPicker = new EntityPickerField("type", new PropertyModel<ResourceID>(model, "type"), GIS.PERCEPTION_CATEGORY);
+		EntityPickerField entityPicker = new EntityPickerField("type", new PropertyModel<ResourceID>(model, "type"),
+                RBSystem.PERCEPTION_CATEGORY);
 		form.add(entityPicker);
 
 		ColorPickerPanel colorPicker = new ColorPickerPanel("color", new PropertyModel<String>(model, "color"));

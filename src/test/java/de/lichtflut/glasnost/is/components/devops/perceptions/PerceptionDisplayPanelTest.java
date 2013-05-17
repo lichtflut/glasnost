@@ -20,14 +20,11 @@ import static org.mockito.Mockito.when;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.Model;
-import org.arastreju.sge.context.ContextID;
-import org.arastreju.sge.naming.QualifiedName;
 import org.junit.Test;
 
-import de.lichtflut.glasnost.is.GIS;
 import de.lichtflut.glasnost.is.GlasnostWebTest;
 import de.lichtflut.glasnost.is.data.RBEntityFactory;
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.core.perceptions.Perception;
 import de.lichtflut.rb.core.entity.RBEntity;
 import de.lichtflut.rb.webck.components.fields.FilePreviewLink;
 

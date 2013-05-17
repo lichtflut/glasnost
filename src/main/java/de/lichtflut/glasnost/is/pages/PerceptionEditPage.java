@@ -29,7 +29,7 @@ import org.arastreju.sge.model.nodes.ResourceNode;
 import org.arastreju.sge.naming.QualifiedName;
 
 import de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionEditPanel;
-import de.lichtflut.glasnost.is.model.logic.Perception;
+import de.lichtflut.rb.core.perceptions.Perception;
 import de.lichtflut.rb.application.base.RBBasePage;
 import de.lichtflut.rb.application.common.CommonParams;
 import de.lichtflut.rb.core.services.SemanticNetworkService;

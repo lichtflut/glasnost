@@ -15,10 +15,12 @@
  */
 package de.lichtflut.glasnost.is.services;
 
-import de.lichtflut.glasnost.is.model.logic.Perception;
-import de.lichtflut.glasnost.is.model.logic.PerceptionItem;
+import de.lichtflut.rb.core.perceptions.Perception;
+import de.lichtflut.rb.core.perceptions.PerceptionItem;
 import de.lichtflut.rb.core.services.ArastrejuResourceFactory;
+import de.lichtflut.rb.core.services.PerceptionDefinitionService;
 import de.lichtflut.rb.core.services.ServiceContext;
+import de.lichtflut.rb.core.services.impl.PerceptionDefinitionServiceImpl;
 import org.arastreju.sge.Conversation;
 import org.arastreju.sge.naming.QualifiedName;
 import org.junit.Before;
