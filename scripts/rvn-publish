@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'rubygems'
+require 'net/https'
+require 'json'
+require 'optparse'
+
+require_relative 'common/authenticate'
+require_relative 'common/http_util'
+
+# Parse command line options
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: rvn-publish [options]"
+  opts.on("-v", "--verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+  opts.on("-u", "--user=USER", "User name") do |user|
+    options[:user] = user
+  end
+  opts.on("-p", "--password=PASSWORD", "Password") do |password|
+    options[:password] = password
+  end
+  opts.on("-o", "--out=OUT", "Path to output file") do |out|
+    options[:out] = out
+  end
+  opts.on("-b", "--base-uri=BASEURI", "Base URI of service") do |base_uri|
+    options[:base_uri] = base_uri
+  end
+  opts.on("-f", "--file=FILE", "File to publish") do |file|
+    options[:file] = file
+  end
+  opts.on("-h", "--help", "Display this help") do |help|
+    puts opts
+    exit 0
+  end
+end.parse!
+
+unless (options[:base_uri])
+  abort("No base URI of service given. Use -h option to dispay help.")
+end
+
+if (options[:user].nil? ^ options[:password].nil?)
+  $stderr.puts "Please provide both a user name *and* password using --user and --password."
+  exit 5
+end
+
+def publish_vspec (base_uri, domain, token)
+  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/viewspecs/perspectives?qn=http://rb.lichtflut.de/view-specifications%23PeoplePerspective")
+  puts "Uri: " + uri.to_s
+  http  = init_http_object uri
+
+  begin
+    puts "Checking #{uri}"
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+    puts "Request has Cookie: #{token}."
+    response = http.request(request)
+    puts response.body
+  rescue OpenSSL::SSL::SSLError => exception    
+    handle_exception(uri.to_s, exception)
+  rescue JSON::ParserError => exception
+    handle_exception(uri.to_s, exception)
+  rescue Exception => exception
+    handle_exception(uri.to_s, exception)
+  end
+end
+
+def handle_exception(uri, exception) 
+  $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
+end
+
+user_ctx = UserCtx.new options[:user], options[:password]
+user_ctx.authenticate options[:base_uri]
+publish_vspec options[:base_uri], 'lf', user_ctx.token
