@@ -22,14 +22,17 @@ OptionParser.new do |opts|
   opts.on("-p", "--password=PASSWORD", "Password") do |password|
     options[:password] = password
   end
+   opts.on("-d", "--domain=DOMAIN", "The domain") do |domain|
+   options[:domain] = domain
+  end
   opts.on("-o", "--out=OUT", "Path to output file") do |out|
     options[:out] = out
   end
   opts.on("-b", "--base-uri=BASEURI", "Base URI of service") do |base_uri|
     options[:base_uri] = base_uri
   end
-  opts.on("-f", "--file=FILE", "File to publish") do |file|
-    options[:file] = file
+  opts.on("-i", "--in=IN", "Directory or file to publish") do |input|
+    options[:in] = input
   end
   opts.on("-h", "--help", "Display this help") do |help|
     puts opts
@@ -46,18 +49,23 @@ if (options[:user].nil? ^ options[:password].nil?)
   exit 5
 end
 
-def publish_vspec (base_uri, domain, token)
-  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/viewspecs/perspectives?qn=http://rb.lichtflut.de/view-specifications%23PeoplePerspective")
-  puts "Uri: " + uri.to_s
+def handle_exception(uri, exception) 
+  $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
+end
+
+def publish_vspec (base_uri, domain, vspec, token)
+  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/viewspecs/perspectives")
+  puts "Publishing to URI: #{uri}"
   http  = init_http_object uri
 
   begin
-    puts "Checking #{uri}"
-    request = Net::HTTP::Get.new(uri.request_uri)
+    request = Net::HTTP::Post.new(uri.request_uri)
     request.add_field 'Cookie', "lfrb-session-auth=#{token}"
-    puts "Request has Cookie: #{token}."
+    File.open(vspec, 'r') do |infile|
+      request.body = infile.read
+    end
     response = http.request(request)
-    puts response.body
+    puts "Response: #{response.code} #{response['Location']}"
   rescue OpenSSL::SSL::SSLError => exception    
     handle_exception(uri.to_s, exception)
   rescue JSON::ParserError => exception
@@ -67,10 +75,66 @@ def publish_vspec (base_uri, domain, token)
   end
 end
 
-def handle_exception(uri, exception) 
-  $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
+def publish_schema (base_uri, domain, schema, token)
+  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/schemas")
+  puts "Publishing to URI: #{uri}"
+  http  = init_http_object uri
+
+  begin
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+    File.open(schema, 'r') do |infile|
+      request.body = infile.read
+    end
+    response = http.request(request)
+    puts "Response: #{response.code} #{response['Location']}"
+  rescue OpenSSL::SSL::SSLError => exception    
+    handle_exception(uri.to_s, exception)
+  rescue JSON::ParserError => exception
+    handle_exception(uri.to_s, exception)
+  rescue Exception => exception
+    handle_exception(uri.to_s, exception)
+  end
 end
+
+def publish_file (base_uri, domain, file, token) 
+  case File.extname(file)
+  when '.vspec'
+    publish_vspec(base_uri, domain, file, token)
+  when '.rsf'  
+    publish_schema(base_uri, domain, file, token)
+  else
+    $stderr.puts "Not a valid file (extension): #{file}"
+  end
+end
+
+def publish_dir (base_uri, domain, dir_name, token) 
+  dir = Dir.new dir_name
+  puts "Publishing directory #{File.expand_path dir}"
+  entries = dir.entries.select {|c| puts "#{c} --> #{File.directory?(c)}"; File.directory?(c) && !c.start_with?('.') }
+  puts "Entries: #{entries}"
+  entries.each do |c| 
+    puts "Current entry #{c}"
+    if File.directory?(c)
+      publish_dir base_uri, domain, c, token
+    else
+      publish_file base_uri, domain, c, token
+    end
+  end
+end
+
+# BEGIN
 
 user_ctx = UserCtx.new options[:user], options[:password]
 user_ctx.authenticate options[:base_uri]
-publish_vspec options[:base_uri], 'lf', user_ctx.token
+
+if File.directory?(options[:in])
+  publish_dir options[:base_uri], options[:domain], options[:in], user_ctx.token
+else
+  publish_file options[:base_uri], options[:domain], options[:in], user_ctx.token
+end
+
+
+
+
+
