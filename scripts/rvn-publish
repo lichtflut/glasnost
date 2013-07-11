@@ -88,7 +88,30 @@ def publish_schema (base_uri, domain, schema, token)
     end
     response = http.request(request)
     puts "Response: #{response.code} #{response['Location']}"
-  rescue OpenSSL::SSL::SSLError => exception    
+  rescue OpenSSL::SSL::SSLError => exception
+    handle_exception(uri.to_s, exception)
+  rescue JSON::ParserError => exception
+    handle_exception(uri.to_s, exception)
+  rescue Exception => exception
+    handle_exception(uri.to_s, exception)
+  end
+end
+
+def publish_graph(base_uri, domain, graph, token)
+  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/context/default")
+  puts "Publishing to URI: #{uri}"
+  http  = init_http_object uri
+
+  begin
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field 'Content-Type', 'application/xml'
+    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+    File.open(graph, 'r') do |infile|
+      request.body = infile.read
+    end
+    response = http.request(request)
+    puts "Response: #{response.code} #{response['Location']}"
+  rescue OpenSSL::SSL::SSLError => exception
     handle_exception(uri.to_s, exception)
   rescue JSON::ParserError => exception
     handle_exception(uri.to_s, exception)
@@ -101,8 +124,10 @@ def publish_file (base_uri, domain, file, token)
   case File.extname(file)
   when '.vspec'
     publish_vspec(base_uri, domain, file, token)
-  when '.rsf'  
+  when '.rsf'
     publish_schema(base_uri, domain, file, token)
+  when '.xml'
+    publish_graph(base_uri, domain, file, token)
   else
     $stderr.puts "Not a valid file (extension): #{file}"
   end
