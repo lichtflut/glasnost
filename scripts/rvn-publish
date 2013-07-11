@@ -111,14 +111,13 @@ end
 def publish_dir (base_uri, domain, dir_name, token) 
   dir = Dir.new dir_name
   puts "Publishing directory #{File.expand_path dir}"
-  entries = dir.entries.select {|c| puts "#{c} --> #{File.directory?(c)}"; File.directory?(c) && !c.start_with?('.') }
-  puts "Entries: #{entries}"
-  entries.each do |c| 
-    puts "Current entry #{c}"
-    if File.directory?(c)
-      publish_dir base_uri, domain, c, token
+  dir.entries.select{ |c| !c.start_with? '.' }. each do |c| 
+    entry = File.join(dir,c)
+    puts "Current entry #{entry}"
+    if File.directory?(entry)
+      publish_dir base_uri, domain, entry, token
     else
-      publish_file base_uri, domain, c, token
+      publish_file base_uri, domain, entry, token
     end
   end
 end
