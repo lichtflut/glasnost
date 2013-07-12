@@ -49,9 +49,9 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PerceptionDefinitionServiceTest {
 
-    private final QualifiedName CPT = QualifiedName.fromURI("http://lf#ConceptPerception");
+    private final QualifiedName CPT = QualifiedName.from("http://lf#ConceptPerception");
 
-    private final QualifiedName DEV = QualifiedName.fromURI("http://lf#DevPerception");
+    private final QualifiedName DEV = QualifiedName.from("http://lf#DevPerception");
 
     // ----------------------------------------------------
 
