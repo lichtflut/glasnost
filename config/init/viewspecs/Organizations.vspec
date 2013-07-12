@@ -1,4 +1,4 @@
-perspective "Organization" {
+perspective "Organizations" {
 
 	title : "Organizational overview"
 
@@ -12,7 +12,9 @@ perspective "Organization" {
 		widget {
 			title : "All organizations"
 			display : "list"
-			action "null" {
+			action {
+			    label : "Add an organization"
+			    create : "http://rb.lichtflut.de/common#Organization"
 			}
 			selection {
 				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Organization'"
@@ -26,7 +28,9 @@ perspective "Organization" {
 		widget {
 			title : "All processes"
 			display : "list"
-			action "null" {
+			action {
+			    label : "Add a process"
+			    create : "http://rb.lichtflut.de/common#Organization"
 			}
 			selection {
 				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/bpm#BusinessProcess'"
@@ -36,7 +40,9 @@ perspective "Organization" {
 		widget {
 			title : "All projects"
 			display : "list"
-			action "null" {
+			action {
+			    label : "Add aproject"
+			    create : "http://rb.lichtflut.de/common#Project"
 			}
 			selection {
 				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'"

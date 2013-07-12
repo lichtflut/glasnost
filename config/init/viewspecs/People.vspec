@@ -7,7 +7,9 @@ perspective "People" {
 		widget {
 			title : "All people"
 			display : "list"
-			action null {
+			action {
+			    label : "Add a person"
+			    create : "http://rb.lichtflut.de/common#Person"
 			}
 			selection {
 				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person'"

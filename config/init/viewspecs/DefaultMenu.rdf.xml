@@ -13,28 +13,21 @@
 	</rdf:Description>
 	
 	<rdf:Description rdf:about="http://rb.lichtflut.de/view-specifications#PeopleDashboardMenuItem">
-		<system:showsPerspective rdf:resource="http://rb.lichtflut.de/view-specifications#PeoplePerspective"/>
+		<system:showsPerspective rdf:resource="local:perspectives:People"/>
 		<rdf:type rdf:resource="http://rb.lichtflut.de/system#MenuItem"/>
 		<common:hasName>People</common:hasName>
 		<aras:hasSerialNumber>1</aras:hasSerialNumber>
 	</rdf:Description>
 	
 	<rdf:Description rdf:about="http://rb.lichtflut.de/view-specifications#OrganizationsDashboardMenuItem">
-		<system:showsPerspective rdf:resource="http://rb.lichtflut.de/view-specifications#OrganizationPerspective"/>
+		<system:showsPerspective rdf:resource="local:perspectives:Organizations"/>
 		<rdf:type rdf:resource="http://rb.lichtflut.de/system#MenuItem"/>
 		<common:hasName>Organizations</common:hasName>
 		<aras:hasSerialNumber>2</aras:hasSerialNumber>
 	</rdf:Description>
-	
-	<rdf:Description rdf:about="http://rb.lichtflut.de/view-specifications#SystemsDashboardMenuItem">
-		<system:showsPerspective rdf:resource="http://rb.lichtflut.de/view-specifications#EAMPerspective"/>
-		<rdf:type rdf:resource="http://rb.lichtflut.de/system#MenuItem"/>
-		<common:hasName>Systems</common:hasName>
-		<aras:hasSerialNumber>3</aras:hasSerialNumber>
-	</rdf:Description>
     
     <rdf:Description rdf:about="http://rb.lichtflut.de/view-specifications#PlacesDashboardMenuItem">
-        <system:showsPerspective rdf:resource="http://rb.lichtflut.de/view-specifications#PlacesPerspective"/>
+        <system:showsPerspective rdf:resource="local:perspectives:Places"/>
         <rdf:type rdf:resource="http://rb.lichtflut.de/system#MenuItem"/>
         <common:hasName>Places</common:hasName>
         <aras:hasSerialNumber>4</aras:hasSerialNumber>
