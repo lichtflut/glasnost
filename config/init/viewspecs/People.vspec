@@ -12,7 +12,32 @@ perspective "People" {
 			    create : "http://rb.lichtflut.de/common#Person"
 			}
 			selection {
-				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person'"
+				query : "AND('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person')"
+			}
+			column {
+			    label : "First name"
+			    property : "http://rb.lichtflut.de/common#hasFirstName"
+			}
+			column {
+			    label : "Last name"
+			    property : "http://rb.lichtflut.de/common#hasLastName"
+			}
+
+		}
+
+	}
+	
+	port {
+
+		widget {
+			title : "innoQ employees"
+			display : "list"
+			selection {
+				query : "AND (
+				            'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person',
+				            'http://rb.lichtflut.de/common#isEmployedBy'='local:7134dc87-a64c-43fe-a478-3f17e401de64'
+				            )
+				        "
 			}
 		}
 

@@ -24,7 +24,6 @@ import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.glasnost.is.pages.DevOpsPage;
-import de.lichtflut.glasnost.is.pages.FindClassInEntityPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
 import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
