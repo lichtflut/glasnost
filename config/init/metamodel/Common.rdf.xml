@@ -355,7 +355,7 @@
 	
     <!-- people -->
 	
-	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasFirstname">
+	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasFirstName">
 		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
 		<rdfs:label>has first name</rdfs:label>
 		<rb:hasFieldLabel>First name</rb:hasFieldLabel>
@@ -367,7 +367,7 @@
 		<rb:hasFieldLabel>Middle name</rb:hasFieldLabel>
 	</rdf:Description>
 	
-	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasLastname">
+	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasLastName">
 		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
 		<rdfs:label>has last name</rdfs:label>
 		<rb:hasFieldLabel>Last name</rb:hasFieldLabel>

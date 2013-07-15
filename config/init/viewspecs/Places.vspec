@@ -24,7 +24,7 @@ perspective "Places" {
 			    create : "http://rb.lichtflut.de/common#City"
 			}
 			selection {
-				query : 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#City'
+				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#City'"
 			}
 		}
 

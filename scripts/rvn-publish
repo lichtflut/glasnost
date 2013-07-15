@@ -25,6 +25,9 @@ OptionParser.new do |opts|
    opts.on("-d", "--domain=DOMAIN", "The domain") do |domain|
    options[:domain] = domain
   end
+   opts.on("-c", "--context=CONTEXT", "The context") do |context|
+   options[:context] = context
+  end
   opts.on("-o", "--out=OUT", "Path to output file") do |out|
     options[:out] = out
   end
@@ -49,8 +52,20 @@ if (options[:user].nil? ^ options[:password].nil?)
   exit 5
 end
 
+unless (options[:context])
+  options[:context] = 'default'
+end
+
 def handle_exception(uri, exception) 
   $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
+end
+
+def derive_context(dir, default)
+  if ('metamodel' == File.basename(dir))
+    return 'typesystem'
+  else 
+    return default
+  end
 end
 
 def publish_vspec (base_uri, domain, vspec, token)
@@ -97,8 +112,8 @@ def publish_schema (base_uri, domain, schema, token)
   end
 end
 
-def publish_graph(base_uri, domain, graph, token)
-  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/context/default")
+def publish_graph(base_uri, domain, context, graph, token)
+  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/context/#{context}")
   puts "Publishing to URI: #{uri}"
   http  = init_http_object uri
 
@@ -120,29 +135,30 @@ def publish_graph(base_uri, domain, graph, token)
   end
 end
 
-def publish_file (base_uri, domain, file, token) 
+def publish_file (base_uri, domain, context, file, token) 
   case File.extname(file)
   when '.vspec'
     publish_vspec(base_uri, domain, file, token)
   when '.rsf'
     publish_schema(base_uri, domain, file, token)
   when '.xml'
-    publish_graph(base_uri, domain, file, token)
+    publish_graph(base_uri, domain, context, file, token)
   else
     $stderr.puts "Not a valid file (extension): #{file}"
   end
 end
 
-def publish_dir (base_uri, domain, dir_name, token) 
+def publish_dir (base_uri, domain, context, dir_name, token) 
   dir = Dir.new dir_name
+  context = derive_context(dir, context)
   puts "Publishing directory #{File.expand_path dir}"
   dir.entries.select{ |c| !c.start_with? '.' }. each do |c| 
     entry = File.join(dir,c)
     puts "Current entry #{entry}"
     if File.directory?(entry)
-      publish_dir base_uri, domain, entry, token
+      publish_dir base_uri, domain, context, entry, token
     else
-      publish_file base_uri, domain, entry, token
+      publish_file base_uri, domain, context, entry, token
     end
   end
 end
@@ -153,9 +169,9 @@ user_ctx = UserCtx.new options[:user], options[:password]
 user_ctx.authenticate options[:base_uri]
 
 if File.directory?(options[:in])
-  publish_dir options[:base_uri], options[:domain], options[:in], user_ctx.token
+  publish_dir options[:base_uri], options[:domain], options[:context], options[:in], user_ctx.token
 else
-  publish_file options[:base_uri], options[:domain], options[:in], user_ctx.token
+  publish_file options[:base_uri], options[:domain], options[:context], options[:in], user_ctx.token
 end
 
 
