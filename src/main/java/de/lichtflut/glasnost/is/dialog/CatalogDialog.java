@@ -15,6 +15,7 @@
  */
 package de.lichtflut.glasnost.is.dialog;
 
+import de.lichtflut.glasnost.is.GlasnostWebApplication;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
@@ -22,7 +23,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.arastreju.sge.model.ResourceID;
 
-import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.catalog.CatalogPanel;
@@ -69,7 +69,7 @@ public class CatalogDialog extends AbstractRBDialog {
 	}
 
 	protected JumpTarget getJumpTarget() {
-		return new JumpTarget(DevOpsPage.class);
+		return new JumpTarget(GlasnostWebApplication.get().getHomePage());
 	}
 
 }

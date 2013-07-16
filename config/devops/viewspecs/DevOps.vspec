@@ -1,0 +1,24 @@
+perspective "DevOps" {
+
+	title : "System overview"
+
+	port {
+
+		widget {
+			title : "All systems"
+			display : "tree"
+			action {
+			    label : "Add a datacenter"
+			    create : "http://rb.lichtflut.de/devops#DataCenter"
+			}
+			selection {
+				by-type : "http://rb.lichtflut.de/devops#DataCenter"
+			}
+		}
+
+	}
+	
+	port {
+	}
+
+}

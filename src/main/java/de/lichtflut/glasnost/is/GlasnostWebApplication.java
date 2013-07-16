@@ -23,7 +23,6 @@ import org.apache.wicket.Page;
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
-import de.lichtflut.glasnost.is.pages.DevOpsPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
 import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
@@ -43,6 +42,7 @@ import de.lichtflut.rb.application.resourceview.EntityDetailPage;
 import de.lichtflut.rb.application.styles.Style;
 import de.lichtflut.rb.core.viewspec.MenuItem;
 import de.lichtflut.rb.webck.components.navigation.NavigationNode;
+import org.apache.wicket.settings.IRequestCycleSettings;
 
 /**
  * <p>
@@ -94,6 +94,8 @@ public class GlasnostWebApplication extends RBApplication {
 		getApplicationSettings().setAccessDeniedPage(DefaultErrorPage.class);
 		getApplicationSettings().setInternalErrorPage(DefaultErrorPage.class);
 
+        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
+
 		// Front end Area
 		mountPage("welcome", WelcomePage.class);
 		mountPage("profile", getUserProfilePage());
@@ -115,15 +117,12 @@ public class GlasnostWebApplication extends RBApplication {
 		mountPage("login", LoginPage.class);
 		mountPage("logout", LogoutPage.class);
 
-		// Glasnost specific
-		mountPage("devops", DevOpsPage.class);
 	}
 
 	@Override
 	public List<NavigationNode> getFirstLevelNavigation(final List<MenuItem> menuItems) {
 		final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
 		nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
-		nodes.add(createPageNode(DevOpsPage.class, "navigation.devops-page"));
 		nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
 		//nodes.add(createPageNode(FindClassInEntityPage.class, "navigation.find-class-in-entity"));
 		nodes.addAll(super.getFirstLevelNavigation(menuItems));
