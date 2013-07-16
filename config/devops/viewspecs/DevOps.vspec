@@ -1,24 +1,26 @@
 perspective "DevOps" {
 
-	title : "System overview"
+ title : "System overview"
 
-	port {
+ port {
+    widget {
+      title : "Perceptions on your systems"
+      implementing-class : "de.lichtflut.rb.webck.components.widgets.builtin.PerceptionsWidget"
+    }
+  }
 
-		widget {
-			title : "All systems"
-			display : "tree"
-			action {
-			    label : "Add a datacenter"
-			    create : "http://rb.lichtflut.de/devops#DataCenter"
-			}
-			selection {
-				by-type : "http://rb.lichtflut.de/devops#DataCenter"
-			}
-		}
-
-	}
-	
-	port {
-	}
+  port {
+    widget {
+      title : "All systems"
+      display : "tree"
+      action {
+          label : "Add a datacenter"
+          create : "http://rb.lichtflut.de/devops#DataCenter"
+      }
+      selection {
+      by-type : "http://rb.lichtflut.de/devops#DataCenter"
+      }
+    }
+  }
 
 }

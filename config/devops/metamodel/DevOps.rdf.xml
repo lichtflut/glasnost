@@ -9,32 +9,6 @@
 
     <!-- TYPES -->
 
-    <!-- Perception types -->
-
-    <rdf:Description rdf:about="http://rb.lichtflut.de/system#DevelopmentPerception">
-        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/system#Perception"/>
-        <rdfs:label>Development</rdfs:label>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="http://rb.lichtflut.de/system#ProductionPerception">
-        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/system#Perception"/>
-        <rdfs:label>Production</rdfs:label>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="http://rb.lichtflut.de/system#QualityAssurancePerception">
-        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/system#Perception"/>
-        <rdfs:label>Quality Assurance</rdfs:label>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="http://rb.lichtflut.de/system#ConceptualPerception">
-        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/system#Perception"/>
-        <rdfs:label>Conceptual</rdfs:label>
-    </rdf:Description>
-
     <!-- Basic Item types -->
 
     <rdf:Description rdf:about="http://rb.lichtflut.de/devops#ConfigurationItem">

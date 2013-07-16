@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+    xmlns:common="http://rb.lichtflut.de/common#"
+    xmlns:rb="http://rb.lichtflut.de/system#"
+    xmlns:aras="http://arastreju.org/kernel#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    
+    <!-- Perception categories -->
+
+    <rdf:Description rdf:about="http://rb.lichtflut.de/devops/perceptions#DevelopmentPerception">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#PerceptionCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>
+        <rdfs:label>Development perception</rdfs:label>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://rb.lichtflut.de/devops/perceptions#ProductionPerception">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#PerceptionCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>
+        <rdfs:label>Production perception</rdfs:label>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://rb.lichtflut.de/devops/perceptions#QualityAssurancePerception">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#PerceptionCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>
+        <rdfs:label>Quality assurance perception</rdfs:label>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://rb.lichtflut.de/devops/perceptions#ConceptualPerception">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#PerceptionCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>
+        <rdfs:label>Conceptual perception</rdfs:label>
+    </rdf:Description>
+    
+</rdf:RDF>

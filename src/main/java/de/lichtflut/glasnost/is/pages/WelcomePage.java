@@ -17,7 +17,7 @@ package de.lichtflut.glasnost.is.pages;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import de.lichtflut.glasnost.is.components.devops.perceptions.PerceptionManagementPanel;
+import de.lichtflut.rb.webck.components.perceptions.PerceptionManagementPanel;
 import de.lichtflut.rb.application.base.RBBasePage;
 
 /**
@@ -38,8 +38,6 @@ public class WelcomePage extends RBBasePage {
 	 */
 	public WelcomePage(final PageParameters parameters) {
 		super(parameters);
-
-		add(new PerceptionManagementPanel("perceptionManagement").setOutputMarkupId(true));
 	}
 
 }

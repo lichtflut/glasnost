@@ -18,11 +18,11 @@ package de.lichtflut.glasnost.is;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.lichtflut.glasnost.is.pages.GlasnostEntityDetailPage;
 import org.apache.wicket.Page;
 
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
-import de.lichtflut.glasnost.is.pages.DevOpsItemPage;
 import de.lichtflut.glasnost.is.pages.LoginPage;
 import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
@@ -69,7 +69,7 @@ public class GlasnostWebApplication extends RBApplication {
 
 	@Override
 	public Class<? extends Page> getEntityDetailPage() {
-		return DevOpsItemPage.class;
+		return GlasnostEntityDetailPage.class;
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class GlasnostWebApplication extends RBApplication {
 		mountPage("profile", getUserProfilePage());
 		mountPage("perspective", getPerspectivePage());
 		mountPage("entity", EntityDetailPage.class);
-		mountPage("item", DevOpsItemPage.class);
+		mountPage("item", GlasnostEntityDetailPage.class);
 		mountPage("browse", getBrowseAndSearchPage());
 		mountPage("treeview", HierarchyInfoVisPage.class);
 		mountPage("periphery", PeripheryViewPage.class);

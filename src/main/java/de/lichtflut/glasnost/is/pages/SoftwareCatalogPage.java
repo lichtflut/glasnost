@@ -56,7 +56,7 @@ public class SoftwareCatalogPage extends RBBasePage {
 				PageParameters parameters = new PageParameters();
 				parameters.add(CommonParams.PARAM_RESOURCE_TYPE, model.getObject());
 				parameters.add(DisplayMode.PARAMETER, DisplayMode.CREATE);
-				setResponsePage(DevOpsItemPage.class, parameters);
+				setResponsePage(GlasnostEntityDetailPage.class, parameters);
 			}
 
 			private void setBrowingStep(final ResourceID id) {

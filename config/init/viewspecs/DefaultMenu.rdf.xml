@@ -8,7 +8,6 @@
 	<rdf:Description rdf:about="http://rb.lichtflut.de/view-specifications#DefaultMenu">
 		<system:hasMenuItem rdf:resource="http://rb.lichtflut.de/view-specifications#PeopleDashboardMenuItem"/>
 		<system:hasMenuItem rdf:resource="http://rb.lichtflut.de/view-specifications#OrganizationsDashboardMenuItem"/>
-		<system:hasMenuItem rdf:resource="http://rb.lichtflut.de/view-specifications#SystemsDashboardMenuItem"/>
         <system:hasMenuItem rdf:resource="http://rb.lichtflut.de/view-specifications#PlacesDashboardMenuItem"/>
 	</rdf:Description>
 	

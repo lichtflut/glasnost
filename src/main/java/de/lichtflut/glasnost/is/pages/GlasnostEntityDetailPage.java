@@ -60,7 +60,7 @@ import de.lichtflut.rb.webck.events.ModelChangeEvent;
  *
  * @author Oliver Tigges
  */
-public class DevOpsItemPage extends EntityDetailPage {
+public class GlasnostEntityDetailPage extends EntityDetailPage {
 
 	@SpringBean
 	private TypeManager typeManager;
@@ -73,11 +73,11 @@ public class DevOpsItemPage extends EntityDetailPage {
 
 	// ---------------- Constructor -------------------------
 
-	public DevOpsItemPage(final PageParameters params) {
+	public GlasnostEntityDetailPage(final PageParameters params) {
 		super(params);
 	}
 
-	public DevOpsItemPage() {
+	public GlasnostEntityDetailPage() {
 		super();
 	}
 
