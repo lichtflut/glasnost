@@ -142,7 +142,7 @@
 
     <rdf:Description rdf:about="http://rb.lichtflut.de/devops#hostsMachine">
         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-        <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#hasChildNode"/>
+        <rdfs:subPropertyOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
         <aras:inverseOf rdf:resource="http://rb.lichtflut.de/devops#hostedAt"/>
         <rdfs:label>hosts machine</rdfs:label>
         <rb:hasFieldLabel>Hosts machine</rb:hasFieldLabel>
@@ -159,7 +159,7 @@
     <rdf:Description rdf:about="http://rb.lichtflut.de/devops#runs">
         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
         <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#contains"/>
-        <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#hasChildNode"/>
+        <rdfs:subPropertyOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
         <aras:inverseOf rdf:resource="http://rb.lichtflut.de/devops#runsOn"/>
         <rdfs:label>runs</rdfs:label>
         <rb:hasFieldLabel>Runs</rb:hasFieldLabel>
@@ -214,7 +214,7 @@
 
     <rdf:Description rdf:about="http://rb.lichtflut.de/devops#containsSoftwareModule">
         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-        <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#hasChildNode"/>
+        <rdfs:subPropertyOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
         <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#dependsOn"/>        
         <rdfs:label>contains</rdfs:label>
         <rb:hasFieldLabel>Contains</rb:hasFieldLabel>

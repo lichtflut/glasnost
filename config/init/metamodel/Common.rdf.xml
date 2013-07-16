@@ -194,22 +194,6 @@
 		<rb:hasFieldLabel>Scope</rb:hasFieldLabel>
 	</rdf:Description>
 	
-	<!-- tree structures -->
-	
-	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasChildNode">
-		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-		<aras:inverseOf rdf:resource="http://rb.lichtflut.de/common#hasParentNode"/>
-		<rdfs:label>has child node</rdfs:label>
-		<rb:hasFieldLabel>Child nodes</rb:hasFieldLabel>
-	</rdf:Description>
-	
-	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasParentNode">
-		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-		<aras:inverseOf rdf:resource="http://rb.lichtflut.de/common#hasChildNode"/>
-		<rdfs:label>has parent node</rdfs:label>
-		<rb:hasFieldLabel>Parent nodes</rb:hasFieldLabel>
-	</rdf:Description>
-	
 	<!-- contains -->
 	
 	<rdf:Description rdf:about="http://rb.lichtflut.de/common#contains">
@@ -236,7 +220,7 @@
 	
 	<rdf:Description rdf:about="http://rb.lichtflut.de/common#dependsOn">
 		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-		<rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#hasChildNode"/>
+		<rdfs:subPropertyOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
 		<rdfs:label>depends on</rdfs:label>
 	</rdf:Description>
 	
@@ -292,7 +276,7 @@
 	
 	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasSubordinate">
 		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-		<rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#hasChildNode"/>
+		<rdfs:subPropertyOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
 		<aras:inverseOf rdf:resource="http://rb.lichtflut.de/common#hasSuperordinate"/>
 		<rdfs:label>has subordinate</rdfs:label>
 		<rb:hasFieldLabel>Sub units</rb:hasFieldLabel>

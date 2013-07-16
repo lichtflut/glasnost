@@ -49,4 +49,20 @@
 		<rdfs:label>inherits from</rdfs:label>
 	</rdf:Description>
 	
+	<!-- tree structures -->
+	
+	<rdf:Description rdf:about="http://arastreju.org/kernel#hasChildNode">
+		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+		<aras:inverseOf rdf:resource="http://arastreju.org/kernel#hasParentNode"/>
+		<rdfs:label>has child node</rdfs:label>
+		<rb:hasFieldLabel>Child nodes</rb:hasFieldLabel>
+	</rdf:Description>
+	
+	<rdf:Description rdf:about="http://arastreju.org/kernel#hasParentNode">
+		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+		<aras:inverseOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
+		<rdfs:label>has parent node</rdfs:label>
+		<rb:hasFieldLabel>Parent nodes</rb:hasFieldLabel>
+	</rdf:Description>
+	
 </rdf:RDF>
