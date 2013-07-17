@@ -1,54 +1,66 @@
 perspective "Organizations" {
 
-	title : "Organizational overview"
+  title : "Organizations"
 
-	port {
+  port {
 
-		widget {
-			title : "My company"
-			implementing-class : "de.lichtflut.rb.webck.components.widgets.builtin.MyCompanyWidget"
-		}
+    widget {
+      title : "My company"
+      implementing-class : "de.lichtflut.rb.webck.components.widgets.builtin.MyCompanyWidget"
+    }
 
-		widget {
-			title : "All organizations"
-			display : "list"
-			action {
-			    label : "Add an organization"
-			    create : "http://rb.lichtflut.de/common#Organization"
-			}
-			selection {
-				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Organization'"
-			}
-		}
+    widget {
+      title : "All organizations"
+      display : "list"
+      action {
+          label : "Add an organization"
+          create : "http://rb.lichtflut.de/common#Organization"
+      }
+      selection {
+        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Organization'"
+      }
+      column {
+          label : "Name"
+          property : "http://rb.lichtflut.de/common#hasName"
+      }
+      column {
+          label : "General manager"
+          property : "http://rb.lichtflut.de/common#hasGeneralManager"
+      }      
+      column {
+          label : "Location"
+          property : "http://rb.lichtflut.de/common#hasDomicile"
+      }
+    }
 
-	}
+  }
 
-	port {
+  port {
+  
+    widget {
+      title : "All projects"
+      display : "list"
+      action {
+          label : "Add aproject"
+          create : "http://rb.lichtflut.de/common#Project"
+      }
+      selection {
+        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'"
+      }
+    }
 
-		widget {
-			title : "All processes"
-			display : "list"
-			action {
-			    label : "Add a process"
-			    create : "http://rb.lichtflut.de/common#Organization"
-			}
-			selection {
-				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/bpm#BusinessProcess'"
-			}
-		}
+    widget {
+      title : "All processes"
+      display : "list"
+      action {
+          label : "Add a process"
+          create : "http://rb.lichtflut.de/common#Organization"
+      }
+      selection {
+        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/bpm#BusinessProcess'"
+      }
+    }
 
-		widget {
-			title : "All projects"
-			display : "list"
-			action {
-			    label : "Add aproject"
-			    create : "http://rb.lichtflut.de/common#Project"
-			}
-			selection {
-				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'"
-			}
-		}
-
-	}
+  }
 
 }

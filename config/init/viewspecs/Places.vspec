@@ -1,33 +1,46 @@
 perspective "Places" {
 
-	title : "Places overview"
+  title : "Places overview"
 
-	port {
+  port {
 
-		widget {
-			title : "Countries"
-			display : "list"
-			selection {
-				by-type : "http://rb.lichtflut.de/common#Country"
-			}
-		}
+    widget {
+      title : "Countries"
+      display : "list"
+      selection {
+        by-type : "http://rb.lichtflut.de/common#Country"
+      }
+      column {
+          label : "Name"
+          property : "http://rb.lichtflut.de/common#hasName"
+      }
+    }
 
-	}
+  }
 
-	port {
+  port {
 
-		widget {
-			title : "Cities"
-			display : "list"
-			action {
-			    label : "Add a city"
-			    create : "http://rb.lichtflut.de/common#City"
-			}
-			selection {
-				query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#City'"
-			}
-		}
+    widget {
+      title : "Cities"
+      display : "list"
+      action {
+          label : "Add a city"
+          create : "http://rb.lichtflut.de/common#City"
+      }
+      selection {
+        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#City'"
+      }
+      column {
+          label : "Name"
+          property : "http://rb.lichtflut.de/common#hasName"
+      }
+      column {
+          label : "Country"
+          property : "http://rb.lichtflut.de/common#isInCountry"
+      }      
 
-	}
+    }
+
+  }
 
 }

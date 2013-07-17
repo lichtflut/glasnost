@@ -15,14 +15,14 @@ schema for "common:City" {
 		datatype : "String"
 	}
 	
-	property "common:isInCountry" [1..1] {
+	property "common:isInCountry" [0..1] {
 		field-label : "Country"
 		field-label[de] : "Land"
 		datatype : "Resource"
 		resource-constraint : "common:Country"
 	}
 	
-	property "common:hasPopulation" [1..1] {
+	property "common:hasPopulation" [0..1] {
 		field-label : "Population"
 		datatype : "Integer"
 	}
@@ -218,10 +218,11 @@ schema for "common:Organization" {
 		datatype : "Resource"
 		resource-constraint : "common:Address"
 	}
-   
-   	property "common:isNPO" [0..1] {
-		field-label : "Is NPO"
-		datatype : "boolean"
+	
+	property "common:hasEmailAddress" [0..n] {
+		field-label : "E-Mail"
+		datatype : "string"
+		reference-constraint : "constraint:EmailConstraint"
 	}
 	
 	property "common:hasSubordinate" [0..n] {
@@ -229,6 +230,11 @@ schema for "common:Organization" {
 		field-label[de] : "Org.-Einheiten"
 		datatype : "Resource"
 		resource-constraint : "common:OrganizationalUnit"
+	}
+	
+	property "common:isNPO" [0..1] {
+		field-label : "Is NPO"
+		datatype : "boolean"
 	}
 	
 	property "common:hasDescription" [0..1] {

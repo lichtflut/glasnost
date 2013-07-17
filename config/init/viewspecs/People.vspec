@@ -1,54 +1,53 @@
 perspective "People" {
 
-	title : "People overview"
+  title : "People"
 
-	port {
+  port {
 
-		widget {
-			title : "All people"
-			display : "list"
-			action {
-			    label : "Add a person"
-			    create : "http://rb.lichtflut.de/common#Person"
-			}
-			selection {
-				query : "AND('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person')"
-			}
-			column {
-			    label : "First name"
-			    property : "http://rb.lichtflut.de/common#hasFirstName"
-			}
-			column {
-			    label : "Last name"
-			    property : "http://rb.lichtflut.de/common#hasLastName"
-			}
+    widget {
+      title : "All people"
+      display : "list"
+      action {
+          label : "Add a person"
+          create : "http://rb.lichtflut.de/common#Person"
+      }
+      selection {
+        query : "AND('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person')"
+      }
+      column {
+          label : "First name"
+          property : "http://rb.lichtflut.de/common#hasFirstName"
+      }
+      column {
+          label : "Last name"
+          property : "http://rb.lichtflut.de/common#hasLastName"
+      }
+      column {
+          label : "Company"
+          property : "http://rb.lichtflut.de/common#isEmployedBy"
+      }
 
-		}
+    }
 
-	}
-	
-	port {
+  }
+  
+  port {
 
-		widget {
-			title : "innoQ employees"
-			display : "list"
-			selection {
-				query : "AND (
-				            'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person',
-				            'http://rb.lichtflut.de/common#isEmployedBy'='local:7134dc87-a64c-43fe-a478-3f17e401de64'
-				            )
-				        "
-			}
-		}
+    widget {
+      implementing-class : "de.lichtflut.rb.webck.components.widgets.builtin.ThatsMeWidget"
+    }
 
-	}
-
-	port {
-
-		widget {
-			implementing-class : "de.lichtflut.rb.webck.components.widgets.builtin.ThatsMeWidget"
-		}
-
-	}
+    widget {
+      title : "innoQ employees"
+      display : "list"
+      selection {
+        query : "AND (
+                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person',
+                    'http://rb.lichtflut.de/common#isEmployedBy'='local:7134dc87-a64c-43fe-a478-3f17e401de64'
+                    )
+                "
+      }
+    }
+  }
 
 }
