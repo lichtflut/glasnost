@@ -357,7 +357,7 @@
 		<rb:hasFieldLabel>Last name</rb:hasFieldLabel>
 	</rdf:Description>
 	
-	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasEmail">
+	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasEmailAddress">
 		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
 		<rdfs:label>has email</rdfs:label>
 		<rb:hasFieldLabel>Email</rb:hasFieldLabel>

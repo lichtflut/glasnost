@@ -15,4 +15,5 @@ core/bin
 webapp/bin
 webck/bin
 META-INF
+scripts/config.yaml
 

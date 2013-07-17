@@ -6,6 +6,7 @@ require 'net/https'
 require 'json'
 require 'optparse'
 
+require_relative 'common/configure'
 require_relative 'common/authenticate'
 require_relative 'common/http_util'
 
@@ -42,19 +43,6 @@ OptionParser.new do |opts|
     exit 0
   end
 end.parse!
-
-unless (options[:base_uri])
-  abort("No base URI of service given. Use -h option to dispay help.")
-end
-
-if (options[:user].nil? ^ options[:password].nil?)
-  $stderr.puts "Please provide both a user name *and* password using --user and --password."
-  exit 5
-end
-
-unless (options[:context])
-  options[:context] = 'default'
-end
 
 def handle_exception(uri, exception) 
   $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
@@ -112,14 +100,14 @@ def publish_schema (base_uri, domain, schema, token)
   end
 end
 
-def publish_graph(base_uri, domain, context, graph, token)
+def publish_graph(base_uri, domain, context, graph, content_type, token)
   uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/context/#{context}")
   puts "Publishing to URI: #{uri}"
   http  = init_http_object uri
 
   begin
     request = Net::HTTP::Post.new(uri.request_uri)
-    request.add_field 'Content-Type', 'application/xml'
+    request.add_field 'Content-Type', content_type
     request.add_field 'Cookie', "lfrb-session-auth=#{token}"
     File.open(graph, 'r') do |infile|
       request.body = infile.read
@@ -142,7 +130,9 @@ def publish_file (base_uri, domain, context, file, token)
   when '.rsf'
     publish_schema(base_uri, domain, file, token)
   when '.xml'
-    publish_graph(base_uri, domain, context, file, token)
+    publish_graph(base_uri, domain, context, file, 'application/rdf+xml', token)
+  when '.n3'
+    publish_graph(base_uri, domain, context, file, 'text/n3', token)
   else
     $stderr.puts "Not a valid file (extension): #{file}"
   end
@@ -165,13 +155,16 @@ end
 
 # BEGIN
 
-user_ctx = UserCtx.new options[:user], options[:password]
-user_ctx.authenticate options[:base_uri]
+config = configure(options)
+puts "Using configuration: #{config}"
 
-if File.directory?(options[:in])
-  publish_dir options[:base_uri], options[:domain], options[:context], options[:in], user_ctx.token
+user_ctx = UserCtx.new config[:user], config[:password]
+user_ctx.authenticate config[:base_uri]
+
+if File.directory?(config[:in])
+  publish_dir config[:base_uri], config[:domain], config[:context], config[:in], user_ctx.token
 else
-  publish_file options[:base_uri], options[:domain], options[:context], options[:in], user_ctx.token
+  publish_file config[:base_uri], config[:domain], config[:context], config[:in], user_ctx.token
 end
 
 

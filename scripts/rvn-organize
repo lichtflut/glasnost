@@ -6,6 +6,7 @@ require 'net/https'
 require 'json'
 require 'optparse'
 
+require_relative 'common/configure'
 require_relative 'common/authenticate'
 require_relative 'common/http_util'
 
@@ -73,14 +74,17 @@ end
 
 # BEGIN
 
-user_ctx = UserCtx.new options[:user], options[:password]
-user_ctx.authenticate options[:base_uri]
+config = configure(options)
+puts "Using configuration: #{config}"
 
-case options[:entity]
+user_ctx = UserCtx.new config[:user], config[:password]
+user_ctx.authenticate config[:base_uri]
+
+case config[:entity]
 when 'domain'
-  create_domain(options, user_ctx.token)
+  create_domain(config, user_ctx.token)
 else 
-  $stderr.puts "Entity #{options[:entity]} not yet supported."
+  $stderr.puts "Entity #{config[:entity]} not yet supported."
 end
 
 

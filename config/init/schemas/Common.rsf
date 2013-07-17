@@ -107,7 +107,7 @@ schema for "common:Person" {
 		datatype : "Date"
 	}
 	
-	property "common:hasEmail" [0..n] {
+	property "common:hasEmailAddress" [0..n] {
 		field-label : "E-Mail"
 		datatype : "string"
 		reference-constraint : "constraint:EmailConstraint"
