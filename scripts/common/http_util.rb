@@ -9,3 +9,7 @@ def init_http_object(uri)
   end
   return http
 end
+
+def handle_exception(uri, exception) 
+  $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
+end

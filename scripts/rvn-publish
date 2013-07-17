@@ -156,6 +156,10 @@ end
 # BEGIN
 
 config = configure(options)
+
+unless (config[:in])
+  abort("No input to publish given. Use -h option to dispay help.")
+end
 puts "Using configuration: #{config}"
 
 user_ctx = UserCtx.new config[:user], config[:password]

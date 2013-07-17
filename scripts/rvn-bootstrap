@@ -23,33 +23,11 @@ OptionParser.new do |opts|
   opts.on("-p", "--password=PASSWORD", "Password") do |password|
     options[:password] = password
   end
-   opts.on("-d", "--domain=DOMAIN", "The domain") do |domain|
-   options[:domain] = domain
-  end
-   opts.on("-c", "--context=CONTEXT", "The context") do |context|
-   options[:context] = context
-  end
-    opts.on("-e", "--entity=ENTITY", "Entity: domain, context, namespace") do |entity|
-    options[:entity] = entity
-  end  
-  opts.on("-a", "--action=ACTION", "Action: create, update, delete, ") do |action|
-    options[:action] = action
-  end
-  opts.on("-b", "--base-uri=BASEURI", "Base URI of service") do |base_uri|
-    options[:base_uri] = base_uri
-  end
-  opts.on("-i", "--in=IN", "Directory or file to publish") do |input|
-    options[:in] = input
-  end
   opts.on("-h", "--help", "Display this help") do |help|
     puts opts
     exit 0
   end
 end.parse!
-
-def handle_exception(uri, exception) 
-  $stderr.puts "\n\nERROR in #{$0} trying to access \"#{uri}\": #{exception.to_s}\n#{exception.backtrace.join("\n")}\n\n"
-end
 
 def create_domain(config, token)
   base_uri = config[:base_uri]
@@ -79,7 +57,7 @@ def create_user(config, token)
   puts "Publishing to URI: #{uri}"
   http  = init_http_object uri
   
-  user = {:name => config[:user], :password => config[:password], :homeDomain => config[:domain]}.to_json
+  user = {:name => config[:user], :password => config[:password], :homeDomain => config[:domain], :email => config[:email]}.to_json
 
   begin
     request = Net::HTTP::Post.new(uri.request_uri)
@@ -99,21 +77,13 @@ end
 
 # BEGIN
 
-config = configure(options)
-puts "Using configuration: #{config}"
+config = configure(nil)
+puts "Bootstraping for configuration: #{config} using opptions: #{options}"
 
-user_ctx = UserCtx.new config[:user], config[:password]
+user_ctx = UserCtx.new options[:user], options[:password]
 user_ctx.authenticate config[:base_uri]
 token = user_ctx.token
 
-case config[:entity]
-when 'domain'
-  create_domain(config, token)
-when 'user'
-  create_user(config, token)
-else 
-  $stderr.puts "Entity #{config[:entity]} not yet supported."
-end
-
-
+create_domain(config, token)
+create_user(config, token)
 

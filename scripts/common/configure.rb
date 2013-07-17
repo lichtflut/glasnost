@@ -13,21 +13,18 @@ def load_configuration
 end
 
 def configure(options)
+  opts = options || {}
   cf = load_configuration['default']
   cf.keys.each do |key|
     cf[(key.to_sym rescue key) || key] = cf.delete(key)
   end
-  cf = cf.merge options
+  cf = cf.merge opts
   check_configuration cf
 end
 
 def check_configuration(config)
   unless (config[:base_uri])
     abort("No base URI of service given. Use -h option to dispay help.")
-  end
-  
-  unless (config[:in])
-    abort("No input to publish given. Use -h option to dispay help.")
   end
 
   if (config[:user].nil? ^ config[:password].nil?)

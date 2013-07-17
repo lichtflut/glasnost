@@ -9,8 +9,6 @@
     <import resource="classpath:spring-context-ui.xml"/>
     <import resource="classpath:spring-context-auth.xml"/>
 
-    <bean id="securityConfig" class="de.lichtflut.glasnost.is.conf.GlasnostSecurityConfiguration"/>
-
     <bean id="emailProperties" class="de.lichtflut.rb.core.config.ConfigurationProperties">
         <constructor-arg index="0" value="de.lichtflut.rb.config"/>
         <constructor-arg index="1">
@@ -43,7 +41,6 @@
     <bean id="rbConfig" class="de.lichtflut.rb.core.config.RBConfig" init-method="ready">
         <constructor-arg value="glasnost"></constructor-arg>
         <property name="emailConfiguration" ref="emailConfig"/>
-        <property name="securityConfiguration" ref="securityConfig"/>
         <property name="domainSupervisor" ref="domainSupervisor"/>
         <property name="fileServiceConfiguration" ref="fsConfig"/>
     </bean>
