@@ -180,6 +180,12 @@
         <rb:hasFieldLabel>Vendor of</rb:hasFieldLabel>
     </rdf:Description>
 
+    <rdf:Description rdf:about="http://rb.lichtflut.de/devops#hasProductDesignation">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:label>has product designation</rdfs:label>
+        <rb:hasFieldLabel>Product designation</rb:hasFieldLabel>
+    </rdf:Description>
+
     <rdf:Description rdf:about="http://rb.lichtflut.de/devops#hasContact">
         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
         <rdfs:label>has contacts</rdfs:label>

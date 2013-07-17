@@ -84,7 +84,7 @@ schema for "devops:PhysicalMachine" {
       common:hasIPAddress,
       devops:hostsMachine
     }
-       
+
     property "common:hasID" [1..1] {
         field-label : "ID"
         datatype : "String"
@@ -94,13 +94,18 @@ schema for "devops:PhysicalMachine" {
         field-label : "Name"
         datatype : "String"
     }
-    
-    property "common:hasDescription" [0..1] {
-        field-label : "Description"
-        field-label[de] : "Beschreibung"
-        datatype : "Text"
+
+    property "devops:hasVendor" [0..1] {
+        field-label : "Vendor"
+        datatype : "Resource"
+        resource-constraint : "common:Organization"
     }
     
+    property "devops:hasProductDesignation" [0..1] {
+        field-label : "Product dsignation"
+        datatype : "String"
+    }
+
     property "common:hasIPAddress" [0..1] {
         field-label : "IP"
         datatype : "String"
@@ -112,12 +117,18 @@ schema for "devops:PhysicalMachine" {
         datatype : "Resource"
         resource-constraint : "devops:VirtualMachine"
     }
-    
+
     property "devops:runsSoftware" [0..n] {
         field-label : "Runs"
         field-label[de] : "Führt aus"
         datatype : "Resource"
         resource-constraint : "devops:SoftwareItem"
+    }
+    
+    property "common:hasDescription" [0..1] {
+        field-label : "Description"
+        field-label[de] : "Beschreibung"
+        datatype : "Text"
     }
 
 }
