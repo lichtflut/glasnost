@@ -1,3 +1,6 @@
+namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" prefix "rdf"
+namespace "http://rb.lichtflut.de/common#" prefix "common"
+
 perspective "Places" {
 
   title : "Places overview"
@@ -5,14 +8,40 @@ perspective "Places" {
   port {
 
     widget {
-      title : "Countries"
+      title : "Places where I work and live"
       display : "list"
       selection {
-        by-type : "http://rb.lichtflut.de/common#Country"
+        <script>
+          me = query("QN='${user.person}'");
+          log('me: ' + me);
+          myCities = me.walk('common:hasAddress').walk('common:isInCity');
+          log('myCities: ' + myCities);
+          myCities.result();
+          myEmployer = me.walk('common:isEmployedBy');
+          log('myEmployer: ' + myEmployer);
+          myEmployersCities = myEmployer.walk('common:hasAddress').walk('common:isInCity');
+          myEmployersCities.result();
+        </script>
       }
       column {
           label : "Name"
-          property : "http://rb.lichtflut.de/common#hasName"
+          property : "common:hasName"
+      }
+      column {
+          label : "Country"
+          property : "common:isInCountry"
+      }      
+    }
+
+    widget {
+      title : "Countries"
+      display : "list"
+      selection {
+        by-type : "common:Country"
+      }
+      column {
+          label : "Name"
+          property : "common:hasName"
       }
     }
 
@@ -25,20 +54,19 @@ perspective "Places" {
       display : "list"
       action {
           label : "Add a city"
-          create : "http://rb.lichtflut.de/common#City"
+          create : "common:City"
       }
       selection {
-        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#City'"
+        query : "'rdf:type'='common:City'"
       }
       column {
           label : "Name"
-          property : "http://rb.lichtflut.de/common#hasName"
+          property : "common:hasName"
       }
       column {
           label : "Country"
-          property : "http://rb.lichtflut.de/common#isInCountry"
+          property : "common:isInCountry"
       }      
-
     }
 
   }

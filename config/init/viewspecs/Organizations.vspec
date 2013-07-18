@@ -38,14 +38,31 @@ perspective "Organizations" {
   port {
   
     widget {
-      title : "All projects"
+      title : "My projects"
       display : "list"
       action {
-          label : "Add aproject"
+          label : "Add a project"
           create : "http://rb.lichtflut.de/common#Project"
       }
       selection {
-        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'"
+        <script>
+          start = query("'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'");
+          start.filter(function (e) {
+            return e.walk('http://rb.lichtflut.de/common#hasMembers').matches('${user.person}');
+          }).result();
+        </script>
+      }
+      column {
+          label : "ID"
+          property : "http://rb.lichtflut.de/common#hasID"
+      }
+      column {
+          label : "Title"
+          property : "http://rb.lichtflut.de/common#hasTitle"
+      }
+      column {
+          label : "Lead"
+          property : "http://rb.lichtflut.de/common#hasLead"
       }
     }
 
