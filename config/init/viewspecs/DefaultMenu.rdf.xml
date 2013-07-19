@@ -29,7 +29,7 @@
         <system:showsPerspective rdf:resource="local:perspectives:Places"/>
         <rdf:type rdf:resource="http://rb.lichtflut.de/system#MenuItem"/>
         <common:hasName>Places</common:hasName>
-        <aras:hasSerialNumber>4</aras:hasSerialNumber>
+        <aras:hasSerialNumber>3</aras:hasSerialNumber>
     </rdf:Description>
 	
 </rdf:RDF>

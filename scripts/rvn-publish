@@ -101,7 +101,7 @@ def publish_schema (base_uri, domain, schema, token)
 end
 
 def publish_graph(base_uri, domain, context, graph, content_type, token)
-  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/context/#{context}")
+  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/contexts/#{context}")
   puts "Publishing to URI: #{uri}"
   http  = init_http_object uri
 
