@@ -49,10 +49,22 @@ def handle_exception(uri, exception)
 end
 
 def derive_context(dir, default)
-  if ('metamodel' == File.basename(dir))
-    return 'typesystem'
+  ctx_file = "#{dir}/context.info"
+  if File.exists? ctx_file
+    ctx_def = { :default => 'default' }
+    File.readlines(ctx_file).each do |line|
+      tokens = line.split '=>'
+      if (tokens.length == 2) 
+        key = tokens[0].strip
+        value = tokens[1].strip
+        ctx_def[key] = value
+      end
+    end    
+    return ctx_def
+  elsif ('metamodel' == File.basename(dir))
+    return { :default => 'typesystem' }
   else 
-    return default
+    return { :default => default }
   end
 end
 
@@ -140,11 +152,12 @@ end
 
 def publish_dir (base_uri, domain, context, dir_name, token) 
   dir = Dir.new dir_name
-  context = derive_context(dir, context)
+  ctx_def = derive_context(File.expand_path(dir), context)
   puts "Publishing directory #{File.expand_path dir}"
-  dir.entries.select{ |c| !c.start_with? '.' }. each do |c| 
+  dir.entries.select{ |c| (!c.start_with? '.') && (c != 'context.info') }. each do |c| 
     entry = File.join(dir,c)
-    puts "Current entry #{entry}"
+    context = ctx_def[c] || ctx_def[:default]
+    puts "Current entry #{entry} (ctx => #{context})"
     if File.directory?(entry)
       publish_dir base_uri, domain, context, entry, token
     else

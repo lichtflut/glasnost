@@ -1,35 +1,9 @@
+namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" prefix "rdf"
+namespace "http://rb.lichtflut.de/common#" prefix "common"
+
 perspective "People" {
 
   title : "People"
-
-  port {
-
-    widget {
-      title : "All people"
-      display : "list"
-      action {
-          label : "Add a person"
-          create : "http://rb.lichtflut.de/common#Person"
-      }
-      selection {
-        query : "AND('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person')"
-      }
-      column {
-          label : "First name"
-          property : "http://rb.lichtflut.de/common#hasFirstName"
-      }
-      column {
-          label : "Last name"
-          property : "http://rb.lichtflut.de/common#hasLastName"
-      }
-      column {
-          label : "Company"
-          property : "http://rb.lichtflut.de/common#isEmployedBy"
-      }
-
-    }
-
-  }
   
   port {
 
@@ -38,16 +12,54 @@ perspective "People" {
     }
 
     widget {
-      title : "innoQ employees"
+      title : "My colleagues"
       display : "list"
       selection {
-        query : "AND (
-                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Person',
-                    'http://rb.lichtflut.de/common#isEmployedBy'='local:7134dc87-a64c-43fe-a478-3f17e401de64'
-                    )
-                "
+        query : "AND ('rdf:type'='common:Person',
+                      'common:isEmployedBy'='http://l2r.info/companies/innoQ-D'
+                  )"
+      }
+      column {
+          label : "Name"
+          property : "common:hasFirstName"
+      }
+      column {
+          label : "Mail"
+          property : "common:hasEmailAddress"
+      }
+      column {
+          label : "Phone"
+          property : "common:hasContactData"
       }
     }
+  }
+  
+  port {
+
+    widget {
+      title : "All people"
+      display : "list"
+      action {
+          label : "Add a person"
+          create : "common:Person"
+      }
+      selection {
+        query : "AND('rdf:type'='common:Person')"
+      }
+      column {
+          label : "First name"
+          property : "common:hasFirstName"
+      }
+      column {
+          label : "Last name"
+          property : "common:hasLastName"
+      }
+      column {
+          label : "Company"
+          property : "common:isEmployedBy"
+      }
+    }
+
   }
 
 }

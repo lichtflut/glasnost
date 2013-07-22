@@ -102,7 +102,7 @@ schema for "devops:PhysicalMachine" {
     }
     
     property "devops:hasProductDesignation" [0..1] {
-        field-label : "Product dsignation"
+        field-label : "Product designation"
         datatype : "String"
     }
 

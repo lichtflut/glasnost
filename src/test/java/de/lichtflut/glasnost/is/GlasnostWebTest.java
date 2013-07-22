@@ -267,7 +267,6 @@ public abstract class GlasnostWebTest {
 	private RBDomain createTestDomain() {
 		RBDomain domain = new RBDomain(DOMAIN_ID.getQualifiedName());
 		domain.setDescription("This domain ist for testing purposes only");
-		domain.setDomainNamespace(DOMAIN_ID.toURI());
 		domain.setName(DOMAIN_NAME);
 		domain.setTitle(DOMAIN_NAME);
 		return domain;
