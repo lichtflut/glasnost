@@ -94,7 +94,7 @@ public class GlasnostWebApplication extends RBApplication {
 		getApplicationSettings().setAccessDeniedPage(DefaultErrorPage.class);
 		getApplicationSettings().setInternalErrorPage(DefaultErrorPage.class);
 
-        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
+        //getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
 
 		// Front end Area
 		mountPage("welcome", WelcomePage.class);
@@ -123,7 +123,7 @@ public class GlasnostWebApplication extends RBApplication {
 	public List<NavigationNode> getFirstLevelNavigation(final List<MenuItem> menuItems) {
 		final List<NavigationNode> nodes = new ArrayList<NavigationNode>();
 		nodes.add(createPageNode(WelcomePage.class, "navigation.welcome-page"));
-		nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
+		//nodes.add(createPageNode(SoftwareCatalogPage.class, "navigation.catalog"));
 		//nodes.add(createPageNode(FindClassInEntityPage.class, "navigation.find-class-in-entity"));
 		nodes.addAll(super.getFirstLevelNavigation(menuItems));
 		return nodes;
