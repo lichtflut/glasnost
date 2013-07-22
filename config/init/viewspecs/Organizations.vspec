@@ -67,14 +67,26 @@ perspective "Organizations" {
     }
 
     widget {
-      title : "All processes"
+      title : "All projects"
       display : "list"
       action {
           label : "Add a process"
           create : "http://rb.lichtflut.de/common#Organization"
       }
       selection {
-        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/bpm#BusinessProcess'"
+        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'"
+      }
+      column {
+          label : "ID"
+          property : "http://rb.lichtflut.de/common#hasID"
+      }
+      column {
+          label : "Title"
+          property : "http://rb.lichtflut.de/common#hasTitle"
+      }
+      column {
+          label : "Lead"
+          property : "http://rb.lichtflut.de/common#hasLead"
       }
     }
 

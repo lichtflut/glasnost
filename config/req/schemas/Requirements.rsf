@@ -1,0 +1,54 @@
+namespace "http://rb.lichtflut.de/common#" prefix "common"
+namespace "http://rb.lichtflut.de/req#" prefix "req"
+namespace "http://rb.lichtflut.de/public-constraints#" prefix "constraint"
+
+schema for "req:Requirement" {
+
+  label-rule : "common:hasName <(> common:hasID <)>"
+
+  property "common:hasID" [1..1] {
+    field-label : "ID"
+    datatype : "String"
+  }
+
+  property "common:hasName" [1..1] {
+    field-label : "Name"
+    datatype : "String"
+  }
+
+  property "req:hasStakeholder" [0..n] {
+    field-label : "Stakeholder"
+    datatype : "Resource"
+    resource-constraint : "req:Stakeholder"
+  }
+
+  property "common:hasDescription" [0..1] {
+    field-label : "Description"
+    field-label[de] : "Beschreibung"
+    datatype : "Text"
+  }
+  
+}
+
+schema for "req:Stakeholder" {
+
+  label-rule : "common:hasName"
+
+  property "common:hasName" [1..1] {
+    field-label : "Name"
+    datatype : "String"
+  }
+
+  property "req:representedBy" [0..n] {
+    field-label : "Represented"
+    datatype : "Resource"
+    resource-constraint : "common:ConceptualPerson"
+  }
+
+  property "common:hasDescription" [0..1] {
+    field-label : "Description"
+    field-label[de] : "Beschreibung"
+    datatype : "Text"
+  }
+  
+}
