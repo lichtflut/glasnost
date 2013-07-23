@@ -1,0 +1,49 @@
+namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" prefix "rdf"
+namespace "http://rb.lichtflut.de/common#" prefix "common"
+namespace "http://rb.lichtflut.de/req#" prefix "req"
+
+perspective "Products" {
+
+  title : "Products and Requirements"
+
+  port {
+
+    widget {
+      title : "All products"
+      display : "list"
+      action {
+          label : "Add a product"
+          create : "req:Product"
+      }
+      selection {
+        query : "'rdf:type'='req:Product'"
+      }
+      column {
+          label : "Name"
+          property : "common:hasName"
+      }
+      column {
+          label : "Product owner"
+          property : "common:hasProductOwner"
+      }      
+      column {
+          label : "Status"
+          property : "common:hasStatus"
+      }
+    }
+
+  }
+  
+  port {
+
+    widget {
+      title : "Product requirements"
+      display : "tree"
+      selection {
+        query : "'rdf:type'='req:Product'"
+      }
+    }
+    
+  }
+
+}

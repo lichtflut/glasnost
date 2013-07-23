@@ -240,7 +240,7 @@ schema for "common:Organization" {
   property "common:hasDescription" [0..1] {
     field-label : "Description"
     field-label[de] : "Beschreibung"
-    datatype : "Text"
+    datatype : "rich_text"
   }
 }
 
@@ -295,7 +295,7 @@ schema for "common:OrganizationalUnit" {
   property "common:hasDescription" [0..1] {
     field-label : "Description"
     field-label[de] : "Beschreibung"
-    datatype : "Text"
+    datatype : "rich_text"
   }
 
 }
@@ -322,8 +322,7 @@ schema for "common:Project" {
   }
   
   property "common:hasStakeholder" [0..n] {
-    field-label : "Deputy"
-    field-label[de] : "Stellvertreter"
+    field-label : "Stakeholder"
     datatype : "Resource"
     resource-constraint : "common:Person"
   }
@@ -350,7 +349,7 @@ schema for "common:Project" {
   property "common:hasDescription" [0..1] {
     field-label : "Description"
     field-label[de] : "Beschreibung"
-    datatype : "Text"
+    datatype : "rich_text"
   }
 
 }

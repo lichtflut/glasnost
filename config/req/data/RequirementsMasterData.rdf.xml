@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+    xmlns:req="http://rb.lichtflut.de/req#"
+    xmlns:common="http://rb.lichtflut.de/common#"
+    xmlns:rb="http://rb.lichtflut.de/system#"
+    xmlns:aras="http://arastreju.org/kernel#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    
+    <!-- CATEGORIES -->
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#FunctionalRequirement">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/req#RequirementCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>
+        <rdfs:label>Functional requirement</rdfs:label>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#StatusNew">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/req#StatusCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>        
+        <rdfs:label>new</rdfs:label>
+    </rdf:Description>
+    
+   <rdf:Description rdf:about="http://rb.lichtflut.de/req#StatusBeingImplemented">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/req#StatusCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>        
+        <rdfs:label>being implemented</rdfs:label>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#StatusNew">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/req#StatusCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>        
+        <rdfs:label>implemented</rdfs:label>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#StatusNew">
+        <rdf:type rdf:resource="http://rb.lichtflut.de/req#StatusCategory"/>
+        <rdf:type rdf:resource="http://rb.lichtflut.de/system#Entity"/>
+        <rdfs:label>retired</rdfs:label>
+    </rdf:Description>
+    
+</rdf:RDF>

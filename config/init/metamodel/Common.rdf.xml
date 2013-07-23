@@ -319,6 +319,13 @@
 		<rb:hasFieldLabel>Domicile</rb:hasFieldLabel>
 	</rdf:Description>
 	
+	<rdf:Description rdf:about="http://rb.lichtflut.de/common#hasProductOwner">
+		<rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+		<rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/common#hasOwner"/>
+		<rdfs:label>has product owner</rdfs:label>
+		<rb:hasFieldLabel>Product owner</rb:hasFieldLabel>
+	</rdf:Description>
+	
 	<!-- vehicles -->
 	
 	<rdf:Description rdf:about="http://rb.lichtflut.de/common#isProducedBy">

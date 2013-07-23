@@ -2,9 +2,9 @@ namespace "http://rb.lichtflut.de/common#" prefix "common"
 namespace "http://rb.lichtflut.de/req#" prefix "req"
 namespace "http://rb.lichtflut.de/public-constraints#" prefix "constraint"
 
-schema for "req:Requirement" {
+schema for "req:Product" {
 
-  label-rule : "common:hasName <(> common:hasID <)>"
+  label-rule : "common:hasName"
 
   property "common:hasID" [1..1] {
     field-label : "ID"
@@ -15,17 +15,60 @@ schema for "req:Requirement" {
     field-label : "Name"
     datatype : "String"
   }
-
+  
+  property "common:hasProductOwner" [0..n] {
+    field-label : "Product owner"
+    datatype : "Resource"
+    resource-constraint : "common:Person"
+  }
+  
   property "req:hasStakeholder" [0..n] {
     field-label : "Stakeholder"
     datatype : "Resource"
     resource-constraint : "req:Stakeholder"
   }
+  
+  property "common:hasMembers" [0..n] {
+    field-label : "Team"
+    datatype : "Resource"
+    resource-constraint : "common:Person"
+  }
+  
+  property "common:hasCostUnit" [0..n] {
+    field-label : "Sponsor"
+    field-label[de] : "Kostenstelle"
+    datatype : "Resource"
+    resource-constraint : "common:OrganizationalUnit"
+  }
+  
+  property "req:drivenByProject" [0..n] {
+    field-label : "Driven by projects"
+    datatype : "Resource"
+    resource-constraint : "common:Project"
+  }
+
+  property "req:hasFeature" [0..n] {
+    field-label : "Features"
+    datatype : "Resource"
+    resource-constraint : "req:Feature"
+  }
+  
+  property "req:hasUseCase" [0..n] {
+    field-label : "Use cases"
+    datatype : "Resource"
+    resource-constraint : "req:UseCase"
+  }
+  
+  property "common:hasStatus" [0..1] {
+    field-label : "Status"
+    datatype : "Resource"
+    resource-constraint : "req:StatusCategory"
+  }
 
   property "common:hasDescription" [0..1] {
     field-label : "Description"
     field-label[de] : "Beschreibung"
-    datatype : "Text"
+    datatype : "rich_text"
   }
   
 }
@@ -49,6 +92,149 @@ schema for "req:Stakeholder" {
     field-label : "Description"
     field-label[de] : "Beschreibung"
     datatype : "Text"
+  }
+  
+}
+
+schema for "req:Feature" {
+
+  label-rule : "common:hasName <(> common:hasID <)>"
+
+  property "common:hasID" [1..1] {
+    field-label : "ID"
+    datatype : "String"
+  }
+
+  property "common:hasName" [1..1] {
+    field-label : "Name"
+    datatype : "String"
+  }
+
+  property "req:hasStakeholder" [0..n] {
+    field-label : "Stakeholder"
+    datatype : "Resource"
+    resource-constraint : "req:Stakeholder"
+  }
+  
+  property "req:hasFeature" [0..n] {
+    field-label : "Sub features"
+    datatype : "Resource"
+    resource-constraint : "req:Feature"
+  }
+  
+  property "req:hasUseCase" [0..n] {
+    field-label : "Use cases"
+    datatype : "Resource"
+    resource-constraint : "req:UseCase"
+  }
+  
+  property "req:defines" [0..n] {
+    field-label : "Defines"
+    datatype : "Resource"
+    resource-constraint : "req:RequirementItem"
+  }
+  
+  property "common:hasStatus" [0..1] {
+    field-label : "Status"
+    datatype : "Resource"
+    resource-constraint : "req:StatusCategory"
+  }
+
+  property "common:hasDescription" [0..1] {
+    field-label : "Description"
+    field-label[de] : "Beschreibung"
+    datatype : "rich_text"
+  }
+  
+}
+
+schema for "req:UseCase" {
+
+  label-rule : "common:hasName <(> common:hasID <)>"
+
+  property "common:hasID" [1..1] {
+    field-label : "ID"
+    datatype : "String"
+  }
+
+  property "common:hasName" [1..1] {
+    field-label : "Name"
+    datatype : "String"
+  }
+  
+  property "req:Actor" [1..1] {
+    field-label : "Actor"
+    datatype : "String"
+  }
+
+  property "req:hasStakeholder" [0..n] {
+    field-label : "Stakeholder"
+    datatype : "Resource"
+    resource-constraint : "req:Stakeholder"
+  }
+  
+  property "req:hasUseCase" [0..n] {
+    field-label : "Sub use cases"
+    datatype : "Resource"
+    resource-constraint : "req:UseCase"
+  }
+  
+  property "req:defines" [0..n] {
+    field-label : "Defines"
+    datatype : "Resource"
+    resource-constraint : "req:RequirementItem"
+  }
+  
+  property "common:hasStatus" [0..1] {
+    field-label : "Status"
+    datatype : "Resource"
+    resource-constraint : "req:StatusCategory"
+  }
+
+  property "common:hasDescription" [0..1] {
+    field-label : "Description"
+    field-label[de] : "Beschreibung"
+    datatype : "rich_text"
+  }
+  
+}
+
+schema for "req:Requirement" {
+
+  label-rule : "common:hasName <(> common:hasID <)>"
+
+  property "common:hasID" [1..1] {
+    field-label : "ID"
+    datatype : "String"
+  }
+
+  property "common:hasName" [1..1] {
+    field-label : "Name"
+    datatype : "String"
+  }
+
+  property "req:hasStakeholder" [0..n] {
+    field-label : "Stakeholder"
+    datatype : "Resource"
+    resource-constraint : "req:Stakeholder"
+  }
+  
+  property "req:defines" [0..n] {
+    field-label : "Defines"
+    datatype : "Resource"
+    resource-constraint : "req:RequirementItem"
+  }
+  
+  property "common:hasStatus" [0..1] {
+    field-label : "Status"
+    datatype : "Resource"
+    resource-constraint : "req:StatusCategory"
+  }
+
+  property "common:hasDescription" [0..1] {
+    field-label : "Description"
+    field-label[de] : "Beschreibung"
+    datatype : "rich_text"
   }
   
 }

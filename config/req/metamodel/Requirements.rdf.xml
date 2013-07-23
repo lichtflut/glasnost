@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+    xmlns:req="http://rb.lichtflut.de/req#"
+    xmlns:common="http://rb.lichtflut.de/common#"
+    xmlns:rb="http://rb.lichtflut.de/system#"
+    xmlns:aras="http://arastreju.org/kernel#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    
+    <!-- TYPES -->
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#RequirementItem">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/common#TreeNode"/>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#Requirement">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/req#RequirementItem"/>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#Feature">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/req#RequirementItem"/>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#UseCase">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/req#RequirementItem"/>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#Product">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/req#RequirementItem"/>
+    </rdf:Description>
+    
+    <!-- Properties -->
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#definedBy">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:subPropertyOf rdf:resource="http://arastreju.org/kernel#hasChildNode"/>
+        <aras:inverseOf rdf:resource="http://rb.lichtflut.de/req#defines"/>        
+        <rdfs:label>defined by</rdfs:label>
+        <rb:hasFieldLabel>Defined by</rb:hasFieldLabel>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#defines">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <aras:inverseOf rdf:resource="http://rb.lichtflut.de/req#definedBy"/>        
+        <rdfs:label>defines</rdfs:label>
+        <rb:hasFieldLabel>Defines</rb:hasFieldLabel>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#hasRequirement">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/req#definedBy"/>
+        <rdfs:label>has requirement</rdfs:label>
+        <rb:hasFieldLabel>Requirements</rb:hasFieldLabel>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#hasFeature">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/req#definedBy"/>
+        <rdfs:label>has feature</rdfs:label>
+        <rb:hasFieldLabel>Features</rb:hasFieldLabel>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#hasUseCase">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:subPropertyOf rdf:resource="http://rb.lichtflut.de/req#definedBy"/>
+        <rdfs:label>has use case</rdfs:label>
+        <rb:hasFieldLabel>Use cases</rb:hasFieldLabel>
+    </rdf:Description>    
+    
+
+    
+    <!-- Category Types -->
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#RequirementCategory">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/common#Category"/>
+    </rdf:Description>
+    
+    <rdf:Description rdf:about="http://rb.lichtflut.de/req#StatusCategory">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:subClassOf rdf:resource="http://rb.lichtflut.de/common#Category"/>        
+    </rdf:Description>
+    
+</rdf:RDF>

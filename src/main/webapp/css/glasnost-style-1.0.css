@@ -121,6 +121,14 @@ div.teaser-graph {
 	height: 200px;
 }
 
+div.teaser-main {
+    background-image: url("glasnost_images/teaser_servers.png");
+    background-position: 80px 40px;
+    background-repeat: no-repeat;
+    height: 500px;
+    min-width: 760px;
+}
+
 div.teaser {
 	font-size: 9pt;
 	padding: 0 5px;

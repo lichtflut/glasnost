@@ -1,3 +1,6 @@
+namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#" prefix "rdf"
+namespace "http://rb.lichtflut.de/common#" prefix "common"
+
 perspective "Organizations" {
 
   title : "Organizations"
@@ -14,22 +17,22 @@ perspective "Organizations" {
       display : "list"
       action {
           label : "Add an organization"
-          create : "http://rb.lichtflut.de/common#Organization"
+          create : "common:Organization"
       }
       selection {
-        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Organization'"
+        query : "'rdf:type'='common:Organization'"
       }
       column {
           label : "Name"
-          property : "http://rb.lichtflut.de/common#hasName"
+          property : "common:hasName"
       }
       column {
           label : "General manager"
-          property : "http://rb.lichtflut.de/common#hasGeneralManager"
+          property : "common:hasGeneralManager"
       }      
       column {
           label : "Location"
-          property : "http://rb.lichtflut.de/common#hasDomicile"
+          property : "common:hasDomicile"
       }
     }
 
@@ -40,29 +43,25 @@ perspective "Organizations" {
     widget {
       title : "My projects"
       display : "list"
-      action {
-          label : "Add a project"
-          create : "http://rb.lichtflut.de/common#Project"
-      }
       selection {
         <script>
-          start = query("'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'");
+          start = query("'rdf:type'='common:Project'");
           start.filter(function (e) {
-            return e.walk('http://rb.lichtflut.de/common#hasMembers').matches('${user.person}');
+            return e.walk('common:hasMembers').matches('${user.person}');
           }).result();
         </script>
       }
       column {
           label : "ID"
-          property : "http://rb.lichtflut.de/common#hasID"
+          property : "common:hasID"
       }
       column {
           label : "Title"
-          property : "http://rb.lichtflut.de/common#hasTitle"
+          property : "common:hasTitle"
       }
       column {
           label : "Lead"
-          property : "http://rb.lichtflut.de/common#hasLead"
+          property : "common:hasLead"
       }
     }
 
@@ -70,23 +69,23 @@ perspective "Organizations" {
       title : "All projects"
       display : "list"
       action {
-          label : "Add a process"
-          create : "http://rb.lichtflut.de/common#Organization"
+          label : "Add a project"
+          create : "common:Project"
       }
       selection {
-        query : "'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'='http://rb.lichtflut.de/common#Project'"
+        query : "'rdf:type'='common:Project'"
       }
       column {
           label : "ID"
-          property : "http://rb.lichtflut.de/common#hasID"
+          property : "common:hasID"
       }
       column {
           label : "Title"
-          property : "http://rb.lichtflut.de/common#hasTitle"
+          property : "common:hasTitle"
       }
       column {
           label : "Lead"
-          property : "http://rb.lichtflut.de/common#hasLead"
+          property : "common:hasLead"
       }
     }
 
