@@ -16,6 +16,7 @@
 package de.lichtflut.glasnost.is.dialog;
 
 import de.lichtflut.glasnost.is.GlasnostWebApplication;
+import de.lichtflut.rb.webck.components.dialogs.RBDialog;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
@@ -26,7 +27,6 @@ import org.arastreju.sge.model.ResourceID;
 import de.lichtflut.rb.webck.browsing.JumpTarget;
 import de.lichtflut.rb.webck.common.RBWebSession;
 import de.lichtflut.rb.webck.components.catalog.CatalogPanel;
-import de.lichtflut.rb.webck.components.dialogs.AbstractRBDialog;
 import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
 
 /**
@@ -37,7 +37,7 @@ import de.lichtflut.rb.webck.models.resources.ResourceLabelModel;
  *
  * @author Ravi Knox
  */
-public class CatalogDialog extends AbstractRBDialog {
+public class CatalogDialog extends RBDialog {
 
 	/**
 	 * Constructor.
@@ -49,7 +49,7 @@ public class CatalogDialog extends AbstractRBDialog {
 		add(new CatalogPanel("catalog", superclass){
 			@Override
 			protected void onCancel(final AjaxRequestTarget target, final Form<?> form) {
-				closeDialog();
+				close(target);
 				RBWebSession.get().getHistory().clear(getJumpTarget());
 			}
 
@@ -62,7 +62,7 @@ public class CatalogDialog extends AbstractRBDialog {
 		setModal(true).setWidth(850).setHeight(600);
 	}
 
-	// ------------------------------------------------------
+    // ------------------------------------------------------
 
 	protected void applyActions(final IModel<ResourceID> model) {
 

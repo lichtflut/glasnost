@@ -159,7 +159,7 @@ public class GlasnostEntityDetailPage extends EntityDetailPage {
 					protected void applyActions(final IModel<ResourceID> model) {
 						setBrowingStep(decl, typeConstraint);
 						sendEvents(typeConstraint);
-						closeDialog();
+						close();
 					}
 
 					private void setBrowingStep(final IModel<PropertyDeclaration> decl,
