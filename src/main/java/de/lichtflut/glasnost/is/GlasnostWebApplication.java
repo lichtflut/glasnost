@@ -94,7 +94,7 @@ public class GlasnostWebApplication extends RBApplication {
 		getApplicationSettings().setAccessDeniedPage(DefaultErrorPage.class);
 		getApplicationSettings().setInternalErrorPage(DefaultErrorPage.class);
 
-        //getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
+        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
 
 		// Front end Area
 		mountPage("welcome", WelcomePage.class);
