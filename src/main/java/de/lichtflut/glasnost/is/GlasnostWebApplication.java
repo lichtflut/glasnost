@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.lichtflut.glasnost.is.pages.GlasnostEntityDetailPage;
+import de.lichtflut.rb.application.extensions.RBRequestCycleListener;
 import org.apache.wicket.Page;
 
 import de.lichtflut.glasnost.is.conf.GlasnostLayout;
 import de.lichtflut.glasnost.is.conf.GlasnostStyle;
 import de.lichtflut.glasnost.is.pages.LoginPage;
-import de.lichtflut.glasnost.is.pages.SoftwareCatalogPage;
 import de.lichtflut.glasnost.is.pages.WelcomePage;
 import de.lichtflut.rb.application.RBApplication;
 import de.lichtflut.rb.application.admin.AdminBasePage;
@@ -88,7 +88,7 @@ public class GlasnostWebApplication extends RBApplication {
 	public void init() {
 		super.init();
 
-		getRequestCycleListeners().add(new GlasnostRequestCycleListener());
+		getRequestCycleListeners().add(new RBRequestCycleListener());
 
 		getApplicationSettings().setPageExpiredErrorPage(ExpiredErrorPage.class);
 		getApplicationSettings().setAccessDeniedPage(DefaultErrorPage.class);
