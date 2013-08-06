@@ -12,9 +12,9 @@ def load_configuration
   end
 end
 
-def configure(options)
+def configure(options, environment = 'default')
   opts = options || {}
-  cf = load_configuration['default']
+  cf = load_configuration[environment]
   cf.keys.each do |key|
     cf[(key.to_sym rescue key) || key] = cf.delete(key)
   end

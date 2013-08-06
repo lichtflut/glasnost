@@ -23,6 +23,9 @@ OptionParser.new do |opts|
   opts.on("-p", "--password=PASSWORD", "Password") do |password|
     options[:password] = password
   end
+  opts.on("-e", "--environment=ENVIRONMENT", "Environment") do |environment|
+    options[:environment] = environment
+  end
   opts.on("-h", "--help", "Display this help") do |help|
     puts opts
     exit 0
@@ -77,7 +80,9 @@ end
 
 # BEGIN
 
-config = configure(nil)
+env = options[:environment] || 'default'
+
+config = configure(nil, env)
 puts "Bootstraping for configuration: #{config} using opptions: #{options}"
 
 user_ctx = UserCtx.new options[:user], options[:password]

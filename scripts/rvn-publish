@@ -32,6 +32,9 @@ OptionParser.new do |opts|
   opts.on("-o", "--out=OUT", "Path to output file") do |out|
     options[:out] = out
   end
+  opts.on("-e", "--environment=ENVIRONMENT", "Environment") do |environment|
+    options[:environment] = environment
+  end
   opts.on("-b", "--base-uri=BASEURI", "Base URI of service") do |base_uri|
     options[:base_uri] = base_uri
   end
@@ -168,7 +171,7 @@ end
 
 # BEGIN
 
-config = configure(options)
+config = configure(options, options[:environment])
 
 unless (config[:in])
   abort("No input to publish given. Use -h option to dispay help.")
