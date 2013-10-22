@@ -10,18 +10,22 @@ class UserCtx
     @password = password
   end
 
-  def authenticate(base_uri)
-    uri   = URI.parse("#{base_uri}/service/auth/tickets")
+  def authenticate(config)
+    base_uri = config[:base_uri]
+    uri = URI.parse("#{base_uri}/service/auth/tickets")
     puts "Authenticating against #{uri.to_s}"
   
-    http  = init_http_object uri
-  
+    http  = init_http_object(uri,config)
     request = Net::HTTP::Post.new(uri.request_uri)
+    if (config[:http_basic_user]) 
+      request.basic_auth(config[:http_basic_user], config[:http_basic_pass])
+    end        
     request.body = login_json
     request.add_field 'Content-Type', 'application/json'
     response = http.request(request)
     
     if (response.code.to_i != 201) 
+      $stderr.puts "Authentication failed:\n#{response.body}"
       raise "Authentication failed (RC=#{response.code})." 
     end
     

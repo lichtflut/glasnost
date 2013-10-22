@@ -37,11 +37,9 @@ def create_domain(config, token)
   domain   = config[:domain]
   uri   = URI.parse("#{base_uri}/service/domains/#{domain}")
   puts "Publishing to URI: #{uri}"
-  http  = init_http_object uri
-
   begin
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+    http  = init_http_object(uri, config)
+    request = init_post_request(uri, config, token)
     response = http.request(request)
     puts "Response: #{response.code} #{response['Location']}"
   rescue OpenSSL::SSL::SSLError => exception
@@ -58,13 +56,11 @@ def create_user(config, token)
   domain   = config[:domain]
   uri   = URI.parse("#{base_uri}/service/domains/#{domain}/users")
   puts "Publishing to URI: #{uri}"
-  http  = init_http_object uri
-  
   user = {:name => config[:user], :password => config[:password], :homeDomain => config[:domain], :email => config[:email]}.to_json
 
   begin
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+    http  = init_http_object(uri, config)
+    request = init_post_request(uri, config, token)
     request.add_field 'Content-Type', 'application/json'
     request.body = user
     response = http.request(request)
@@ -86,7 +82,7 @@ config = configure(nil, env)
 puts "Bootstraping for configuration: #{config} using opptions: #{options}"
 
 user_ctx = UserCtx.new options[:user], options[:password]
-user_ctx.authenticate config[:base_uri]
+user_ctx.authenticate config
 token = user_ctx.token
 
 create_domain(config, token)
