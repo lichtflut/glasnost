@@ -15,7 +15,7 @@ class UserCtx
     uri = URI.parse("#{base_uri}/service/auth/tickets")
     puts "Authenticating against #{uri.to_s}"
   
-    http  = init_http_object(uri,config)
+    http  = init_http_object(uri)
     request = Net::HTTP::Post.new(uri.request_uri)
     if (config[:http_basic_user]) 
       request.basic_auth(config[:http_basic_user], config[:http_basic_pass])

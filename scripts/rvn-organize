@@ -73,27 +73,12 @@ def create_domain(config, token)
 end
 
 def create_user(config, token)
-  base_uri = config[:base_uri]
-  domain   = config[:domain]
   uri   = URI.parse("#{base_uri}/service/domains/#{domain}/users")
   puts "Publishing to URI: #{uri}"
-  http  = init_http_object uri config
-  
   user = {:name => config[:user], :password => config[:password], :homeDomain => config[:domain]}.to_json
-
-  begin
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+  exec_post_request(uri, config) do |request| 
     request.add_field 'Content-Type', 'application/json'
     request.body = user
-    response = http.request(request)
-    puts "Response: #{response.code} #{response['Location']}"
-  rescue OpenSSL::SSL::SSLError => exception
-    handle_exception(uri.to_s, exception)
-  rescue JSON::ParserError => exception
-    handle_exception(uri.to_s, exception)
-  rescue Exception => exception
-    handle_exception(uri.to_s, exception)
   end
 end
 

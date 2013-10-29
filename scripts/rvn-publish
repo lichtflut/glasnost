@@ -71,89 +71,54 @@ def derive_context(dir, default)
   end
 end
 
-def publish_vspec (base_uri, domain, vspec, token)
-  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/viewspecs/perspectives")
+def publish_vspec (config, vspec)
+  uri   = URI.parse("#{config[:base_uri]}/service/domains/#{config[:domain]}/viewspecs/perspectives")
   puts "Publishing to URI: #{uri}"
-  http  = init_http_object uri config
-
-  begin
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+  response = exec_post_request(uri, config) do |request| 
     File.open(vspec, 'r') do |infile|
       request.body = infile.read
     end
-    response = http.request(request)
-    puts "Response: #{response.code} #{response['Location']}"
-  rescue OpenSSL::SSL::SSLError => exception    
-    handle_exception(uri.to_s, exception)
-  rescue JSON::ParserError => exception
-    handle_exception(uri.to_s, exception)
-  rescue Exception => exception
-    handle_exception(uri.to_s, exception)
   end
 end
 
-def publish_schema (base_uri, domain, schema, token)
-  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/schemas")
-  puts "Publishing to URI: #{uri}"
-  http  = init_http_object uri config
-
-  begin
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
+def publish_schema (config, schema)
+  uri   = URI.parse("#{config[:base_uri]}/service/domains/#{config[:domain]}/schemas")
+  puts "Publishing to URI: #{uri}"  
+  response = exec_post_request(uri, config) do |request| 
     File.open(schema, 'r') do |infile|
       request.body = infile.read
     end
-    response = http.request(request)
-    puts "Response: #{response.code} #{response['Location']}"
-  rescue OpenSSL::SSL::SSLError => exception
-    handle_exception(uri.to_s, exception)
-  rescue JSON::ParserError => exception
-    handle_exception(uri.to_s, exception)
-  rescue Exception => exception
-    handle_exception(uri.to_s, exception)
   end
 end
 
-def publish_graph(base_uri, domain, context, graph, content_type, token)
-  uri   = URI.parse("#{base_uri}/service/domains/#{domain}/graphs/contexts/#{context}")
+def publish_graph(config, context, graph, content_type)
+  uri   = URI.parse("#{config[:base_uri]}/service/domains/#{config[:domain]}/graphs/contexts/#{context}")
   puts "Publishing to URI: #{uri}"
-  http  = init_http_object uri config
-
-  begin
-    request = Net::HTTP::Post.new(uri.request_uri)
+  response = exec_post_request(uri, config) do |request| 
     request.add_field 'Content-Type', content_type
-    request.add_field 'Cookie', "lfrb-session-auth=#{token}"
     File.open(graph, 'r') do |infile|
       request.body = infile.read
     end
-    response = http.request(request)
-    puts "Response: #{response.code} #{response['Location']}"
-  rescue OpenSSL::SSL::SSLError => exception
-    handle_exception(uri.to_s, exception)
-  rescue JSON::ParserError => exception
-    handle_exception(uri.to_s, exception)
-  rescue Exception => exception
-    handle_exception(uri.to_s, exception)
   end
 end
 
-def publish_file (base_uri, domain, context, file, token) 
+def publish_file (config, context, file) 
   case File.extname(file)
   when '.vspec'
-    publish_vspec(base_uri, domain, file, token)
+    publish_vspec(config, file)
   when '.rsf'
-    publish_schema(base_uri, domain, file, token)
+    publish_schema(config, file)
   when '.xml'
-    publish_graph(base_uri, domain, context, file, 'application/rdf+xml', token)
+    publish_graph(config, context, file, 'application/rdf+xml')
   when '.n3'
-    publish_graph(base_uri, domain, context, file, 'text/n3', token)
+    publish_graph(config, context, file, 'text/n3')
   else
     $stderr.puts "Not a valid file (extension): #{file}"
   end
 end
 
-def publish_dir (base_uri, domain, context, dir_name, token) 
+def publish_dir (config, context, dir_name) 
+  context = config[:context]
   dir = Dir.new dir_name
   ctx_def = derive_context(File.expand_path(dir), context)
   puts "Publishing directory #{File.expand_path dir}"
@@ -162,9 +127,9 @@ def publish_dir (base_uri, domain, context, dir_name, token)
     context = ctx_def[c] || ctx_def[:default]
     puts "Current entry #{entry} (ctx => #{context})"
     if File.directory?(entry)
-      publish_dir base_uri, domain, context, entry, token
+      publish_dir config, context, entry
     else
-      publish_file base_uri, domain, context, entry, token
+      publish_file config, context, entry
     end
   end
 end
@@ -181,10 +146,12 @@ puts "Using configuration: #{config}"
 user_ctx = UserCtx.new config[:user], config[:password]
 user_ctx.authenticate config
 
+config[:token] = user_ctx.token
+
 if File.directory?(config[:in])
-  publish_dir config[:base_uri], config[:domain], config[:context], config[:in], user_ctx.token
+  publish_dir config, config[:context], config[:in]
 else
-  publish_file config[:base_uri], config[:domain], config[:context], config[:in], user_ctx.token
+  publish_file config, config[:context], config[:in]
 end
 
 
